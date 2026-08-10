@@ -1,25 +1,43 @@
-# xleader-cwi
+# xleader-cwi — Chat With Insight
 
-Chat With Insight — plugin Claude Code giúp đội XLeaders hỏi dữ liệu và dựng báo cáo trên
-Metabase `insight.xteam.edu.vn` bằng tiếng Việt.
+Hỏi dữ liệu kinh doanh XLeaders bằng tiếng Việt và tự dựng báo cáo riêng trên `insight.xteam.edu.vn`,
+ngay trong Claude Code. Không cần biết SQL.
 
-## Cài plugin từ thư mục local (đã kiểm chứng)
+## Cài đặt (làm một lần)
 
-Lệnh CLI trực tiếp **có tồn tại** trên phiên bản Claude Code `2.1.221` và chạy thành công — không
-cần rơi xuống biến thể slash-command:
-
-```bash
-claude plugin marketplace add ~/project/xleader-cwi
-claude plugin install xleader-cwi@xleader-cwi
-```
-
-Output thật:
+> ⚠ `<org>` là CHỖ TRỐNG — chưa chốt tên tổ chức/tài khoản GitHub sẽ lưu repo này. Thay `<org>` bằng giá trị
+> thật (ví dụ `github.com/<org>/xleader-cwi`) trước khi dùng lệnh dưới đây; xem mục "Dành cho người bảo trì".
 
 ```
-Adding marketplace…✔ Successfully added marketplace: xleader-cwi (declared in user settings)
-Installing plugin "xleader-cwi@xleader-cwi"...✔ Successfully installed plugin: xleader-cwi@xleader-cwi (scope: user)
+/plugin marketplace add <org>/xleader-cwi
+/plugin install xleader-cwi@xleader-cwi
+/start
 ```
 
-Xác nhận: `claude mcp list` liệt kê `plugin:xleader-cwi:cwi: node
-/Users/johnvu/project/xleader-cwi/plugin/mcp/server.mjs - ✔ Connected`, và `claude plugin list`
-liệt kê `xleader-cwi@xleader-cwi ... Status: ✔ enabled`.
+Bật **auto update** trong màn hình `/plugin` để máy tự cập nhật khi cấu trúc dữ liệu thay đổi.
+
+## Dùng thế nào
+
+Cứ hỏi bình thường:
+- *"Doanh thu lớp CEO.QTKH.K01 là bao nhiêu?"*
+- *"Tháng này có bao nhiêu học viên ghi danh chính thức?"*
+- *"Hiệu suất của Sale Phương Anh 3 tháng gần đây thế nào?"*
+- *"Dựng cho tôi báo cáo doanh thu theo khoá học năm nay"*
+
+Mỗi câu trả lời đều kèm **"Cách tính:"** để bạn biết con số đó nghĩa là gì.
+
+## Phạm vi an toàn
+
+Công cụ **chỉ tạo và sửa báo cáo trong thư mục riêng của bạn**. Báo cáo chung của công ty thì đọc được nhưng
+không sửa được — Metabase từ chối ở phía máy chủ, không phụ thuộc vào phần mềm này cư xử đúng.
+
+Gỡ báo cáo = đưa vào Thùng rác Metabase (khôi phục được), không xoá vĩnh viễn.
+
+## Dành cho người bảo trì
+
+- Từ điển dữ liệu sinh bằng `node scripts/gen-cwi-dictionary.mjs` trong repo `xleaders-crm-app`.
+- Quy trình nạp lại khi schema đổi nằm trong skill `/build-metabase-report`.
+- Chạy test: `node --test`
+- Siết quyền collection (guardrail lớp 1): `node scripts/siet-quyen-collection.mjs [--apply]`
+- `<org>` ở mục Cài đặt: repo này CHƯA có remote GitHub — cần người dùng chốt tên tổ chức/tài khoản trước khi
+  tạo remote riêng tư và push (xem báo cáo Task 13).
