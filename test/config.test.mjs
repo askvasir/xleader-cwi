@@ -29,6 +29,18 @@ test('session.json phải có quyền 0600', async () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+test('session.json ĐÃ TỒN TẠI với quyền lỏng phải bị SIẾT lại 0600', async () => {
+  // Ca này khác test trên: writeFileSync({mode}) chỉ áp dụng khi TẠO MỚI.
+  // Không chmod lại thì file cũ 0644 vẫn 0644 — token phiên đọc được bởi user khác.
+  const dir = mkdtempSync(join(tmpdir(), 'cwi-'));
+  const { writeFileSync, chmodSync } = await import('node:fs');
+  writeFileSync(join(dir, 'session.json'), '{"session":"cu"}');
+  chmodSync(join(dir, 'session.json'), 0o644);
+  await makeConfigStore(dir).writeSession('moi');
+  assert.equal(statSync(join(dir, 'session.json')).mode & 0o777, 0o600);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test('file session hỏng thì trả null chứ không ném lỗi', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'cwi-'));
   const s = makeConfigStore(dir);

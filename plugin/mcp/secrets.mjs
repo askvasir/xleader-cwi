@@ -7,6 +7,11 @@ const run = promisify(execFile);
 const SERVICE = 'xleader-cwi';
 const laMac = () => process.platform === 'darwin';
 
+// ⚠ ĐÃ BIẾT & CHẤP NHẬN: `security` không nhận mật khẩu qua stdin, nên `-w <password>` nằm trong
+// argv và LỘ trong `ps` với tiến trình cùng user cục bộ suốt vài mili-giây lệnh chạy (đã đo thật).
+// Chấp nhận vì: cửa sổ rất ngắn, chỉ lộ cục bộ (không ra mạng, không ghi đĩa/log), chỉ gọi lúc
+// /start, và ràng buộc "không phụ thuộc npm" loại bỏ thư viện native (keytar) — đây là lựa chọn
+// tốt nhất khả dĩ. Đối chiếu: `loadPassword` (gọi thường xuyên hơn) KHÔNG hề đưa secret vào argv.
 export async function savePassword(email, password) {
   if (!laMac()) return;                       // nơi khác: người dùng tự đặt biến môi trường
   await run('security', ['add-generic-password', '-U', '-s', SERVICE, '-a', email, '-w', password]);

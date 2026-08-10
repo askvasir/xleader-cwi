@@ -22,20 +22,42 @@ export const getConfig = async () => ({
 
 let _mb = null;
 
-/** Trả client đã đăng nhập. Phiên hết hạn thì tự đăng nhập lại bằng mật khẩu trong Keychain. */
+async function dangNhapLai(mb, email) {
+  const pw = await loadPassword(email);
+  if (!pw) throw new Error('Không đọc được mật khẩu đã lưu. Anh/chị chạy lại /start giúp em nhé.');
+  await store.writeSession(await mb.login(email, pw));
+}
+
+/**
+ * Trả client đã đăng nhập, tự phục hồi phiên khi hết hạn.
+ *
+ * ⚠⚠ ĐỪNG "tối ưu" thành `if (_mb) return _mb` rồi thăm dò bằng `me()` MỘT LẦN lúc tạo:
+ * server MCP sống rất lâu (nhiều ngày), phiên Metabase thì hết hạn giữa chừng. Kiểm một lần
+ * lúc khởi tạo nghĩa là mọi lời gọi sau đó ném thẳng lỗi 401 tiếng Anh ra mặt người dùng.
+ * Cũng đừng gọi `me()` trước MỖI lời gọi — thêm một vòng mạng cho mỗi câu hỏi.
+ * Cách đúng: BỌC `api()`, gặp ĐÚNG 401 thì đăng nhập lại một lần rồi thử lại.
+ * Chỉ 401 mới là "hết hạn"; Metabase sập / mạng lỗi phải nổi lên nguyên trạng, không được
+ * nguỵ trang thành hết hạn rồi đăng nhập lại vô ích.
+ */
 export async function connect() {
   const cfg = await store.readConfig();
   if (!cfg) throw new Error('Chưa cấu hình. Anh/chị gõ /start để em thiết lập giúp nhé.');
   if (_mb) return _mb;
   const mb = createMetabase({ baseUrl: MB_URL });
   const token = await store.readSession();
-  if (token) {
-    mb.setSession(token);
-    try { await mb.me(); _mb = mb; return mb; } catch { /* hết hạn → đăng nhập lại bên dưới */ }
-  }
-  const pw = await loadPassword(cfg.email);
-  if (!pw) throw new Error('Không đọc được mật khẩu đã lưu. Anh/chị chạy lại /start giúp em nhé.');
-  await store.writeSession(await mb.login(cfg.email, pw));
+  if (token) mb.setSession(token);
+  else await dangNhapLai(mb, cfg.email);
+
+  const goc = mb.api;
+  mb.api = async (path, opts) => {
+    try {
+      return await goc(path, opts);
+    } catch (e) {
+      if (e?.status !== 401) throw e;      // KHÔNG nuốt lỗi thật
+      await dangNhapLai(mb, cfg.email);
+      return goc(path, opts);              // thử lại đúng MỘT lần
+    }
+  };
   _mb = mb;
   return mb;
 }
