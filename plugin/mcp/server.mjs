@@ -6,6 +6,7 @@ import { loadDictionary, sliceTables, findModel } from './dict.mjs';
 import { makeConfigStore } from './config.mjs';
 import { loadPassword } from './secrets.mjs';
 import { createMetabase } from './metabase.mjs';
+import { resolveModelId, runModelQuery, runSql } from './query.mjs';
 
 const DICT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'dictionary');
 const dict = loadDictionary(DICT_DIR);
@@ -94,6 +95,25 @@ const TOOLS = [
       additionalProperties: false,
     },
   },
+  {
+    name: 'cwi_query',
+    description: 'Chạy truy vấn CHỈ ĐỌC trên insight. Ưu tiên mode "model" (định nghĩa nghiệp vụ đã đối soát sẵn); ' +
+      'chỉ dùng mode "sql" khi Model không làm được (tỉ lệ giữa các dòng, YoY, kỳ gộp).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        mode: { type: 'string', enum: ['model', 'sql'] },
+        model: { type: 'string', description: 'Tên Model khi mode=model' },
+        aggregation: { type: 'array', description: 'MBQL aggregation, vd [["count"]]' },
+        breakout: { type: 'array', description: 'MBQL breakout' },
+        filter: { type: 'array', description: 'MBQL filter' },
+        limit: { type: 'number' },
+        sql: { type: 'string', description: 'Câu SELECT khi mode=sql' },
+      },
+      required: ['mode'],
+      additionalProperties: false,
+    },
+  },
 ];
 
 async function onCall(name, args) {
@@ -124,6 +144,18 @@ async function onCall(name, args) {
     }
     if (!out.tables && !out.model) throw new Error('Cần truyền tables[], model, hoặc list:true.');
     return JSON.stringify(out, null, 1);
+  }
+  if (name === 'cwi_query') {
+    const mb = await connect();                 // connect()/getConfig() từ Task 7
+    const cfg = await getConfig();
+    if (args.mode === 'sql') {
+      return JSON.stringify(await runSql(mb, { databaseId: cfg.databaseId, sql: args.sql }), null, 1);
+    }
+    const modelId = await resolveModelId(mb, cfg.modelsCollection, args.model);
+    return JSON.stringify(await runModelQuery(mb, {
+      databaseId: cfg.databaseId, modelId,
+      aggregation: args.aggregation, breakout: args.breakout, filter: args.filter, limit: args.limit,
+    }), null, 1);
   }
   throw new Error(`Chưa có công cụ tên "${name}".`);
 }
