@@ -55,3 +55,17 @@ test('compareFingerprint: cột THÊM trên DB không phải lỗi (thay đổi 
   const r = compareFingerprint(fp, { tables: { _class: ['id', 'maLopHoc', 'ghiChu'] }, enums: { 'opportunity.nguon': ['FB_ADS', 'GIOI_THIEU'] } });
   assert.equal(r.ok, true);
 });
+
+test('compareFingerprint: MẤT HẲN một bảng phải kêu, không im lặng bỏ qua', () => {
+  // Chuông báo động câm còn tệ hơn không có chuông: bảng biến mất mà báo ok
+  // ⇒ plugin vẫn dựng báo cáo trên một bảng không còn tồn tại.
+  const r = compareFingerprint(fp, { tables: {}, enums: { 'opportunity.nguon': ['FB_ADS', 'GIOI_THIEU'] } });
+  assert.equal(r.ok, false);
+  assert.deepEqual(r.thieuCot, ['_class.id', '_class.maLopHoc']);
+});
+
+test('compareFingerprint: live thiếu hẳn khoá enums vẫn phát hiện được lệch', () => {
+  const r = compareFingerprint(fp, { tables: { _class: ['id', 'maLopHoc'] } });
+  assert.equal(r.ok, false);
+  assert.deepEqual(r.enumLech, ['opportunity.nguon']);
+});

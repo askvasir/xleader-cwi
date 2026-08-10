@@ -38,10 +38,16 @@ async function onCall(name, args) {
       }, null, 1);
     }
     const out = {};
+    const GOI_Y = 'Dùng cwi_dict {list:true} để xem danh sách bảng.';
     if (args.tables?.length) {
       const r = sliceTables(dict.schema, args.tables);
+      // Không tìm thấy bảng NÀO ⇒ báo lỗi hẳn. Trả `{tables:{}}` im lặng là ngõ cụt:
+      // người hỏi không biết tên bảng, và tool "thành công" nên không ai biết là đã hỏng.
+      if (!Object.keys(r.tables).length) {
+        throw new Error(`Không có bảng nào tên ${r.thieu.map((t) => `"${t}"`).join(', ')}. ${GOI_Y}`);
+      }
       out.tables = r.tables;
-      if (r.thieu.length) out.khongTimThay = r.thieu;
+      if (r.thieu.length) out.khongTimThay = { ten: r.thieu, goiY: GOI_Y };
     }
     if (args.model) {
       const m = findModel(dict.models, args.model);
