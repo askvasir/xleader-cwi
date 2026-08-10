@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T08:18:48.413Z",
+  "generatedAt": "2026-08-10T08:31:35.775Z",
   "tables": {
     "_class": {
       "object": "class",
@@ -175,6 +175,13 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -256,6 +263,13 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -317,6 +331,13 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -654,6 +675,13 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -811,6 +839,13 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -860,6 +895,13 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -957,6 +999,13 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -1139,6 +1188,13 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -1147,37 +1203,37 @@
       "label": "Attachment",
       "description": "An attachment",
       "columns": {
-        "targetOrder": {
+        "targetOrderId": {
           "field": "targetOrder",
           "label": "Order",
           "type": "MORPH_RELATION",
           "description": "Order Order"
         },
-        "targetPayment": {
+        "targetPaymentId": {
           "field": "targetPayment",
           "label": "Payment",
           "type": "MORPH_RELATION",
           "description": "Payment Payment"
         },
-        "targetCourse": {
+        "targetCourseId": {
           "field": "targetCourse",
           "label": "Course",
           "type": "MORPH_RELATION",
           "description": "Course Course"
         },
-        "targetSepayWebhookLog": {
+        "targetSepayWebhookLogId": {
           "field": "targetSepayWebhookLog",
           "label": "SepayWebhookLog",
           "type": "MORPH_RELATION",
           "description": "SepayWebhookLog Nhật ký webhook SePay"
         },
-        "targetClass": {
+        "targetClassId": {
           "field": "targetClass",
           "label": "Class",
           "type": "MORPH_RELATION",
           "description": "Class Class"
         },
-        "targetMauTaiLieu": {
+        "targetMauTaiLieuId": {
           "field": "targetMauTaiLieu",
           "label": "MauTaiLieu",
           "type": "MORPH_RELATION",
@@ -1206,6 +1262,104 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "targetTaskId": {
+          "field": "targetTaskId",
+          "label": "targetTaskId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetDashboardId": {
+          "field": "targetDashboardId",
+          "label": "targetDashboardId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetSalesPolicyId": {
+          "field": "targetSalesPolicyId",
+          "label": "targetSalesPolicyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetPersonId": {
+          "field": "targetPersonId",
+          "label": "targetPersonId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetNoteId": {
+          "field": "targetNoteId",
+          "label": "targetNoteId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetWorkflowId": {
+          "field": "targetWorkflowId",
+          "label": "targetWorkflowId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "fullPath": {
+          "field": "fullPath",
+          "label": "fullPath",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetOpportunityId": {
+          "field": "targetOpportunityId",
+          "label": "targetOpportunityId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetEnrollmentId": {
+          "field": "targetEnrollmentId",
+          "label": "targetEnrollmentId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetCompanyId": {
+          "field": "targetCompanyId",
+          "label": "targetCompanyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "file": {
+          "field": "file",
+          "label": "file",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "fileCategory": {
+          "field": "fileCategory",
+          "label": "fileCategory",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetOrderItemId": {
+          "field": "targetOrderItemId",
+          "label": "targetOrderItemId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -1830,6 +1984,181 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "addressAddressCity": {
+          "field": "addressAddressCity",
+          "label": "addressAddressCity",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "employees": {
+          "field": "employees",
+          "label": "employees",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedinLinkPrimaryLinkLabel": {
+          "field": "linkedinLinkPrimaryLinkLabel",
+          "label": "linkedinLinkPrimaryLinkLabel",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "addressAddressPostcode": {
+          "field": "addressAddressPostcode",
+          "label": "addressAddressPostcode",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "addressAddressStreet2": {
+          "field": "addressAddressStreet2",
+          "label": "addressAddressStreet2",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedinLinkSecondaryLinks": {
+          "field": "linkedinLinkSecondaryLinks",
+          "label": "linkedinLinkSecondaryLinks",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "idealCustomerProfile": {
+          "field": "idealCustomerProfile",
+          "label": "idealCustomerProfile",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "annualRecurringRevenueCurrencyCode": {
+          "field": "annualRecurringRevenueCurrencyCode",
+          "label": "annualRecurringRevenueCurrencyCode",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "accountOwnerId": {
+          "field": "accountOwnerId",
+          "label": "accountOwnerId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedinLinkPrimaryLinkUrl": {
+          "field": "linkedinLinkPrimaryLinkUrl",
+          "label": "linkedinLinkPrimaryLinkUrl",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "annualRecurringRevenueAmountMicros": {
+          "field": "annualRecurringRevenueAmountMicros",
+          "label": "annualRecurringRevenueAmountMicros",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "addressAddressLat": {
+          "field": "addressAddressLat",
+          "label": "addressAddressLat",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "addressAddressState": {
+          "field": "addressAddressState",
+          "label": "addressAddressState",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "xLinkPrimaryLinkLabel": {
+          "field": "xLinkPrimaryLinkLabel",
+          "label": "xLinkPrimaryLinkLabel",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "annualRevenueAmountMicros": {
+          "field": "annualRevenueAmountMicros",
+          "label": "annualRevenueAmountMicros",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "annualRevenueCurrencyCode": {
+          "field": "annualRevenueCurrencyCode",
+          "label": "annualRevenueCurrencyCode",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "domainNamePrimaryLinkLabel": {
+          "field": "domainNamePrimaryLinkLabel",
+          "label": "domainNamePrimaryLinkLabel",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "domainNameSecondaryLinks": {
+          "field": "domainNameSecondaryLinks",
+          "label": "domainNameSecondaryLinks",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "addressAddressCountry": {
+          "field": "addressAddressCountry",
+          "label": "addressAddressCountry",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "addressAddressStreet1": {
+          "field": "addressAddressStreet1",
+          "label": "addressAddressStreet1",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "domainNamePrimaryLinkUrl": {
+          "field": "domainNamePrimaryLinkUrl",
+          "label": "domainNamePrimaryLinkUrl",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "addressAddressLng": {
+          "field": "addressAddressLng",
+          "label": "addressAddressLng",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "xLinkSecondaryLinks": {
+          "field": "xLinkSecondaryLinks",
+          "label": "xLinkSecondaryLinks",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "xLinkPrimaryLinkUrl": {
+          "field": "xLinkPrimaryLinkUrl",
+          "label": "xLinkPrimaryLinkUrl",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -1838,37 +2167,37 @@
       "label": "Note Target",
       "description": "A note target",
       "columns": {
-        "targetCourse": {
+        "targetCourseId": {
           "field": "targetCourse",
           "label": "Course",
           "type": "MORPH_RELATION",
           "description": "Course Course"
         },
-        "targetSepayWebhookLog": {
+        "targetSepayWebhookLogId": {
           "field": "targetSepayWebhookLog",
           "label": "SepayWebhookLog",
           "type": "MORPH_RELATION",
           "description": "SepayWebhookLog Nhật ký webhook SePay"
         },
-        "targetPayment": {
+        "targetPaymentId": {
           "field": "targetPayment",
           "label": "Payment",
           "type": "MORPH_RELATION",
           "description": "Payment Payment"
         },
-        "targetOrder": {
+        "targetOrderId": {
           "field": "targetOrder",
           "label": "Order",
           "type": "MORPH_RELATION",
           "description": "Order Order"
         },
-        "targetMauTaiLieu": {
+        "targetMauTaiLieuId": {
           "field": "targetMauTaiLieu",
           "label": "MauTaiLieu",
           "type": "MORPH_RELATION",
           "description": "MauTaiLieu Mẫu tài liệu"
         },
-        "targetClass": {
+        "targetClassId": {
           "field": "targetClass",
           "label": "Class",
           "type": "MORPH_RELATION",
@@ -1897,6 +2226,55 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "targetOpportunityId": {
+          "field": "targetOpportunityId",
+          "label": "targetOpportunityId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetPersonId": {
+          "field": "targetPersonId",
+          "label": "targetPersonId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetCompanyId": {
+          "field": "targetCompanyId",
+          "label": "targetCompanyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetSalesPolicyId": {
+          "field": "targetSalesPolicyId",
+          "label": "targetSalesPolicyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetOrderItemId": {
+          "field": "targetOrderItemId",
+          "label": "targetOrderItemId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetEnrollmentId": {
+          "field": "targetEnrollmentId",
+          "label": "targetEnrollmentId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "noteId": {
+          "field": "noteId",
+          "label": "noteId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -2584,6 +2962,62 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "closeDate": {
+          "field": "closeDate",
+          "label": "closeDate",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "amountAmountMicros": {
+          "field": "amountAmountMicros",
+          "label": "amountAmountMicros",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "ownerId": {
+          "field": "ownerId",
+          "label": "ownerId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "stage": {
+          "field": "stage",
+          "label": "stage",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "amountCurrencyCode": {
+          "field": "amountCurrencyCode",
+          "label": "amountCurrencyCode",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "companyId": {
+          "field": "companyId",
+          "label": "companyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "pointOfContactId": {
+          "field": "pointOfContactId",
+          "label": "pointOfContactId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -3026,6 +3460,146 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "avatarFile": {
+          "field": "avatarFile",
+          "label": "avatarFile",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "phonesPrimaryPhoneNumber": {
+          "field": "phonesPrimaryPhoneNumber",
+          "label": "phonesPrimaryPhoneNumber",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "emailsPrimaryEmail": {
+          "field": "emailsPrimaryEmail",
+          "label": "emailsPrimaryEmail",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedinLinkPrimaryLinkLabel": {
+          "field": "linkedinLinkPrimaryLinkLabel",
+          "label": "linkedinLinkPrimaryLinkLabel",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "xLinkSecondaryLinks": {
+          "field": "xLinkSecondaryLinks",
+          "label": "xLinkSecondaryLinks",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "emailsAdditionalEmails": {
+          "field": "emailsAdditionalEmails",
+          "label": "emailsAdditionalEmails",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "nameLastName": {
+          "field": "nameLastName",
+          "label": "nameLastName",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "nameFirstName": {
+          "field": "nameFirstName",
+          "label": "nameFirstName",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "avatarUrl": {
+          "field": "avatarUrl",
+          "label": "avatarUrl",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "xLinkPrimaryLinkUrl": {
+          "field": "xLinkPrimaryLinkUrl",
+          "label": "xLinkPrimaryLinkUrl",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "jobTitle": {
+          "field": "jobTitle",
+          "label": "jobTitle",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "phonesAdditionalPhones": {
+          "field": "phonesAdditionalPhones",
+          "label": "phonesAdditionalPhones",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "city": {
+          "field": "city",
+          "label": "city",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "facebookSecondaryLinks": {
+          "field": "facebookSecondaryLinks",
+          "label": "facebookSecondaryLinks",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "phonesPrimaryPhoneCallingCode": {
+          "field": "phonesPrimaryPhoneCallingCode",
+          "label": "phonesPrimaryPhoneCallingCode",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedinLinkPrimaryLinkUrl": {
+          "field": "linkedinLinkPrimaryLinkUrl",
+          "label": "linkedinLinkPrimaryLinkUrl",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "xLinkPrimaryLinkLabel": {
+          "field": "xLinkPrimaryLinkLabel",
+          "label": "xLinkPrimaryLinkLabel",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "companyId": {
+          "field": "companyId",
+          "label": "companyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "phonesPrimaryPhoneCountryCode": {
+          "field": "phonesPrimaryPhoneCountryCode",
+          "label": "phonesPrimaryPhoneCountryCode",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedinLinkSecondaryLinks": {
+          "field": "linkedinLinkSecondaryLinks",
+          "label": "linkedinLinkSecondaryLinks",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -3034,37 +3608,37 @@
       "label": "Task Target",
       "description": "A task target",
       "columns": {
-        "targetPayment": {
+        "targetPaymentId": {
           "field": "targetPayment",
           "label": "Payment",
           "type": "MORPH_RELATION",
           "description": "Payment Payment"
         },
-        "targetMauTaiLieu": {
+        "targetMauTaiLieuId": {
           "field": "targetMauTaiLieu",
           "label": "MauTaiLieu",
           "type": "MORPH_RELATION",
           "description": "MauTaiLieu Mẫu tài liệu"
         },
-        "targetOrder": {
+        "targetOrderId": {
           "field": "targetOrder",
           "label": "Order",
           "type": "MORPH_RELATION",
           "description": "Order Order"
         },
-        "targetCourse": {
+        "targetCourseId": {
           "field": "targetCourse",
           "label": "Course",
           "type": "MORPH_RELATION",
           "description": "Course Course"
         },
-        "targetSepayWebhookLog": {
+        "targetSepayWebhookLogId": {
           "field": "targetSepayWebhookLog",
           "label": "SepayWebhookLog",
           "type": "MORPH_RELATION",
           "description": "SepayWebhookLog Nhật ký webhook SePay"
         },
-        "targetClass": {
+        "targetClassId": {
           "field": "targetClass",
           "label": "Class",
           "type": "MORPH_RELATION",
@@ -3093,6 +3667,55 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "targetPersonId": {
+          "field": "targetPersonId",
+          "label": "targetPersonId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "taskId": {
+          "field": "taskId",
+          "label": "taskId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetCompanyId": {
+          "field": "targetCompanyId",
+          "label": "targetCompanyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetSalesPolicyId": {
+          "field": "targetSalesPolicyId",
+          "label": "targetSalesPolicyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetEnrollmentId": {
+          "field": "targetEnrollmentId",
+          "label": "targetEnrollmentId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetOrderItemId": {
+          "field": "targetOrderItemId",
+          "label": "targetOrderItemId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetOpportunityId": {
+          "field": "targetOpportunityId",
+          "label": "targetOpportunityId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     },
@@ -3101,37 +3724,37 @@
       "label": "Timeline Activity",
       "description": "Aggregated / filtered event to be displayed on the timeline",
       "columns": {
-        "targetPayment": {
+        "targetPaymentId": {
           "field": "targetPayment",
           "label": "Payment",
           "type": "MORPH_RELATION",
           "description": "Payment Payment"
         },
-        "targetSepayWebhookLog": {
+        "targetSepayWebhookLogId": {
           "field": "targetSepayWebhookLog",
           "label": "SepayWebhookLog",
           "type": "MORPH_RELATION",
           "description": "SepayWebhookLog Nhật ký webhook SePay"
         },
-        "targetCourse": {
+        "targetCourseId": {
           "field": "targetCourse",
           "label": "Course",
           "type": "MORPH_RELATION",
           "description": "Course Course"
         },
-        "targetMauTaiLieu": {
+        "targetMauTaiLieuId": {
           "field": "targetMauTaiLieu",
           "label": "MauTaiLieu",
           "type": "MORPH_RELATION",
           "description": "MauTaiLieu Mẫu tài liệu"
         },
-        "targetClass": {
+        "targetClassId": {
           "field": "targetClass",
           "label": "Class",
           "type": "MORPH_RELATION",
           "description": "Class Class"
         },
-        "targetOrder": {
+        "targetOrderId": {
           "field": "targetOrder",
           "label": "Order",
           "type": "MORPH_RELATION",
@@ -3160,6 +3783,139 @@
           "label": "Ngày xoá mềm",
           "type": "DATE_TIME",
           "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        },
+        "name": {
+          "field": "name",
+          "label": "name",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetCompanyId": {
+          "field": "targetCompanyId",
+          "label": "targetCompanyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetSalesPolicyId": {
+          "field": "targetSalesPolicyId",
+          "label": "targetSalesPolicyId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedObjectMetadataId": {
+          "field": "linkedObjectMetadataId",
+          "label": "linkedObjectMetadataId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetOpportunityId": {
+          "field": "targetOpportunityId",
+          "label": "targetOpportunityId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetTaskId": {
+          "field": "targetTaskId",
+          "label": "targetTaskId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetPersonId": {
+          "field": "targetPersonId",
+          "label": "targetPersonId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "workspaceMemberId": {
+          "field": "workspaceMemberId",
+          "label": "workspaceMemberId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedRecordCachedName": {
+          "field": "linkedRecordCachedName",
+          "label": "linkedRecordCachedName",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "linkedRecordId": {
+          "field": "linkedRecordId",
+          "label": "linkedRecordId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetEnrollmentId": {
+          "field": "targetEnrollmentId",
+          "label": "targetEnrollmentId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "properties": {
+          "field": "properties",
+          "label": "properties",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetNoteId": {
+          "field": "targetNoteId",
+          "label": "targetNoteId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetOrderItemId": {
+          "field": "targetOrderItemId",
+          "label": "targetOrderItemId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetDashboardId": {
+          "field": "targetDashboardId",
+          "label": "targetDashboardId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "happensAt": {
+          "field": "happensAt",
+          "label": "happensAt",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetWorkflowRunId": {
+          "field": "targetWorkflowRunId",
+          "label": "targetWorkflowRunId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetWorkflowId": {
+          "field": "targetWorkflowId",
+          "label": "targetWorkflowId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
+        },
+        "targetWorkflowVersionId": {
+          "field": "targetWorkflowVersionId",
+          "label": "targetWorkflowVersionId",
+          "type": "DB",
+          "description": "",
+          "nguon": "db"
         }
       }
     }
