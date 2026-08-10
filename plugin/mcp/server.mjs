@@ -146,6 +146,19 @@ async function onCall(name, args) {
     return JSON.stringify(out, null, 1);
   }
   if (name === 'cwi_query') {
+    // ⚠ `rpc.mjs` KHÔNG kiểm `inputSchema` — `required` chỉ là mô tả cho model AI đọc, server không ép.
+    // Không tự kiểm ở đây thì thiếu `sql` lộ lỗi Clojure nội bộ của Metabase bằng tiếng Anh
+    // ("Assert failed: (string? sql)"), còn thiếu `model` thì báo 'không thấy Model "undefined"'
+    // — đọc như người dùng gõ sai tên, chứ không phải quên tham số. Cả hai đã đo thật.
+    if (args.mode !== 'model' && args.mode !== 'sql') {
+      throw new Error(`Cách truy vấn không hợp lệ: "${args.mode}". Chỉ nhận "model" hoặc "sql".`);
+    }
+    if (args.mode === 'sql' && !String(args.sql || '').trim()) {
+      throw new Error('Thiếu câu truy vấn. Dùng mode "sql" thì phải kèm tham số `sql`.');
+    }
+    if (args.mode === 'model' && !String(args.model || '').trim()) {
+      throw new Error('Thiếu tên Model. Gọi cwi_dict {list:true} để xem danh sách Model có sẵn.');
+    }
     const mb = await connect();                 // connect()/getConfig() từ Task 7
     const cfg = await getConfig();
     if (args.mode === 'sql') {

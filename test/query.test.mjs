@@ -26,6 +26,14 @@ test('assertReadOnly KHÔNG chặn nhầm khi từ khoá nằm trong tên cột 
   assert.doesNotThrow(() => assertReadOnly('select "deletedAt" from "_class"'));
 });
 
+test('assertReadOnly KHÔNG chặn oan câu SELECT có comment SQL', () => {
+  // Đo thật ở vòng review: cả 3 ca dưới đều bị CHẶN OAN khi chưa bỏ comment.
+  assert.doesNotThrow(() => assertReadOnly('select 1; -- ghi chú vô hại'));
+  assert.doesNotThrow(() => assertReadOnly('select 1 -- delete from x nằm trong comment'));
+  assert.doesNotThrow(() => assertReadOnly('select 1 /* delete this */'));
+  assert.doesNotThrow(() => assertReadOnly(`select ';' as dau_cham_phay_trong_chuoi`));
+});
+
 function fakeMb(capture) {
   return { api: async (path, opts) => { capture.push({ path, opts }); return {
     status: 'completed', data: { cols: [{ display_name: 'Số lượng' }], rows: [[42]] } }; } };

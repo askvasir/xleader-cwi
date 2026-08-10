@@ -4,9 +4,18 @@
 
 const TU_KHOA_GHI = /\b(insert|update|delete|drop|create|alter|grant|revoke|truncate|copy|vacuum)\b/i;
 
-/** Bỏ chuỗi và định danh trong nháy trước khi dò từ khoá → không chặn nhầm "updatedAt" hay 'đã insert'. */
+/**
+ * Bỏ chuỗi, định danh trong nháy VÀ comment trước khi dò từ khoá.
+ * ⚠ Thứ tự quan trọng: bỏ chuỗi TRƯỚC (để `'--'` trong chuỗi không bị coi là comment), rồi mới bỏ comment.
+ * ⚠ Không bỏ comment thì chặn OAN: `select 1; -- ghi chú` bị đếm thành 2 câu lệnh, và
+ * `select 1 /* delete this * /` bị coi là có thao tác ghi. AI sinh SQL rất hay chèn comment giải thích.
+ */
 export function assertReadOnly(sql) {
-  const sach = String(sql).replace(/'(?:[^']|'')*'/g, "''").replace(/"(?:[^"]|"")*"/g, '""');
+  const sach = String(sql)
+    .replace(/'(?:[^']|'')*'/g, "''")
+    .replace(/"(?:[^"]|"")*"/g, '""')
+    .replace(/--[^\n]*/g, ' ')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ');
   if (TU_KHOA_GHI.test(sach)) {
     throw new Error('Câu lệnh này có thao tác ghi. Công cụ chỉ đọc dữ liệu, không sửa dữ liệu.');
   }
