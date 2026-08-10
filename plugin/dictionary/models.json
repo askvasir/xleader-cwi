@@ -1,0 +1,600 @@
+{
+  "generatedAt": "2026-08-10T08:18:49.193Z",
+  "collection": "XLeaders – Models",
+  "models": [
+    {
+      "name": "Cơ hội (Lead)",
+      "description": "Fact phễu — 1 dòng / (cơ hội × lớp đã gắn): cơ hội mua vé cho nhiều lớp sẽ xuất hiện ở MỌI lớp đó, nên lọc theo Lớp là chính xác. Đếm TỔNG toàn hệ thống (không lọc Lớp) thì lọc \"Dòng đại diện\" = true để mỗi cơ hội chỉ tính 1 lần. Phân loại Lead, Nguồn, Kênh, Sale, lớp/khoá, giá trị & công nợ.",
+      "columns": [
+        {
+          "name": "ID",
+          "base_type": "type/UUID"
+        },
+        {
+          "name": "Mã Opp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Khách hàng",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "ID KH",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Email",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "SĐT",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Công ty",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Phân loại Lead",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã tầng",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Nguồn",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Kênh",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Sale",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "PIC",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã lớp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã khoá",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Chuỗi",
+          "base_type": "type/PostgresEnum"
+        },
+        {
+          "name": "Số lần tư vấn",
+          "base_type": "type/Float"
+        },
+        {
+          "name": "Giá trị (VND)",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Đã thanh toán (VND)",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Còn lại (VND)",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Tình trạng",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Có đơn hàng",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Dòng đại diện",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Ngày tạo",
+          "base_type": "type/Date"
+        }
+      ]
+    },
+    {
+      "name": "Cơ hội theo tầng phễu",
+      "description": "Fact phễu CỘNG DỒN — 1 dòng / (cơ hội × tầng đã đạt × lớp đã gắn). Đếm group-by \"Tầng phễu\" ra C1≥C2≥C3≥C4 và drill được. Lọc theo Lớp chính xác (cơ hội nhiều lớp tính ở mọi lớp); đếm TỔNG không lọc Lớp thì thêm \"Dòng đại diện\" = true.",
+      "columns": [
+        {
+          "name": "ID",
+          "base_type": "type/UUID"
+        },
+        {
+          "name": "Mã Opp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Khách hàng",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "ID KH",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Sale",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Phân loại Lead",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Nguồn",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Kênh",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã lớp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã khoá",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Chuỗi",
+          "base_type": "type/PostgresEnum"
+        },
+        {
+          "name": "Giá trị (VND)",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Ngày tạo",
+          "base_type": "type/Date"
+        },
+        {
+          "name": "Dòng đại diện",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Tầng phễu",
+          "base_type": "type/Text"
+        }
+      ]
+    },
+    {
+      "name": "Dòng đơn hàng (Vé)",
+      "description": "Fact doanh thu — 1 dòng / dòng đơn hàng (_orderItem). Net/VAT/chiết khấu, lớp/khoá, khách mua & học viên, đã chốt.",
+      "columns": [
+        {
+          "name": "ID",
+          "base_type": "type/UUID"
+        },
+        {
+          "name": "Mã dòng",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã đơn hàng",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã Opp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Khách mua",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Học viên",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã lớp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã khoá",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Chuỗi",
+          "base_type": "type/PostgresEnum"
+        },
+        {
+          "name": "Sale",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Phân loại Lead (Opp)",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Loại đăng ký",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Số lượng",
+          "base_type": "type/Float"
+        },
+        {
+          "name": "Đơn giá (VND)",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Chiết khấu %",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "VAT %",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Thành tiền gồm VAT (VND)",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Net chưa VAT (VND)",
+          "base_type": "type/Float"
+        },
+        {
+          "name": "Đã chốt",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Có học viên",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Ngày tạo",
+          "base_type": "type/Date"
+        }
+      ]
+    },
+    {
+      "name": "Ghi danh (HV theo lớp)",
+      "description": "Fact ĐÀO TẠO — 1 dòng / ghi danh (_enrollment). Học viên + công ty/ngành nghề của học viên, lớp/khoá/chuỗi, ngày–năm–tháng tổ chức, loại đăng ký, tình trạng học tập, doanh thu net của vé. Dùng cho mọi chỉ số \"học viên đã đào tạo\" và \"đối tác theo kỳ\" (group theo \"Công ty (học viên)\").",
+      "columns": [
+        {
+          "name": "ID",
+          "base_type": "type/UUID"
+        },
+        {
+          "name": "Mã ghi danh",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Học viên",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "ID KH",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Email",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "SĐT",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Chức danh",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Công ty (học viên)",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Thương hiệu",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Ngành nghề",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Nhóm ngành",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã lớp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã khoá",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Tên khoá học",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Chuỗi",
+          "base_type": "type/PostgresEnum"
+        },
+        {
+          "name": "Ngày tổ chức",
+          "base_type": "type/Date"
+        },
+        {
+          "name": "Năm tổ chức",
+          "base_type": "type/Integer"
+        },
+        {
+          "name": "Tháng tổ chức",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Trạng thái lớp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Đã đào tạo",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Sale",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Loại đăng ký",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Tình trạng học tập",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Trạng thái ghi danh",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Đang hiệu lực",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Có thu phí",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Doanh thu net (VND)",
+          "base_type": "type/Float"
+        },
+        {
+          "name": "Ngày tạo",
+          "base_type": "type/Date"
+        }
+      ]
+    },
+    {
+      "name": "Lớp học (Buổi đào tạo)",
+      "description": "Fact lớp — 1 dòng / lớp (_class). Khoá/chuỗi/chuyên đề, lịch & địa điểm & giảng viên, sĩ số – số học viên – số doanh nghiệp – doanh thu net đã cuộn sẵn. Cột \"Đã tổ chức\" = đã qua ngày tổ chức.",
+      "columns": [
+        {
+          "name": "ID",
+          "base_type": "type/UUID"
+        },
+        {
+          "name": "Mã lớp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã khoá",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Tên khoá học",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Chuỗi",
+          "base_type": "type/PostgresEnum"
+        },
+        {
+          "name": "Chuyên đề",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Ngày tổ chức",
+          "base_type": "type/Date"
+        },
+        {
+          "name": "Đến ngày",
+          "base_type": "type/Date"
+        },
+        {
+          "name": "Năm tổ chức",
+          "base_type": "type/Integer"
+        },
+        {
+          "name": "Tháng tổ chức",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Kỳ tổ chức",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Trạng thái",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Loại lớp",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Hình thức học",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Địa điểm",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Giảng viên",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Số ngày học",
+          "base_type": "type/Float"
+        },
+        {
+          "name": "Học phí gốc (VND)",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Đã tổ chức",
+          "base_type": "type/Boolean"
+        },
+        {
+          "name": "Sĩ số (ghi danh)",
+          "base_type": "type/BigInteger"
+        },
+        {
+          "name": "Số học viên",
+          "base_type": "type/BigInteger"
+        },
+        {
+          "name": "Số doanh nghiệp",
+          "base_type": "type/BigInteger"
+        },
+        {
+          "name": "Ghi danh miễn phí",
+          "base_type": "type/BigInteger"
+        },
+        {
+          "name": "Doanh thu net (VND)",
+          "base_type": "type/Float"
+        }
+      ]
+    },
+    {
+      "name": "Thanh toán",
+      "description": "Fact tiền mặt — 1 dòng / thanh toán (_payment). Thực thu, xác nhận kế toán, đơn hàng, Sale.",
+      "columns": [
+        {
+          "name": "ID",
+          "base_type": "type/UUID"
+        },
+        {
+          "name": "Mã payment",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã giao dịch",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Mã đơn hàng",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Khách mua",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Sale",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Thực thu (VND)",
+          "base_type": "type/Decimal"
+        },
+        {
+          "name": "Xác nhận kế toán",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Loại thanh toán",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Phương thức",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Tài khoản",
+          "base_type": "type/PostgresEnum"
+        },
+        {
+          "name": "Ngày chuyển khoản",
+          "base_type": "type/Date"
+        },
+        {
+          "name": "Ngày tạo",
+          "base_type": "type/Date"
+        }
+      ]
+    },
+    {
+      "name": "Đối tác doanh nghiệp",
+      "description": "Danh bạ đối tác — 1 dòng / công ty đã có ít nhất 1 học viên tại XLeaders (qua công ty của học viên trên ghi danh). Số liệu LIFETIME: số học viên/lớp/khoá, lần đầu & gần nhất đào tạo, doanh thu net. Cần lọc theo kỳ → dùng model \"Ghi danh (HV theo lớp)\".",
+      "columns": [
+        {
+          "name": "ID",
+          "base_type": "type/UUID"
+        },
+        {
+          "name": "Đối tác (Công ty)",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Thương hiệu",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Ngành nghề",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Nhóm ngành",
+          "base_type": "type/Text"
+        },
+        {
+          "name": "Số học viên",
+          "base_type": "type/BigInteger"
+        },
+        {
+          "name": "Số lượt ghi danh",
+          "base_type": "type/BigInteger"
+        },
+        {
+          "name": "Số lớp",
+          "base_type": "type/BigInteger"
+        },
+        {
+          "name": "Số khoá học",
+          "base_type": "type/BigInteger"
+        },
+        {
+          "name": "Lần đầu đào tạo",
+          "base_type": "type/Date"
+        },
+        {
+          "name": "Lần gần nhất đào tạo",
+          "base_type": "type/Date"
+        },
+        {
+          "name": "Năm trở thành đối tác",
+          "base_type": "type/Integer"
+        },
+        {
+          "name": "Doanh thu net (VND)",
+          "base_type": "type/Float"
+        }
+      ]
+    }
+  ]
+}

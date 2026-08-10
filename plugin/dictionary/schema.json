@@ -1,0 +1,3457 @@
+{
+  "generatedAt": "2026-08-10T08:18:48.413Z",
+  "tables": {
+    "_class": {
+      "object": "class",
+      "label": "Class",
+      "description": "Ky to chuc cu the cua mot khoa hoc",
+      "columns": {
+        "maLopHoc": {
+          "field": "maLopHoc",
+          "label": "Mã lớp học",
+          "type": "TEXT",
+          "description": ""
+        },
+        "siSoMucTieu": {
+          "field": "siSoMucTieu",
+          "label": "Sĩ số mục tiêu",
+          "type": "NUMBER",
+          "description": ""
+        },
+        "trangThai": {
+          "field": "trangThai",
+          "label": "Trạng thái",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "SAP_DIEN_RA",
+              "label": "Sắp diễn ra"
+            },
+            {
+              "value": "DANG_DIEN_RA",
+              "label": "Đang diễn ra"
+            },
+            {
+              "value": "DA_KET_THUC",
+              "label": "Đã kết thúc"
+            }
+          ]
+        },
+        "loaiLop": {
+          "field": "loaiLop",
+          "label": "Loại lớp",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CUOI_TUAN",
+              "label": "CUOI_TUAN"
+            },
+            {
+              "value": "TRONG_TUAN",
+              "label": "TRONG_TUAN"
+            },
+            {
+              "value": "GIUA_TUAN",
+              "label": "GIUA_TUAN"
+            }
+          ]
+        },
+        "lichHoc": {
+          "field": "lichHoc",
+          "label": "Lịch học",
+          "type": "TEXT",
+          "description": ""
+        },
+        "khoaHocId": {
+          "field": "khoaHoc",
+          "label": "Khóa học",
+          "type": "RELATION",
+          "description": "Classes tied to the Course",
+          "target": "course"
+        },
+        "kyToChuc": {
+          "field": "kyToChuc",
+          "label": "Kỳ tổ chức",
+          "type": "TEXT",
+          "description": ""
+        },
+        "hinhThucHoc": {
+          "field": "hinhThucHoc",
+          "label": "Hình thức học",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "OFFLINE",
+              "label": "OFFLINE"
+            },
+            {
+              "value": "HYBRID",
+              "label": "HYBRID"
+            },
+            {
+              "value": "ONLINE",
+              "label": "ONLINE"
+            }
+          ]
+        },
+        "ngayToChuc": {
+          "field": "ngayToChuc",
+          "label": "Từ ngày",
+          "type": "DATE",
+          "description": ""
+        },
+        "denNgay": {
+          "field": "denNgay",
+          "label": "Đến ngày",
+          "type": "DATE",
+          "description": ""
+        },
+        "thoiGianBatDau": {
+          "field": "thoiGianBatDau",
+          "label": "Thời gian bắt đầu",
+          "type": "DATE",
+          "description": ""
+        },
+        "diaDiem": {
+          "field": "diaDiem",
+          "label": "Địa điểm",
+          "type": "TEXT",
+          "description": ""
+        },
+        "giangVien": {
+          "field": "giangVien",
+          "label": "Giảng viên",
+          "type": "TEXT",
+          "description": ""
+        },
+        "hocPhiGocAmountMicros": {
+          "field": "hocPhiGoc",
+          "label": "Học phí gốc",
+          "type": "CURRENCY",
+          "description": "",
+          "note": "chia 1e6 để ra VND"
+        },
+        "hocPhiGocCurrencyCode": {
+          "field": "hocPhiGoc",
+          "label": "Học phí gốc",
+          "type": "CURRENCY",
+          "description": ""
+        },
+        "soNgayHoc": {
+          "field": "soNgayHoc",
+          "label": "Số ngày học",
+          "type": "NUMBER",
+          "description": ""
+        },
+        "thueSuatVat": {
+          "field": "thueSuatVat",
+          "label": "Thuế suất VAT (%)",
+          "type": "NUMBER",
+          "description": ""
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "_course": {
+      "object": "course",
+      "label": "Course",
+      "description": "Danh muc khoa hoc dao tao",
+      "columns": {
+        "chuoi": {
+          "field": "chuoi",
+          "label": "Chuỗi",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CEO",
+              "label": "CEO"
+            },
+            {
+              "value": "HRM",
+              "label": "HRM"
+            },
+            {
+              "value": "LDP",
+              "label": "LDP"
+            },
+            {
+              "value": "QTC",
+              "label": "QTC"
+            },
+            {
+              "value": "QSP",
+              "label": "QSP"
+            },
+            {
+              "value": "HTDN",
+              "label": "HTDN"
+            }
+          ]
+        },
+        "chuyenDe": {
+          "field": "chuyenDe",
+          "label": "Chuyên đề",
+          "type": "TEXT",
+          "description": ""
+        },
+        "tenKhoaHoc": {
+          "field": "tenKhoaHoc",
+          "label": "Tên khóa học",
+          "type": "TEXT",
+          "description": ""
+        },
+        "maKhoaHoc": {
+          "field": "maKhoaHoc",
+          "label": "Mã khóa học",
+          "type": "TEXT",
+          "description": ""
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "_mauTaiLieu": {
+      "object": "mauTaiLieu",
+      "label": "Mẫu tài liệu",
+      "description": "Mẫu in/hóa đơn (HTML) cho In cơ hội — sửa trực tiếp trong CRM, không cần deploy lại.",
+      "columns": {
+        "tenMau": {
+          "field": "tenMau",
+          "label": "Tên mẫu",
+          "type": "TEXT",
+          "description": ""
+        },
+        "fileMau": {
+          "field": "fileMau",
+          "label": "Tệp mẫu",
+          "type": "FILES",
+          "description": "Tải lên tệp mẫu in .html. Bắt đầu từ mẫu mặc định `templates/bao-gia-hoc-phi.html` (có sẵn placeholder {{maDonHang}}, {{ngayLap}}, {{khichGui}}, {{tongThanhTien}}… và vòng lặp {{#items}}…{{/items}}); tương lai .docx cho hợp đồng."
+        },
+        "loaiApDung": {
+          "field": "loaiApDung",
+          "label": "Loại áp dụng",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CO_HOI",
+              "label": "Cơ hội"
+            }
+          ]
+        },
+        "kichHoat": {
+          "field": "kichHoat",
+          "label": "Kích hoạt",
+          "type": "BOOLEAN",
+          "description": ""
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "_payment": {
+      "object": "payment",
+      "label": "Payment",
+      "description": "Giao dich thanh toan hoc phi",
+      "columns": {
+        "ngayChuyenKhoan": {
+          "field": "ngayChuyenKhoan",
+          "label": "Ngày chuyển khoản",
+          "type": "DATE",
+          "description": ""
+        },
+        "noiDungChuyenKhoan": {
+          "field": "noiDungChuyenKhoan",
+          "label": "Nội dung chuyển khoản",
+          "type": "TEXT",
+          "description": "Nội dung CK ngân hàng (parse từ webhook). Nếu chứa mã đơn hàng thì payment tự gắn vào đơn."
+        },
+        "maPayment": {
+          "field": "maPayment",
+          "label": "Mã Payment",
+          "type": "TEXT",
+          "description": ""
+        },
+        "sepayId": {
+          "field": "sepayId",
+          "label": "Mã giao dịch SePay",
+          "type": "TEXT",
+          "description": "ID giao dịch SePay (duy nhất) — chống tạo trùng payment khi webhook gửi lại."
+        },
+        "rawWebhook": {
+          "field": "rawWebhook",
+          "label": "Dữ liệu webhook (raw)",
+          "type": "RAW_JSON",
+          "description": "Toàn bộ payload SePay gửi về, lưu nguyên trạng để đối soát/kiểm tra (an toàn trước)."
+        },
+        "maGiaoDich": {
+          "field": "maGiaoDich",
+          "label": "Mã giao dịch",
+          "type": "TEXT",
+          "description": ""
+        },
+        "ghiChuBlocknote": {
+          "field": "ghiChu",
+          "label": "Ghi chú",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "ghiChuMarkdown": {
+          "field": "ghiChu",
+          "label": "Ghi chú",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "phuongThuc": {
+          "field": "phuongThuc",
+          "label": "Phương thức",
+          "type": "TEXT",
+          "description": ""
+        },
+        "taiKhoan": {
+          "field": "taiKhoan",
+          "label": "Tài khoản",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "TK_CONG_TY",
+              "label": "TK Công ty"
+            },
+            {
+              "value": "TK_CA_NHAN",
+              "label": "TK Cá nhân"
+            }
+          ]
+        },
+        "xacNhanKeToan": {
+          "field": "xacNhanKeToan",
+          "label": "Xác nhận KT",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CHUA_XAC_NHAN",
+              "label": "Chưa xác nhận"
+            },
+            {
+              "value": "DA_HOAN_TAT",
+              "label": "Đã hoàn tất"
+            },
+            {
+              "value": "CHUA_HOAN_TAT",
+              "label": "Chưa hoàn tất"
+            },
+            {
+              "value": "DONG_HP_BO_SUNG",
+              "label": "Đóng HP bổ sung"
+            }
+          ]
+        },
+        "thanhTienThucThuAmountMicros": {
+          "field": "thanhTienThucThu",
+          "label": "Thành tiền thực thu",
+          "type": "CURRENCY",
+          "description": "",
+          "note": "chia 1e6 để ra VND"
+        },
+        "thanhTienThucThuCurrencyCode": {
+          "field": "thanhTienThucThu",
+          "label": "Thành tiền thực thu",
+          "type": "CURRENCY",
+          "description": ""
+        },
+        "loaiThanhToan": {
+          "field": "loaiThanhToan",
+          "label": "Loại thanh toán",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "DAT_COC",
+              "label": "Đặt cọc"
+            },
+            {
+              "value": "TT_MOT_PHAN",
+              "label": "Thanh toán một phần"
+            },
+            {
+              "value": "TT_DU",
+              "label": "Thanh toán đủ"
+            },
+            {
+              "value": "HOAN_TIEN",
+              "label": "Hoàn tiền"
+            }
+          ]
+        },
+        "name": {
+          "field": "name",
+          "label": "Ghi chú",
+          "type": "TEXT",
+          "description": "Ghi chú"
+        },
+        "thuocDonHangId": {
+          "field": "thuocDonHang",
+          "label": "thuocDonHang",
+          "type": "RELATION",
+          "description": "",
+          "target": "order"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "_order": {
+      "object": "order",
+      "label": "Đơn hàng",
+      "description": "Đơn hàng tài chính theo pháp nhân thanh toán (dòng của Cơ hội)",
+      "columns": {
+        "maDonHang": {
+          "field": "maDonHang",
+          "label": "Mã đơn hàng",
+          "type": "TEXT",
+          "description": "Mã đơn hàng = DH_{YYMMDD}_{email PIC}_{STT}. Hệ thống tự sinh."
+        },
+        "loaiDon": {
+          "field": "loaiDon",
+          "label": "Loại đơn",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "BAN_MOI",
+              "label": "Bán mới"
+            },
+            {
+              "value": "DIEU_CHINH",
+              "label": "Điều chỉnh"
+            }
+          ]
+        },
+        "trangThaiThanhToan": {
+          "field": "trangThaiThanhToan",
+          "label": "Trạng thái thanh toán",
+          "type": "SELECT",
+          "description": "Hệ thống suy từ tổng tiền & đã thu.",
+          "options": [
+            {
+              "value": "CHUA_THU",
+              "label": "Chưa thu"
+            },
+            {
+              "value": "THU_MOT_PHAN",
+              "label": "Thu một phần"
+            },
+            {
+              "value": "DA_THU_DU",
+              "label": "Đã thu đủ"
+            },
+            {
+              "value": "HOAN_TIEN",
+              "label": "Hoàn tiền"
+            }
+          ]
+        },
+        "tongTienHangAmountMicros": {
+          "field": "tongTienHang",
+          "label": "Tổng tiền hàng",
+          "type": "CURRENCY",
+          "description": "Σ thành tiền các dòng. Hệ thống tự tính.",
+          "note": "chia 1e6 để ra VND"
+        },
+        "tongTienHangCurrencyCode": {
+          "field": "tongTienHang",
+          "label": "Tổng tiền hàng",
+          "type": "CURRENCY",
+          "description": "Σ thành tiền các dòng. Hệ thống tự tính."
+        },
+        "daThanhToanAmountMicros": {
+          "field": "daThanhToan",
+          "label": "Đã thanh toán",
+          "type": "CURRENCY",
+          "description": "Σ payment đã hoàn tất. Hệ thống tự tính.",
+          "note": "chia 1e6 để ra VND"
+        },
+        "daThanhToanCurrencyCode": {
+          "field": "daThanhToan",
+          "label": "Đã thanh toán",
+          "type": "CURRENCY",
+          "description": "Σ payment đã hoàn tất. Hệ thống tự tính."
+        },
+        "conLaiAmountMicros": {
+          "field": "conLai",
+          "label": "Còn lại",
+          "type": "CURRENCY",
+          "description": "Tổng tiền hàng − Đã thanh toán. Hệ thống tự tính.",
+          "note": "chia 1e6 để ra VND"
+        },
+        "conLaiCurrencyCode": {
+          "field": "conLai",
+          "label": "Còn lại",
+          "type": "CURRENCY",
+          "description": "Tổng tiền hàng − Đã thanh toán. Hệ thống tự tính."
+        },
+        "ghiChuBlocknote": {
+          "field": "ghiChu",
+          "label": "Ghi chú",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "ghiChuMarkdown": {
+          "field": "ghiChu",
+          "label": "Ghi chú",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "xacThucTao": {
+          "field": "xacThucTao",
+          "label": "Xác thực tạo",
+          "type": "TEXT",
+          "description": "Dấu hệ thống chống tạo tay: chỉ hợp lệ khi bản ghi do chức năng \"Tạo nhanh\" (front-component) tạo. Bản ghi tạo tay thiếu dấu này sẽ bị xoá vĩnh viễn. KHÔNG chỉnh sửa."
+        },
+        "picId": {
+          "field": "pic",
+          "label": "pic",
+          "type": "RELATION",
+          "description": "",
+          "target": "workspaceMember"
+        },
+        "coHoiId": {
+          "field": "coHoi",
+          "label": "coHoi",
+          "type": "RELATION",
+          "description": "",
+          "target": "opportunity"
+        },
+        "khachMuaId": {
+          "field": "khachMua",
+          "label": "khachMua",
+          "type": "RELATION",
+          "description": "",
+          "target": "person"
+        },
+        "congTyMuaId": {
+          "field": "congTyMua",
+          "label": "congTyMua",
+          "type": "RELATION",
+          "description": "",
+          "target": "company"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "_orderItem": {
+      "object": "orderItem",
+      "label": "Dòng đơn hàng",
+      "description": "Dòng sản phẩm của Đơn hàng — mang toàn bộ tiền (đơn giá/CK/VAT/thành tiền, số lượng ±)",
+      "columns": {
+        "maDong": {
+          "field": "maDong",
+          "label": "Mã dòng",
+          "type": "TEXT",
+          "description": "Mã dòng = {mã đơn hàng}.{STT}. Hệ thống tự sinh."
+        },
+        "soLuong": {
+          "field": "soLuong",
+          "label": "Số lượng",
+          "type": "NUMBER",
+          "description": "Số lượng. Âm = dòng điều chỉnh (đổi/huỷ/chuyển lớp)."
+        },
+        "donGiaAmountMicros": {
+          "field": "donGia",
+          "label": "Đơn giá",
+          "type": "CURRENCY",
+          "description": "Đơn giá ghi đè. Bỏ trống = dùng học phí gốc của Lớp.",
+          "note": "chia 1e6 để ra VND"
+        },
+        "donGiaCurrencyCode": {
+          "field": "donGia",
+          "label": "Đơn giá",
+          "type": "CURRENCY",
+          "description": "Đơn giá ghi đè. Bỏ trống = dùng học phí gốc của Lớp."
+        },
+        "tyLeChietKhau": {
+          "field": "tyLeChietKhau",
+          "label": "Tỷ lệ chiết khấu",
+          "type": "NUMBER",
+          "description": "Tỷ lệ chiết khấu (lưu phân số: 5% = 0.05). Suy từ Chính sách bán hàng, sửa tay được."
+        },
+        "vat": {
+          "field": "vat",
+          "label": "VAT",
+          "type": "NUMBER",
+          "description": "Thuế suất VAT (lưu phân số: 8% = 0.08). Mặc định 8%."
+        },
+        "thanhTienAmountMicros": {
+          "field": "thanhTien",
+          "label": "Thành tiền",
+          "type": "CURRENCY",
+          "description": "= Số lượng × (Đơn giá ?? giá Lớp) × (1 − CK) × (1 + VAT). Hệ thống tự tính.",
+          "note": "chia 1e6 để ra VND"
+        },
+        "thanhTienCurrencyCode": {
+          "field": "thanhTien",
+          "label": "Thành tiền",
+          "type": "CURRENCY",
+          "description": "= Số lượng × (Đơn giá ?? giá Lớp) × (1 − CK) × (1 + VAT). Hệ thống tự tính."
+        },
+        "loaiDangKy": {
+          "field": "loaiDangKy",
+          "label": "Loại đăng ký",
+          "type": "SELECT",
+          "description": "Stamp sang Ghi danh khi vật chất hoá. Khách mời/Vé tặng/Bảo lưu → 0đ.",
+          "options": [
+            {
+              "value": "TIEU_CHUAN",
+              "label": "Tiêu chuẩn"
+            },
+            {
+              "value": "HP_BO_SUNG_C41",
+              "label": "HP bổ sung (C41)"
+            },
+            {
+              "value": "KHACH_MOI",
+              "label": "Khách mời"
+            },
+            {
+              "value": "VE_TANG",
+              "label": "Vé tặng"
+            },
+            {
+              "value": "BAO_LUU",
+              "label": "Bảo lưu"
+            }
+          ]
+        },
+        "xacThucTao": {
+          "field": "xacThucTao",
+          "label": "Xác thực tạo",
+          "type": "TEXT",
+          "description": "Dấu hệ thống chống tạo tay: chỉ hợp lệ khi bản ghi do chức năng \"Tạo nhanh\" (front-component) tạo. Bản ghi tạo tay thiếu dấu này sẽ bị xoá vĩnh viễn. KHÔNG chỉnh sửa."
+        },
+        "donHangId": {
+          "field": "donHang",
+          "label": "donHang",
+          "type": "RELATION",
+          "description": "",
+          "target": "order"
+        },
+        "coHoiId": {
+          "field": "coHoi",
+          "label": "coHoi",
+          "type": "RELATION",
+          "description": "",
+          "target": "opportunity"
+        },
+        "hocVienId": {
+          "field": "hocVien",
+          "label": "hocVien",
+          "type": "RELATION",
+          "description": "",
+          "target": "person"
+        },
+        "lopHocId": {
+          "field": "lopHoc",
+          "label": "lopHoc",
+          "type": "RELATION",
+          "description": "",
+          "target": "class"
+        },
+        "chinhSachBanHangId": {
+          "field": "chinhSachBanHang",
+          "label": "chinhSachBanHang",
+          "type": "RELATION",
+          "description": "",
+          "target": "salesPolicy"
+        },
+        "ghiDanhHoanTacId": {
+          "field": "ghiDanhHoanTac",
+          "label": "ghiDanhHoanTac",
+          "type": "RELATION",
+          "description": "",
+          "target": "enrollment"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "_salesPolicy": {
+      "object": "salesPolicy",
+      "label": "Chính sách bán hàng",
+      "description": "Danh mục chính sách bán hàng (mã giảm giá) áp cho từng cơ hội trên đơn hàng.",
+      "columns": {
+        "ten": {
+          "field": "ten",
+          "label": "Tên chính sách",
+          "type": "TEXT",
+          "description": ""
+        },
+        "tyLeChietKhau": {
+          "field": "tyLeChietKhau",
+          "label": "Tỷ lệ chiết khấu",
+          "type": "NUMBER",
+          "description": "Chiết khấu áp cho cơ hội khi chọn chính sách này (hiển thị dạng %, lưu dạng phân số: 5% = 0.05)."
+        },
+        "dienGiai": {
+          "field": "dienGiai",
+          "label": "Diễn giải",
+          "type": "TEXT",
+          "description": ""
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "_sepayWebhookLog": {
+      "object": "sepayWebhookLog",
+      "label": "Nhật ký webhook SePay",
+      "description": "Nhật ký mọi lần SePay gọi webhook (kể cả trùng/không khớp/lỗi) — để quan sát & đối soát.",
+      "columns": {
+        "soTien": {
+          "field": "soTien",
+          "label": "Số tiền (VND)",
+          "type": "NUMBER",
+          "description": ""
+        },
+        "ketQua": {
+          "field": "ketQua",
+          "label": "Kết quả",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "TAO_MOI",
+              "label": "Tạo payment mới"
+            },
+            {
+              "value": "TRUNG_BO_QUA",
+              "label": "Trùng — bỏ qua"
+            },
+            {
+              "value": "KHONG_HOP_LE",
+              "label": "Payload không hợp lệ"
+            },
+            {
+              "value": "LOI",
+              "label": "Lỗi xử lý"
+            }
+          ]
+        },
+        "tieuDe": {
+          "field": "tieuDe",
+          "label": "Tiêu đề",
+          "type": "TEXT",
+          "description": ""
+        },
+        "rawPayload": {
+          "field": "rawPayload",
+          "label": "Payload (raw)",
+          "type": "RAW_JSON",
+          "description": ""
+        },
+        "maDonHangKhop": {
+          "field": "maDonHangKhop",
+          "label": "Mã đơn khớp",
+          "type": "TEXT",
+          "description": ""
+        },
+        "ghiChu": {
+          "field": "ghiChu",
+          "label": "Ghi chú",
+          "type": "TEXT",
+          "description": ""
+        },
+        "noiDung": {
+          "field": "noiDung",
+          "label": "Nội dung CK",
+          "type": "TEXT",
+          "description": ""
+        },
+        "sepayId": {
+          "field": "sepayId",
+          "label": "SePay ID",
+          "type": "TEXT",
+          "description": ""
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "_enrollment": {
+      "object": "enrollment",
+      "label": "Ghi danh",
+      "description": "Một học viên ghi danh vào một lớp học (dòng của Cơ hội)",
+      "columns": {
+        "maGhiDanh": {
+          "field": "maGhiDanh",
+          "label": "Mã ghi danh",
+          "type": "TEXT",
+          "description": "Mã ghi danh = {ID học viên}.{mã lớp}. Hệ thống tự sinh."
+        },
+        "loaiDangKy": {
+          "field": "loaiDangKy",
+          "label": "Loại đăng ký",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "TIEU_CHUAN",
+              "label": "Tiêu chuẩn"
+            },
+            {
+              "value": "HP_BO_SUNG_C41",
+              "label": "HP bổ sung (C41)"
+            },
+            {
+              "value": "KHACH_MOI",
+              "label": "Khách mời"
+            },
+            {
+              "value": "VE_TANG",
+              "label": "Vé tặng"
+            },
+            {
+              "value": "BAO_LUU",
+              "label": "Bảo lưu"
+            }
+          ]
+        },
+        "tinhTrangHocTap": {
+          "field": "tinhTrangHocTap",
+          "label": "Tình trạng học tập",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "DA_HOC_XONG",
+              "label": "Đã học xong"
+            },
+            {
+              "value": "BAO_LUU_DA_HOC_BU",
+              "label": "Bảo lưu - Đã học bù"
+            },
+            {
+              "value": "VANG_1_NGAY",
+              "label": "Vắng 1 ngày"
+            },
+            {
+              "value": "BAO_LUU_CHUA_HOC_BU",
+              "label": "Bảo lưu - Chưa Học bù"
+            },
+            {
+              "value": "BAO_LUU",
+              "label": "Bảo lưu"
+            },
+            {
+              "value": "VANG_2_NGAY",
+              "label": "Vắng 2 ngày"
+            }
+          ]
+        },
+        "trangThai": {
+          "field": "trangThai",
+          "label": "Trạng thái",
+          "type": "SELECT",
+          "description": "Trạng thái ghi danh. Hệ thống đặt: Chính thức khi vật chất hoá; Đã chuyển/Đã huỷ khi có đơn điều chỉnh; Đã bảo lưu khi chuyển sang lớp Sắp diễn ra của cùng khoá.",
+          "options": [
+            {
+              "value": "CHINH_THUC",
+              "label": "Chính thức"
+            },
+            {
+              "value": "DA_CHUYEN",
+              "label": "Đã chuyển"
+            },
+            {
+              "value": "DA_HUY",
+              "label": "Đã huỷ"
+            },
+            {
+              "value": "DA_BAO_LUU",
+              "label": "Đã bảo lưu"
+            }
+          ]
+        },
+        "dongDonKhoa": {
+          "field": "dongDonKhoa",
+          "label": "Khoá dòng đơn (hệ thống)",
+          "type": "TEXT",
+          "description": "ID dòng đơn đã sinh ra ghi danh này (mirror của dongDon). Unique — chống vật chất hoá trùng khi các dispatcher chạy song song. Hệ thống ghi, không sửa."
+        },
+        "active": {
+          "field": "active",
+          "label": "Đang hoạt động",
+          "type": "BOOLEAN",
+          "description": "Ghi danh đã kích hoạt (khách đã thanh toán). Hệ thống tự tính từ Phân loại Lead của Cơ hội: BẬT khi C4/C41, TẮT khi C0/C1/C2/C3/C31 (khi đó ghi danh chỉ để tham chiếu). Không sửa tay."
+        },
+        "lopHocId": {
+          "field": "lopHoc",
+          "label": "lopHoc",
+          "type": "RELATION",
+          "description": "",
+          "target": "class"
+        },
+        "chuyenToiId": {
+          "field": "chuyenToi",
+          "label": "chuyenToi",
+          "type": "RELATION",
+          "description": "",
+          "target": "class"
+        },
+        "hocVienId": {
+          "field": "hocVien",
+          "label": "hocVien",
+          "type": "RELATION",
+          "description": "",
+          "target": "person"
+        },
+        "picId": {
+          "field": "pic",
+          "label": "pic",
+          "type": "RELATION",
+          "description": "",
+          "target": "workspaceMember"
+        },
+        "dongDonId": {
+          "field": "dongDon",
+          "label": "dongDon",
+          "type": "RELATION",
+          "description": "",
+          "target": "orderItem"
+        },
+        "donHangId": {
+          "field": "donHang",
+          "label": "donHang",
+          "type": "RELATION",
+          "description": "",
+          "target": "order"
+        },
+        "coHoiId": {
+          "field": "coHoi",
+          "label": "coHoi",
+          "type": "RELATION",
+          "description": "",
+          "target": "opportunity"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "attachment": {
+      "object": "attachment",
+      "label": "Attachment",
+      "description": "An attachment",
+      "columns": {
+        "targetOrder": {
+          "field": "targetOrder",
+          "label": "Order",
+          "type": "MORPH_RELATION",
+          "description": "Order Order"
+        },
+        "targetPayment": {
+          "field": "targetPayment",
+          "label": "Payment",
+          "type": "MORPH_RELATION",
+          "description": "Payment Payment"
+        },
+        "targetCourse": {
+          "field": "targetCourse",
+          "label": "Course",
+          "type": "MORPH_RELATION",
+          "description": "Course Course"
+        },
+        "targetSepayWebhookLog": {
+          "field": "targetSepayWebhookLog",
+          "label": "SepayWebhookLog",
+          "type": "MORPH_RELATION",
+          "description": "SepayWebhookLog Nhật ký webhook SePay"
+        },
+        "targetClass": {
+          "field": "targetClass",
+          "label": "Class",
+          "type": "MORPH_RELATION",
+          "description": "Class Class"
+        },
+        "targetMauTaiLieu": {
+          "field": "targetMauTaiLieu",
+          "label": "MauTaiLieu",
+          "type": "MORPH_RELATION",
+          "description": "MauTaiLieu Mẫu tài liệu"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "company": {
+      "object": "company",
+      "label": "Company",
+      "description": "A company",
+      "columns": {
+        "thuongHieu": {
+          "field": "thuongHieu",
+          "label": "Thương hiệu",
+          "type": "TEXT",
+          "description": ""
+        },
+        "nganhNghe": {
+          "field": "nganhNghe",
+          "label": "Ngành nghề",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CONG_NGHE_PHAN_MEM_SAAS",
+              "label": "Công nghệ & Điện tử > Phần mềm & SaaS"
+            },
+            {
+              "value": "CONG_NGHE_GIA_CONG_DICH_VU_CNTT",
+              "label": "Công nghệ & Điện tử > Gia công & Dịch vụ CNTT"
+            },
+            {
+              "value": "CONG_NGHE_THUONG_MAI_DIEN_TU_NEN_TANG_SO",
+              "label": "Công nghệ & Điện tử > Thương mại điện tử & Nền tảng số"
+            },
+            {
+              "value": "CONG_NGHE_SAN_XUAT_PHAN_PHOI_THIET_BI_DIEN_TU",
+              "label": "Công nghệ & Điện tử > Sản xuất & Phân phối thiết bị điện tử"
+            },
+            {
+              "value": "CONG_NGHE_FINTECH_CONG_NGHE_CHUYEN_NGANH",
+              "label": "Công nghệ & Điện tử > Fintech & Công nghệ chuyên ngành"
+            },
+            {
+              "value": "CONG_NGHE_VIEN_THONG_HA_TANG_SO",
+              "label": "Công nghệ & Điện tử > Viễn thông & Hạ tầng số"
+            },
+            {
+              "value": "Y_TE_PHONG_KHAM_BENH_VIEN_TU",
+              "label": "Y tế & Dược > Phòng khám & Bệnh viện tư"
+            },
+            {
+              "value": "Y_TE_DUOC_PHAM_SAN_XUAT_PHAN_PHOI",
+              "label": "Y tế & Dược > Dược phẩm (sản xuất & phân phối)"
+            },
+            {
+              "value": "Y_TE_THIET_BI_VAT_TU_Y_TE",
+              "label": "Y tế & Dược > Thiết bị & Vật tư y tế"
+            },
+            {
+              "value": "Y_TE_THUC_PHAM_CHUC_NANG_CHAM_SOC_SUC_KHOE",
+              "label": "Y tế & Dược > Thực phẩm chức năng & Chăm sóc sức khỏe"
+            },
+            {
+              "value": "Y_TE_NHA_KHOA_CHUYEN_KHOA",
+              "label": "Y tế & Dược > Nha khoa & Chuyên khoa"
+            },
+            {
+              "value": "Y_TE_CONG_NGHE_Y_TE_HEALTHTECH",
+              "label": "Y tế & Dược > Công nghệ y tế (HealthTech)"
+            },
+            {
+              "value": "GIAO_DUC_MAM_NON_PHO_THONG_TU_THUC",
+              "label": "Giáo dục & Đào tạo > Mầm non & Phổ thông tư thục"
+            },
+            {
+              "value": "GIAO_DUC_TRUNG_TAM_NGOAI_NGU",
+              "label": "Giáo dục & Đào tạo > Trung tâm ngoại ngữ"
+            },
+            {
+              "value": "GIAO_DUC_DAO_TAO_KY_NANG_NGHE_NGHIEP",
+              "label": "Giáo dục & Đào tạo > Đào tạo kỹ năng & Nghề nghiệp"
+            },
+            {
+              "value": "GIAO_DUC_DAO_TAO_DOANH_NGHIEP_LANH_DAO",
+              "label": "Giáo dục & Đào tạo > Đào tạo doanh nghiệp & Lãnh đạo"
+            },
+            {
+              "value": "GIAO_DUC_CONG_NGHE_GIAO_DUC_EDTECH",
+              "label": "Giáo dục & Đào tạo > Công nghệ giáo dục (EdTech)"
+            },
+            {
+              "value": "GIAO_DUC_TU_VAN_DU_HOC",
+              "label": "Giáo dục & Đào tạo > Tư vấn du học"
+            },
+            {
+              "value": "LAM_DEP_SPA_THAM_MY_VIEN",
+              "label": "Làm đẹp & Mỹ phẩm > Spa & Thẩm mỹ viện"
+            },
+            {
+              "value": "LAM_DEP_MY_PHAM_CHAM_SOC_DA_SX_PHAN_PHOI",
+              "label": "Làm đẹp & Mỹ phẩm > Mỹ phẩm & Chăm sóc da (SX/phân phối)"
+            },
+            {
+              "value": "LAM_DEP_TOC_NAIL",
+              "label": "Làm đẹp & Mỹ phẩm > Tóc & Nail"
+            },
+            {
+              "value": "LAM_DEP_THAM_MY_Y_KHOA",
+              "label": "Làm đẹp & Mỹ phẩm > Thẩm mỹ y khoa"
+            },
+            {
+              "value": "LAM_DEP_PHAN_PHOI_THIET_BI_LAM_DEP",
+              "label": "Làm đẹp & Mỹ phẩm > Phân phối thiết bị làm đẹp"
+            },
+            {
+              "value": "XAY_DUNG_TONG_THAU_THI_CONG_XAY_DUNG",
+              "label": "Xây dựng & Nội thất > Tổng thầu & Thi công xây dựng"
+            },
+            {
+              "value": "XAY_DUNG_THIET_KE_KIEN_TRUC_TU_VAN",
+              "label": "Xây dựng & Nội thất > Thiết kế kiến trúc & Tư vấn"
+            },
+            {
+              "value": "XAY_DUNG_NOI_THAT_SAN_XUAT_THI_CONG",
+              "label": "Xây dựng & Nội thất > Nội thất (sản xuất & thi công)"
+            },
+            {
+              "value": "XAY_DUNG_VAT_LIEU_XAY_DUNG",
+              "label": "Xây dựng & Nội thất > Vật liệu xây dựng"
+            },
+            {
+              "value": "XAY_DUNG_CO_DIEN_CONG_TRINH_M_E",
+              "label": "Xây dựng & Nội thất > Cơ điện công trình (M&E)"
+            },
+            {
+              "value": "THOI_TRANG_THUONG_HIEU_THOI_TRANG_BAN_LE",
+              "label": "Thời trang & May mặc > Thương hiệu thời trang & Bán lẻ"
+            },
+            {
+              "value": "THOI_TRANG_SAN_XUAT_MAY_MAC",
+              "label": "Thời trang & May mặc > Sản xuất may mặc"
+            },
+            {
+              "value": "THOI_TRANG_TRANG_SUC_PHU_KIEN",
+              "label": "Thời trang & May mặc > Trang sức & Phụ kiện"
+            },
+            {
+              "value": "THOI_TRANG_GIAY_DEP_DO_DA",
+              "label": "Thời trang & May mặc > Giày dép & Đồ da"
+            },
+            {
+              "value": "THOI_TRANG_PHAN_PHOI_THOI_TRANG",
+              "label": "Thời trang & May mặc > Phân phối thời trang"
+            },
+            {
+              "value": "THUONG_MAI_BAN_BUON_PHAN_PHOI",
+              "label": "Thương mại & Bán lẻ > Bán buôn & Phân phối"
+            },
+            {
+              "value": "THUONG_MAI_BAN_LE_CHUOI_CUA_HANG",
+              "label": "Thương mại & Bán lẻ > Bán lẻ & Chuỗi cửa hàng"
+            },
+            {
+              "value": "THUONG_MAI_HANG_TIEU_DUNG_NHANH_FMCG",
+              "label": "Thương mại & Bán lẻ > Hàng tiêu dùng nhanh (FMCG)"
+            },
+            {
+              "value": "THUONG_MAI_XUAT_NHAP_KHAU",
+              "label": "Thương mại & Bán lẻ > Xuất nhập khẩu"
+            },
+            {
+              "value": "THUONG_MAI_BAN_LE_TRUC_TUYEN",
+              "label": "Thương mại & Bán lẻ > Bán lẻ trực tuyến"
+            },
+            {
+              "value": "MARKETING_AGENCY_QUANG_CAO_TRUYEN_THONG",
+              "label": "Marketing & Truyền thông > Agency quảng cáo & Truyền thông"
+            },
+            {
+              "value": "MARKETING_SAN_XUAT_NOI_DUNG_MEDIA",
+              "label": "Marketing & Truyền thông > Sản xuất nội dung & Media"
+            },
+            {
+              "value": "MARKETING_TO_CHUC_SU_KIEN",
+              "label": "Marketing & Truyền thông > Tổ chức sự kiện"
+            },
+            {
+              "value": "MARKETING_THIET_KE_SANG_TAO",
+              "label": "Marketing & Truyền thông > Thiết kế & Sáng tạo"
+            },
+            {
+              "value": "MARKETING_PR_DIGITAL_MARKETING",
+              "label": "Marketing & Truyền thông > PR & Digital Marketing"
+            },
+            {
+              "value": "AM_THUC_CHUOI_F_B_NHA_HANG_CA_PHE",
+              "label": "Ẩm thực & Thực phẩm > Chuỗi F&B (nhà hàng/cà phê)"
+            },
+            {
+              "value": "AM_THUC_NHA_HANG_QUAN_DON_LE",
+              "label": "Ẩm thực & Thực phẩm > Nhà hàng & Quán đơn lẻ"
+            },
+            {
+              "value": "AM_THUC_SAN_XUAT_CHE_BIEN_THUC_PHAM",
+              "label": "Ẩm thực & Thực phẩm > Sản xuất & Chế biến thực phẩm"
+            },
+            {
+              "value": "AM_THUC_PHAN_PHOI_THUC_PHAM_DO_UONG",
+              "label": "Ẩm thực & Thực phẩm > Phân phối thực phẩm & Đồ uống"
+            },
+            {
+              "value": "AM_THUC_BEP_TRUNG_TAM_SUAT_AN",
+              "label": "Ẩm thực & Thực phẩm > Bếp trung tâm & Suất ăn"
+            },
+            {
+              "value": "TAP_DOAN_HOLDINGS_DAU_TU_DA_NGANH",
+              "label": "Tập đoàn đa ngành > Holdings / Đầu tư đa ngành"
+            },
+            {
+              "value": "TAP_DOAN_SAN_XUAT_DA_NGANH",
+              "label": "Tập đoàn đa ngành > Sản xuất đa ngành"
+            },
+            {
+              "value": "TAP_DOAN_THUONG_MAI_DICH_VU_DA_NGANH",
+              "label": "Tập đoàn đa ngành > Thương mại - dịch vụ đa ngành"
+            },
+            {
+              "value": "VAN_TAI_VAN_TAI_HANG_HOA",
+              "label": "Vận tải & Logistics > Vận tải hàng hóa"
+            },
+            {
+              "value": "VAN_TAI_LOGISTICS_KHO_BAI_3PL",
+              "label": "Vận tải & Logistics > Logistics & Kho bãi (3PL)"
+            },
+            {
+              "value": "VAN_TAI_DU_LICH_LU_HANH",
+              "label": "Vận tải & Logistics > Du lịch & Lữ hành"
+            },
+            {
+              "value": "VAN_TAI_LUU_TRU_KHACH_SAN",
+              "label": "Vận tải & Logistics > Lưu trú & Khách sạn"
+            },
+            {
+              "value": "VAN_TAI_VAN_TAI_HANH_KHACH",
+              "label": "Vận tải & Logistics > Vận tải hành khách"
+            },
+            {
+              "value": "BAT_DONG_SAN_PHAT_TRIEN_DU_AN_CHU_DAU_TU",
+              "label": "Bất động sản > Phát triển dự án (Chủ đầu tư)"
+            },
+            {
+              "value": "BAT_DONG_SAN_MOI_GIOI_PHAN_PHOI",
+              "label": "Bất động sản > Môi giới & Phân phối"
+            },
+            {
+              "value": "BAT_DONG_SAN_QUAN_LY_VAN_HANH_BDS",
+              "label": "Bất động sản > Quản lý & Vận hành BĐS"
+            },
+            {
+              "value": "BAT_DONG_SAN_BDS_CHO_THUE_KHAI_THAC",
+              "label": "Bất động sản > BĐS cho thuê & Khai thác"
+            },
+            {
+              "value": "BAT_DONG_SAN_BDS_NGHI_DUONG",
+              "label": "Bất động sản > BĐS nghỉ dưỡng"
+            },
+            {
+              "value": "TAI_CHINH_DICH_VU_TAI_CHINH_DAU_TU",
+              "label": "Tài chính & Ngân hàng > Dịch vụ tài chính & Đầu tư"
+            },
+            {
+              "value": "TAI_CHINH_BAO_HIEM_MOI_GIOI_BAO_HIEM",
+              "label": "Tài chính & Ngân hàng > Bảo hiểm & Môi giới bảo hiểm"
+            },
+            {
+              "value": "TAI_CHINH_FINTECH_THANH_TOAN",
+              "label": "Tài chính & Ngân hàng > Fintech & Thanh toán"
+            },
+            {
+              "value": "TAI_CHINH_KE_TOAN_KIEM_TOAN_THUE",
+              "label": "Tài chính & Ngân hàng > Kế toán - Kiểm toán & Thuế"
+            },
+            {
+              "value": "TAI_CHINH_TU_VAN_TAI_CHINH",
+              "label": "Tài chính & Ngân hàng > Tư vấn tài chính"
+            },
+            {
+              "value": "SAN_XUAT_SAN_XUAT_CONG_NGHIEP_CHE_TAO",
+              "label": "Sản xuất & Công nghiệp > Sản xuất công nghiệp & Chế tạo"
+            },
+            {
+              "value": "SAN_XUAT_CO_KHI_TU_DONG_HOA",
+              "label": "Sản xuất & Công nghiệp > Cơ khí & Tự động hóa"
+            },
+            {
+              "value": "SAN_XUAT_HOA_CHAT_NHUA",
+              "label": "Sản xuất & Công nghiệp > Hóa chất & Nhựa"
+            },
+            {
+              "value": "SAN_XUAT_BAO_BI_IN_AN",
+              "label": "Sản xuất & Công nghiệp > Bao bì & In ấn"
+            },
+            {
+              "value": "SAN_XUAT_NONG_NGHIEP_CONG_NGHE_CAO_CHE_BIEN",
+              "label": "Sản xuất & Công nghiệp > Nông nghiệp công nghệ cao & Chế biến"
+            },
+            {
+              "value": "DICH_VU_TU_VAN_DICH_VU_CHUYEN_MON",
+              "label": "Dịch vụ chuyên môn & Khác > Tư vấn & Dịch vụ chuyên môn"
+            },
+            {
+              "value": "DICH_VU_PHAP_LY",
+              "label": "Dịch vụ chuyên môn & Khác > Pháp lý"
+            },
+            {
+              "value": "DICH_VU_NHAN_SU_TUYEN_DUNG",
+              "label": "Dịch vụ chuyên môn & Khác > Nhân sự & Tuyển dụng"
+            },
+            {
+              "value": "DICH_VU_DICH_VU_DOANH_NGHIEP_KHAC",
+              "label": "Dịch vụ chuyên môn & Khác > Dịch vụ doanh nghiệp khác"
+            },
+            {
+              "value": "DICH_VU_KHAC_CHUA_PHAN_LOAI",
+              "label": "Dịch vụ chuyên môn & Khác > Khác (chưa phân loại)"
+            }
+          ]
+        },
+        "namThanhLap": {
+          "field": "namThanhLap",
+          "label": "Năm thành lập",
+          "type": "NUMBER",
+          "description": ""
+        },
+        "quyMoNhanSu": {
+          "field": "quyMoNhanSu",
+          "label": "Quy mô nhân sự",
+          "type": "NUMBER",
+          "description": ""
+        },
+        "thongTinCongTy": {
+          "field": "thongTinCongTy",
+          "label": "Thông tin công ty",
+          "type": "TEXT",
+          "description": ""
+        },
+        "moHinhKinhDoanh": {
+          "field": "moHinhKinhDoanh",
+          "label": "Mô hình kinh doanh",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "B2B_OFFLINE",
+              "label": "B2B_offline"
+            },
+            {
+              "value": "B2B_ONLINE",
+              "label": "B2B_online"
+            },
+            {
+              "value": "B2B_OMNI",
+              "label": "B2B_omni/hybrid"
+            },
+            {
+              "value": "B2C_OFFLINE",
+              "label": "B2C_offline"
+            },
+            {
+              "value": "B2C_ONLINE",
+              "label": "B2C_online"
+            },
+            {
+              "value": "B2C_OMNI",
+              "label": "B2C_omnichanel"
+            },
+            {
+              "value": "B2B2C",
+              "label": "B2B2C"
+            },
+            {
+              "value": "B2G",
+              "label": "B2G"
+            }
+          ]
+        },
+        "phamViHoatDong": {
+          "field": "phamViHoatDong",
+          "label": "Phạm vi hoạt động",
+          "type": "SELECT",
+          "description": "Địa lý / phạm vi hoạt động.",
+          "options": [
+            {
+              "value": "TRONG_NUOC_HN",
+              "label": "Trong nước_HN"
+            },
+            {
+              "value": "TRONG_NUOC_HN_HCM",
+              "label": "Trong nước_HN & HCM"
+            },
+            {
+              "value": "TRONG_NUOC_TINH_KHAC",
+              "label": "Trong nước các tỉnh khác"
+            },
+            {
+              "value": "TRONG_NUOC_NUOC_NGOAI",
+              "label": "Trong nước & Nước ngoài"
+            }
+          ]
+        },
+        "quyMoDoanhThu": {
+          "field": "quyMoDoanhThu",
+          "label": "Quy mô doanh thu",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "DUOI_3_TY",
+              "label": "Dưới 3 tỷ (Siêu nhỏ)"
+            },
+            {
+              "value": "TU_3_50_TY",
+              "label": "3 đến 50 tỷ (Nhỏ)"
+            },
+            {
+              "value": "TU_50_100_TY",
+              "label": "50 đến 100 tỷ"
+            },
+            {
+              "value": "TU_100_200_TY",
+              "label": "100 đến 200 tỷ"
+            },
+            {
+              "value": "TU_200_300_TY",
+              "label": "200 đến 300 tỷ (Vừa)"
+            },
+            {
+              "value": "TU_300_500_TY",
+              "label": "300 đến 500 tỷ"
+            },
+            {
+              "value": "TU_500_1000_TY",
+              "label": "500 đến 1.000 tỷ"
+            },
+            {
+              "value": "TREN_1000_TY",
+              "label": "Trên 1.000 tỷ (Lớn)"
+            }
+          ]
+        },
+        "quyMoKhachHang": {
+          "field": "quyMoKhachHang",
+          "label": "Quy mô khách hàng",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "DUOI_100",
+              "label": "Dưới 100"
+            },
+            {
+              "value": "TU_100_1K",
+              "label": "100 đến 1.000"
+            },
+            {
+              "value": "TU_1K_10K",
+              "label": "1.000 đến 10.000"
+            },
+            {
+              "value": "TU_10K_100K",
+              "label": "10.000 đến 100.000"
+            },
+            {
+              "value": "TU_100K_1TR",
+              "label": "100.000 đến 1 triệu"
+            },
+            {
+              "value": "TREN_1TR",
+              "label": "Trên 1 triệu"
+            }
+          ]
+        },
+        "doiNguLanhDao": {
+          "field": "doiNguLanhDao",
+          "label": "Đội ngũ lãnh đạo",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "DA_CO_CORE_KEY",
+              "label": "Đã có đội ngũ Core Key"
+            },
+            {
+              "value": "DANG_TUYEN_DUNG",
+              "label": "Đang tuyển dụng"
+            },
+            {
+              "value": "CHUA_THUC_HIEN",
+              "label": "Chưa thực hiện"
+            }
+          ]
+        },
+        "vanHoaHocTap": {
+          "field": "vanHoaHocTap",
+          "label": "Văn hóa học tập",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CHUA_DAU_TU",
+              "label": "Chưa đầu tư"
+            },
+            {
+              "value": "DAU_TU_NOI_BO",
+              "label": "Đầu tư học tập nội bộ"
+            },
+            {
+              "value": "DAU_TU_BEN_NGOAI",
+              "label": "Đầu tư học tập bên ngoài"
+            }
+          ]
+        },
+        "soDoToChuc": {
+          "field": "soDoToChuc",
+          "label": "Sơ đồ tổ chức",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CHUA_CO",
+              "label": "Chưa có"
+            },
+            {
+              "value": "CAN_HOAN_THIEN",
+              "label": "Đã có nhưng cần hoàn thiện"
+            },
+            {
+              "value": "DA_CHUAN_HOA",
+              "label": "Đã chuẩn hóa"
+            }
+          ]
+        },
+        "quyetDinhHocTap": {
+          "field": "quyetDinhHocTap",
+          "label": "Quyết định học tập",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CA_NHAN_HOC",
+              "label": "Cá nhân học"
+            },
+            {
+              "value": "DOI_NGU_HOC",
+              "label": "Đội ngũ học"
+            },
+            {
+              "value": "HOC_LIEN_KET",
+              "label": "Học liên kết"
+            }
+          ]
+        },
+        "tanSuatHocTap": {
+          "field": "tanSuatHocTap",
+          "label": "Tần suất học tập",
+          "type": "SELECT",
+          "description": "Tần suất học tập phù hợp.",
+          "options": [
+            {
+              "value": "BON_KHOA_THANG",
+              "label": "4 khóa/tháng"
+            },
+            {
+              "value": "HAI_KHOA_THANG",
+              "label": "2 khóa/tháng"
+            },
+            {
+              "value": "MOT_KHOA_THANG",
+              "label": "1 khóa/tháng"
+            },
+            {
+              "value": "TANG_CUONG",
+              "label": "Học tăng cường để hoàn thành trong thời gian ngắn"
+            },
+            {
+              "value": "LINH_HOAT",
+              "label": "Linh hoạt"
+            }
+          ]
+        },
+        "coDonHang": {
+          "field": "coDonHang",
+          "label": "Có đơn hàng",
+          "type": "BOOLEAN",
+          "description": "Hệ thống tự đặt: là Công ty mua của ít nhất 1 Đơn hàng. Dùng cho quyền xem của Kế toán."
+        },
+        "picId": {
+          "field": "pic",
+          "label": "pic",
+          "type": "RELATION",
+          "description": "",
+          "target": "workspaceMember"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "noteTarget": {
+      "object": "noteTarget",
+      "label": "Note Target",
+      "description": "A note target",
+      "columns": {
+        "targetCourse": {
+          "field": "targetCourse",
+          "label": "Course",
+          "type": "MORPH_RELATION",
+          "description": "Course Course"
+        },
+        "targetSepayWebhookLog": {
+          "field": "targetSepayWebhookLog",
+          "label": "SepayWebhookLog",
+          "type": "MORPH_RELATION",
+          "description": "SepayWebhookLog Nhật ký webhook SePay"
+        },
+        "targetPayment": {
+          "field": "targetPayment",
+          "label": "Payment",
+          "type": "MORPH_RELATION",
+          "description": "Payment Payment"
+        },
+        "targetOrder": {
+          "field": "targetOrder",
+          "label": "Order",
+          "type": "MORPH_RELATION",
+          "description": "Order Order"
+        },
+        "targetMauTaiLieu": {
+          "field": "targetMauTaiLieu",
+          "label": "MauTaiLieu",
+          "type": "MORPH_RELATION",
+          "description": "MauTaiLieu Mẫu tài liệu"
+        },
+        "targetClass": {
+          "field": "targetClass",
+          "label": "Class",
+          "type": "MORPH_RELATION",
+          "description": "Class Class"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "opportunity": {
+      "object": "opportunity",
+      "label": "Opportunity",
+      "description": "An opportunity",
+      "columns": {
+        "trangThaiDeal": {
+          "field": "trangThaiDeal",
+          "label": "Trạng thái Deal",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "DANG_XU_LY",
+              "label": "Đang xử lý"
+            },
+            {
+              "value": "HUY",
+              "label": "Hủy"
+            },
+            {
+              "value": "BAO_LUU",
+              "label": "Bảo lưu"
+            },
+            {
+              "value": "HOAN_THANH",
+              "label": "Hoàn thành"
+            },
+            {
+              "value": "CHAM_SOC",
+              "label": "Chăm sóc"
+            }
+          ]
+        },
+        "nhatKyTuVanBlocknote": {
+          "field": "nhatKyTuVan",
+          "label": "Nhật ký tư vấn",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "nhatKyTuVanMarkdown": {
+          "field": "nhatKyTuVan",
+          "label": "Nhật ký tư vấn",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "soLanTuVan": {
+          "field": "soLanTuVan",
+          "label": "Số lần tư vấn",
+          "type": "NUMBER",
+          "description": ""
+        },
+        "phanLoaiLead": {
+          "field": "phanLoaiLead",
+          "label": "Phân loại Lead",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "LEAD_C0",
+              "label": "C0 - Liên hệ rác"
+            },
+            {
+              "value": "LEAD_C1",
+              "label": "C1 - Lead tiềm năng"
+            },
+            {
+              "value": "LEAD_C2",
+              "label": "C2 - Lead quan tâm"
+            },
+            {
+              "value": "LEAD_C3",
+              "label": "C3 - Chờ chuyển khoản"
+            },
+            {
+              "value": "LEAD_C31",
+              "label": "C31 - Chờ xác nhận"
+            },
+            {
+              "value": "LEAD_C4",
+              "label": "C4 - Đã chuyển khoản"
+            },
+            {
+              "value": "LEAD_C41",
+              "label": "C41 - Đóng HP bổ sung"
+            }
+          ]
+        },
+        "maQC": {
+          "field": "maQC",
+          "label": "Mã QC",
+          "type": "TEXT",
+          "description": ""
+        },
+        "nguon": {
+          "field": "nguon",
+          "label": "Nguồn",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "HOTLINE_ADS",
+              "label": "Hotline_Ads"
+            },
+            {
+              "value": "LANDING_PAGE_ADS",
+              "label": "Landing Page_Ads"
+            },
+            {
+              "value": "FB_ADS",
+              "label": "FB_Ads"
+            },
+            {
+              "value": "GOOGLER_ADS",
+              "label": "GoogleR_Ads"
+            },
+            {
+              "value": "ZOA_ADS",
+              "label": "ZOA_Ads"
+            },
+            {
+              "value": "FB_INBOX",
+              "label": "FB_Inbox"
+            },
+            {
+              "value": "TIKTOK_INBOX",
+              "label": "Tiktok_Inbox"
+            },
+            {
+              "value": "ZALO_INBOX",
+              "label": "Zalo_Inbox"
+            },
+            {
+              "value": "GIOI_THIEU",
+              "label": "Giới thiệu"
+            },
+            {
+              "value": "CHAM_SOC_CHU_DONG",
+              "label": "Chăm sóc chủ động"
+            }
+          ]
+        },
+        "sale": {
+          "field": "sale",
+          "label": "Sale",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CHI",
+              "label": "Chi"
+            },
+            {
+              "value": "PHUONG_ANH",
+              "label": "Phương Anh"
+            },
+            {
+              "value": "KIEU",
+              "label": "Kiều"
+            },
+            {
+              "value": "LY",
+              "label": "Lý"
+            },
+            {
+              "value": "OANH",
+              "label": "Oanh"
+            },
+            {
+              "value": "NGHIA",
+              "label": "Nghĩa"
+            },
+            {
+              "value": "HUONG",
+              "label": "Hương"
+            },
+            {
+              "value": "HUE",
+              "label": "Huế"
+            },
+            {
+              "value": "HANG",
+              "label": "Hằng"
+            }
+          ]
+        },
+        "tinhTrang": {
+          "field": "tinhTrang",
+          "label": "Tình trạng",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "LIEN_HE_MOI",
+              "label": "Liên hệ mới"
+            },
+            {
+              "value": "KTN_KHONG_TUONG_TAC",
+              "label": "Không tiềm năng - Không tương tác"
+            },
+            {
+              "value": "KTN_KHONG_NHU_CAU",
+              "label": "Không tiềm năng - Không có nhu cầu học"
+            },
+            {
+              "value": "HUY_HOC_CHO_KHAC",
+              "label": "Hủy đăng ký - Học ở chỗ khác"
+            },
+            {
+              "value": "HUY_KHONG_CON_NHU_CAU",
+              "label": "Hủy đăng ký - Không còn nhu cầu"
+            },
+            {
+              "value": "CHAM_SOC_KH",
+              "label": "Chăm sóc KH"
+            },
+            {
+              "value": "DCN_NOI_DUNG",
+              "label": "Đang cân nhắc - Nội dung"
+            },
+            {
+              "value": "DCN_HOC_PHI",
+              "label": "Đang cân nhắc - Học phí"
+            },
+            {
+              "value": "DCN_LICH_HOC",
+              "label": "Đang cân nhắc - Lịch học"
+            },
+            {
+              "value": "DCN_GIANG_VIEN",
+              "label": "Đang cân nhắc - Giảng viên / tổ chức"
+            },
+            {
+              "value": "DCN_CAN_THOI_GIAN",
+              "label": "Đang cân nhắc - Cần thời gian suy nghĩ"
+            },
+            {
+              "value": "DCN_DIA_DIEM_XA",
+              "label": "Đang cân nhắc - Địa điểm xa"
+            },
+            {
+              "value": "HUY_KHONG_SAP_XEP",
+              "label": "Hủy đăng ký - Không sắp xếp được thời gian"
+            },
+            {
+              "value": "DANG_KY_CHO_CK",
+              "label": "Đăng ký - Chờ chuyển khoản"
+            },
+            {
+              "value": "DANG_KY_CHO_XAC_NHAN",
+              "label": "Đăng ký - Chờ xác nhận tiền về"
+            },
+            {
+              "value": "RAC_SPAM",
+              "label": "Liên hệ rác - Spam tin rác"
+            },
+            {
+              "value": "RAC_SAI_SO",
+              "label": "Liên hệ rác - Sai số liên hệ"
+            },
+            {
+              "value": "RAC_TRUNG_LAP",
+              "label": "Liên hệ rác - Trùng lặp"
+            },
+            {
+              "value": "RAC_SAI_CHAN_DUNG",
+              "label": "Liên hệ rác - Sai chân dung mục tiêu"
+            },
+            {
+              "value": "RAC_DOI_THU",
+              "label": "Liên hệ rác - Đối thủ dò giá"
+            },
+            {
+              "value": "RAC_NHAM_DICH_VU",
+              "label": "Liên hệ rác - Nhầm dịch vụ"
+            },
+            {
+              "value": "RAC_THONG_TIN_AO",
+              "label": "Liên hệ rác - Thông tin ảo"
+            }
+          ]
+        },
+        "lichSuChuyenDoi": {
+          "field": "lichSuChuyenDoi",
+          "label": "Lịch sử chuyển đổi",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CHUYEN_DOI_KHOA_HOC",
+              "label": "Chuyển đổi khóa học"
+            },
+            {
+              "value": "CHUYEN_DOI_NGUOI_HOC",
+              "label": "Chuyển đổi người học"
+            },
+            {
+              "value": "CD_KHOA_BL_SANG_KHOA_KHAC",
+              "label": "CĐ khóa BL sang khóa khác"
+            },
+            {
+              "value": "CD_KHOA_BL_SANG_NGUOI_KHAC",
+              "label": "CĐ khóa BL sang người khác"
+            },
+            {
+              "value": "HOC_BU_KHOA_BL",
+              "label": "Học bù khóa BL"
+            },
+            {
+              "value": "DONG_HP_BO_SUNG",
+              "label": "Đóng HP bổ sung"
+            }
+          ]
+        },
+        "ghiChuDealBlocknote": {
+          "field": "ghiChuDeal",
+          "label": "Ghi chú",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "ghiChuDealMarkdown": {
+          "field": "ghiChuDeal",
+          "label": "Ghi chú",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "maOpp": {
+          "field": "maOpp",
+          "label": "Mã Opp",
+          "type": "TEXT",
+          "description": "Mã cơ hội bán hàng = OP{YYMMDD}{số thứ tự 3 chữ số}. Hệ thống tự sinh, duy nhất."
+        },
+        "tongTienHangAmountMicros": {
+          "field": "tongTienHang",
+          "label": "Tổng tiền hàng",
+          "type": "CURRENCY",
+          "description": "Doanh thu cơ hội = Σ thành tiền các ghi danh. Hệ thống tự tính.",
+          "note": "chia 1e6 để ra VND"
+        },
+        "tongTienHangCurrencyCode": {
+          "field": "tongTienHang",
+          "label": "Tổng tiền hàng",
+          "type": "CURRENCY",
+          "description": "Doanh thu cơ hội = Σ thành tiền các ghi danh. Hệ thống tự tính."
+        },
+        "daThanhToanAmountMicros": {
+          "field": "daThanhToan",
+          "label": "Đã thanh toán",
+          "type": "CURRENCY",
+          "description": "Σ thanh toán đã xác nhận. Hệ thống tự tính.",
+          "note": "chia 1e6 để ra VND"
+        },
+        "daThanhToanCurrencyCode": {
+          "field": "daThanhToan",
+          "label": "Đã thanh toán",
+          "type": "CURRENCY",
+          "description": "Σ thanh toán đã xác nhận. Hệ thống tự tính."
+        },
+        "conLaiAmountMicros": {
+          "field": "conLai",
+          "label": "Còn lại",
+          "type": "CURRENCY",
+          "description": "Tổng tiền − đã thanh toán. Hệ thống tự tính.",
+          "note": "chia 1e6 để ra VND"
+        },
+        "conLaiCurrencyCode": {
+          "field": "conLai",
+          "label": "Còn lại",
+          "type": "CURRENCY",
+          "description": "Tổng tiền − đã thanh toán. Hệ thống tự tính."
+        },
+        "tuongTacGanNhat": {
+          "field": "tuongTacGanNhat",
+          "label": "Ngày tương tác gần nhất",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "canFollow": {
+          "field": "canFollow",
+          "label": "Cần follow",
+          "type": "BOOLEAN",
+          "description": ""
+        },
+        "moTaNguoiMua": {
+          "field": "moTaNguoiMua",
+          "label": "Mô tả người mua",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "MUA_CHO_MINH",
+              "label": "Mua cho mình"
+            },
+            {
+              "value": "MUA_CHO_NHAN_VIEN",
+              "label": "Mua cho nhân viên"
+            },
+            {
+              "value": "MUA_HO_CONG_TY",
+              "label": "Mua hộ công ty"
+            }
+          ]
+        },
+        "kenhChamSoc": {
+          "field": "kenhChamSoc",
+          "label": "Kênh chăm sóc",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "ZALO",
+              "label": "Zalo"
+            },
+            {
+              "value": "FACEBOOK_PAGE",
+              "label": "Facebook Page"
+            },
+            {
+              "value": "TIKTOK",
+              "label": "Tiktok"
+            },
+            {
+              "value": "FACEBOOK_CA_NHAN",
+              "label": "Facebook cá nhân"
+            },
+            {
+              "value": "ZOA",
+              "label": "ZOA"
+            }
+          ]
+        },
+        "noiDauThachThuc": {
+          "field": "noiDauThachThuc",
+          "label": "Nỗi đau thách thức",
+          "type": "MULTI_SELECT",
+          "description": "Nhật ký tư vấn: nỗi đau / thách thức của khách.",
+          "options": [
+            {
+              "value": "THIEU_HE_THONG_QUAN_TRI",
+              "label": "Thiếu hệ thống quản trị"
+            },
+            {
+              "value": "QUAN_TRI_BAN_NANG",
+              "label": "Quản trị Bản năng"
+            },
+            {
+              "value": "DOI_NGU_YEU",
+              "label": "Đội ngũ yếu"
+            },
+            {
+              "value": "TANG_TRUONG_CHAM",
+              "label": "Tăng trưởng chậm/chững/đi xuống"
+            },
+            {
+              "value": "VAN_HOA_YEU",
+              "label": "Văn hóa yếu"
+            },
+            {
+              "value": "THAT_THOAT_TAI_CHINH",
+              "label": "Thất thoát Tài chính"
+            },
+            {
+              "value": "LANH_DAO_YEU",
+              "label": "Lãnh đạo Yếu"
+            }
+          ]
+        },
+        "mucTieu": {
+          "field": "mucTieu",
+          "label": "Khai thác mục tiêu",
+          "type": "MULTI_SELECT",
+          "description": "Nhật ký tư vấn: mục tiêu khách hướng tới.",
+          "options": [
+            {
+              "value": "CHUAN_HOA_TO_CHUC",
+              "label": "Chuẩn hóa tổ chức"
+            },
+            {
+              "value": "SCALE",
+              "label": "Scale"
+            },
+            {
+              "value": "TAI_CAU_TRUC",
+              "label": "Tái cấu trúc"
+            },
+            {
+              "value": "MO_MOI_BUSINESS",
+              "label": "Mở mới Business"
+            },
+            {
+              "value": "NANG_CAO_NANG_LUC_CA_NHAN",
+              "label": "Nâng cao Năng lực Cá nhân"
+            }
+          ]
+        },
+        "hanhDongTiepTheo": {
+          "field": "hanhDongTiepTheo",
+          "label": "Hành động tiếp theo",
+          "type": "MULTI_SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "MOI_XTOUR_XTALK",
+              "label": "Mời XTour-XTalk"
+            },
+            {
+              "value": "SHARE_TAI_LIEU",
+              "label": "Share tài liệu"
+            },
+            {
+              "value": "HOI_THAM",
+              "label": "Hỏi thăm"
+            },
+            {
+              "value": "OFFER_UU_DAI",
+              "label": "Offer chính sách ưu đãi"
+            },
+            {
+              "value": "NHAP_LIEU_KHACH_HANG",
+              "label": "Nhập liệu thông tin khách hàng"
+            }
+          ]
+        },
+        "hanhViCongDong": {
+          "field": "hanhViCongDong",
+          "label": "Hành vi cộng đồng",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CHUA_THAM_GIA",
+              "label": "Chưa tham gia"
+            },
+            {
+              "value": "THAM_GIA_NGHE",
+              "label": "Có tham gia_Nghe"
+            },
+            {
+              "value": "THAM_GIA_CHIA_SE",
+              "label": "Có tham gia_Chia sẻ"
+            },
+            {
+              "value": "THAM_GIA_LAN_TOA",
+              "label": "Có tham gia_Lan tỏa người khác"
+            }
+          ]
+        },
+        "soKhoaDaMua": {
+          "field": "soKhoaDaMua",
+          "label": "Số khoá đã mua",
+          "type": "NUMBER",
+          "description": "Số khoá học (riêng biệt) người mua đã mua tính tới lúc tạo ra Cơ hội. Hệ thống tự tính, chỉ đọc."
+        },
+        "noiDauHocTap": {
+          "field": "noiDauHocTap",
+          "label": "Nỗi đau học tập",
+          "type": "MULTI_SELECT",
+          "description": "Nhật ký tư vấn: nỗi đau trong việc học tập của khách.",
+          "options": [
+            {
+              "value": "DA_HOC_KHONG_GIAI_QUYET",
+              "label": "Đã học nhưng không giải quyết được vấn đề"
+            },
+            {
+              "value": "HOC_KHONG_CHUYEN_HOA",
+              "label": "Học nhưng không chuyển hóa được"
+            },
+            {
+              "value": "HOC_KHONG_CO_NGUOI_LAM",
+              "label": "Học nhưng không có người làm"
+            },
+            {
+              "value": "HOC_KHONG_HANDS_ON",
+              "label": "Học hiểu nhưng không có khả năng Hands-on"
+            }
+          ]
+        },
+        "lyDoTuChoi": {
+          "field": "lyDoTuChoi",
+          "label": "Lý do từ chối",
+          "type": "SELECT",
+          "description": "Nhật ký tư vấn: lý do khách từ chối học.",
+          "options": [
+            {
+              "value": "HOC_CHO_KHAC",
+              "label": "Học chỗ khác"
+            },
+            {
+              "value": "KHONG_CON_NHU_CAU",
+              "label": "Không có nhu cầu nữa"
+            },
+            {
+              "value": "CHUA_UU_TIEN",
+              "label": "Chưa ưu tiên học tập giai đoạn này"
+            },
+            {
+              "value": "HOC_KHO",
+              "label": "Học khó"
+            },
+            {
+              "value": "CHUA_AP_DUNG_DUOC",
+              "label": "Học nhưng chưa áp dụng được"
+            },
+            {
+              "value": "HOC_PHI_KHONG_KHA_THI",
+              "label": "Học phí không khả thi"
+            }
+          ]
+        },
+        "hanhViHocTap": {
+          "field": "hanhViHocTap",
+          "label": "Hành vi Học tập",
+          "type": "SELECT",
+          "description": "Nhật ký tư vấn: mức độ đầu tư học Quản trị của khách.",
+          "options": [
+            {
+              "value": "CHUA_DAU_TU",
+              "label": "Chưa đầu tư học Quản trị"
+            },
+            {
+              "value": "DA_DAU_TU_QUAN_TRI",
+              "label": "Đã đầu tư học Quản trị (kể tên được các nơi đã học)"
+            },
+            {
+              "value": "DA_DAU_TU_CA_NHAN_DOI_NGU",
+              "label": "Đã đầu tư học cho Cá nhân & Đội ngũ"
+            }
+          ]
+        },
+        "xacThucTao": {
+          "field": "xacThucTao",
+          "label": "Xác thực tạo",
+          "type": "TEXT",
+          "description": "Dấu hệ thống chống tạo tay: chỉ hợp lệ khi bản ghi do chức năng \"Tạo nhanh\" (front-component) tạo. Bản ghi tạo tay thiếu dấu này sẽ bị xoá vĩnh viễn. KHÔNG chỉnh sửa."
+        },
+        "coDonHang": {
+          "field": "coDonHang",
+          "label": "Có đơn hàng",
+          "type": "BOOLEAN",
+          "description": "Hệ thống tự đặt: Cơ hội đã có ít nhất 1 Đơn hàng. Dùng cho quyền xem của Kế toán."
+        },
+        "khachMuaId": {
+          "field": "khachMua",
+          "label": "khachMua",
+          "type": "RELATION",
+          "description": "",
+          "target": "person"
+        },
+        "congTyMuaId": {
+          "field": "congTyMua",
+          "label": "congTyMua",
+          "type": "RELATION",
+          "description": "",
+          "target": "company"
+        },
+        "picId": {
+          "field": "pic",
+          "label": "pic",
+          "type": "RELATION",
+          "description": "",
+          "target": "workspaceMember"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "person": {
+      "object": "person",
+      "label": "Person",
+      "description": "A person",
+      "columns": {
+        "ngayKhoiTao": {
+          "field": "ngayKhoiTao",
+          "label": "Ngày khởi tạo",
+          "type": "DATE",
+          "description": ""
+        },
+        "ghiChuBlocknote": {
+          "field": "ghiChu",
+          "label": "Ghi chú",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "ghiChuMarkdown": {
+          "field": "ghiChu",
+          "label": "Ghi chú",
+          "type": "RICH_TEXT",
+          "description": ""
+        },
+        "sale": {
+          "field": "sale",
+          "label": "Sale",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "NGHIA",
+              "label": "NGHIA"
+            },
+            {
+              "value": "PHUONG_ANH",
+              "label": "PHUONG_ANH"
+            },
+            {
+              "value": "KIEU",
+              "label": "KIEU"
+            },
+            {
+              "value": "OANH",
+              "label": "OANH"
+            },
+            {
+              "value": "LY",
+              "label": "LY"
+            },
+            {
+              "value": "CHI",
+              "label": "CHI"
+            },
+            {
+              "value": "HUONG",
+              "label": "HUONG"
+            },
+            {
+              "value": "CHAM_SOC_CHU_DONG",
+              "label": "CHAM_SOC_CHU_DONG"
+            },
+            {
+              "value": "HUE",
+              "label": "HUE"
+            },
+            {
+              "value": "HANG",
+              "label": "HANG"
+            }
+          ]
+        },
+        "soLopHocDaThamGia": {
+          "field": "soLopHocDaThamGia",
+          "label": "Số lớp đã tham gia",
+          "type": "NUMBER",
+          "description": "Số lớp học (riêng biệt) học viên đã đăng ký — hệ thống tự tính từ các cơ hội."
+        },
+        "mucDoTiemNang": {
+          "field": "mucDoTiemNang",
+          "label": "Mức độ tiềm năng",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CHU_DONG",
+              "label": "Chủ động (95%)"
+            },
+            {
+              "value": "CHIA_SE_NHIEU",
+              "label": "Chia sẻ nhiều (81%)"
+            },
+            {
+              "value": "QUAN_TAM",
+              "label": "Quan tâm (65%)"
+            },
+            {
+              "value": "TRUNG_LAP",
+              "label": "Trung lập (35%)"
+            },
+            {
+              "value": "THO_O",
+              "label": "Thờ ơ"
+            }
+          ]
+        },
+        "chucDanh": {
+          "field": "chucDanh",
+          "label": "Chức danh",
+          "type": "TEXT",
+          "description": ""
+        },
+        "idKh": {
+          "field": "idKh",
+          "label": "ID KH",
+          "type": "TEXT",
+          "description": ""
+        },
+        "gioiTinh": {
+          "field": "gioiTinh",
+          "label": "Giới tính",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "NAM",
+              "label": "Nam"
+            },
+            {
+              "value": "NU",
+              "label": "Nữ"
+            }
+          ]
+        },
+        "facebookPrimaryLinkUrl": {
+          "field": "facebook",
+          "label": "Facebook",
+          "type": "LINKS",
+          "description": ""
+        },
+        "facebookPrimaryLinkLabel": {
+          "field": "facebook",
+          "label": "Facebook",
+          "type": "LINKS",
+          "description": ""
+        },
+        "tinhThanh": {
+          "field": "tinhThanh",
+          "label": "Tỉnh thành",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "HA_NOI",
+              "label": "Hà Nội"
+            },
+            {
+              "value": "HCM",
+              "label": "TP. Hồ Chí Minh"
+            },
+            {
+              "value": "HAI_PHONG",
+              "label": "Hải Phòng"
+            },
+            {
+              "value": "DA_NANG",
+              "label": "Đà Nẵng"
+            },
+            {
+              "value": "CAN_THO",
+              "label": "Cần Thơ"
+            },
+            {
+              "value": "HUE",
+              "label": "Huế"
+            },
+            {
+              "value": "AN_GIANG",
+              "label": "An Giang"
+            },
+            {
+              "value": "BAC_NINH",
+              "label": "Bắc Ninh"
+            },
+            {
+              "value": "CA_MAU",
+              "label": "Cà Mau"
+            },
+            {
+              "value": "CAO_BANG",
+              "label": "Cao Bằng"
+            },
+            {
+              "value": "DAK_LAK",
+              "label": "Đắk Lắk"
+            },
+            {
+              "value": "DIEN_BIEN",
+              "label": "Điện Biên"
+            },
+            {
+              "value": "DONG_NAI",
+              "label": "Đồng Nai"
+            },
+            {
+              "value": "DONG_THAP",
+              "label": "Đồng Tháp"
+            },
+            {
+              "value": "GIA_LAI",
+              "label": "Gia Lai"
+            },
+            {
+              "value": "HA_TINH",
+              "label": "Hà Tĩnh"
+            },
+            {
+              "value": "HUNG_YEN",
+              "label": "Hưng Yên"
+            },
+            {
+              "value": "KHANH_HOA",
+              "label": "Khánh Hòa"
+            },
+            {
+              "value": "LAI_CHAU",
+              "label": "Lai Châu"
+            },
+            {
+              "value": "LAM_DONG",
+              "label": "Lâm Đồng"
+            },
+            {
+              "value": "LANG_SON",
+              "label": "Lạng Sơn"
+            },
+            {
+              "value": "LAO_CAI",
+              "label": "Lào Cai"
+            },
+            {
+              "value": "NGHE_AN",
+              "label": "Nghệ An"
+            },
+            {
+              "value": "NINH_BINH",
+              "label": "Ninh Bình"
+            },
+            {
+              "value": "PHU_THO",
+              "label": "Phú Thọ"
+            },
+            {
+              "value": "QUANG_NGAI",
+              "label": "Quảng Ngãi"
+            },
+            {
+              "value": "QUANG_NINH",
+              "label": "Quảng Ninh"
+            },
+            {
+              "value": "QUANG_TRI",
+              "label": "Quảng Trị"
+            },
+            {
+              "value": "SON_LA",
+              "label": "Sơn La"
+            },
+            {
+              "value": "TAY_NINH",
+              "label": "Tây Ninh"
+            },
+            {
+              "value": "THAI_NGUYEN",
+              "label": "Thái Nguyên"
+            },
+            {
+              "value": "THANH_HOA",
+              "label": "Thanh Hóa"
+            },
+            {
+              "value": "TUYEN_QUANG",
+              "label": "Tuyên Quang"
+            },
+            {
+              "value": "VINH_LONG",
+              "label": "Vĩnh Long"
+            },
+            {
+              "value": "KHAC",
+              "label": "Khác"
+            }
+          ]
+        },
+        "tinhTrangGiaDinh": {
+          "field": "tinhTrangGiaDinh",
+          "label": "Tình trạng gia đình",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "CHUA_LAP_GIA_DINH",
+              "label": "Chưa lập gia đình"
+            },
+            {
+              "value": "DA_LAP_GIA_DINH",
+              "label": "Đã lập gia đình"
+            },
+            {
+              "value": "GIA_DINH_CON",
+              "label": "Gia đình + Con"
+            },
+            {
+              "value": "DA_LY_HON",
+              "label": "Đã ly hôn"
+            }
+          ]
+        },
+        "keNhiem": {
+          "field": "keNhiem",
+          "label": "Kế nhiệm công ty gia đình",
+          "type": "BOOLEAN",
+          "description": "Có phải là người kế nhiệm/kế thừa lại công ty gia đình không."
+        },
+        "tinhCach": {
+          "field": "tinhCach",
+          "label": "Tính cách",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "QUYET_DOAN",
+              "label": "Quyết đoán/Mạnh mẽ"
+            },
+            {
+              "value": "HIEN_LANH",
+              "label": "Hiền lành/Ít nói"
+            },
+            {
+              "value": "COI_MO",
+              "label": "Cởi mở/Thân thiện"
+            },
+            {
+              "value": "DONG_KHEP_KIN",
+              "label": "Đóng/Khép kín"
+            }
+          ]
+        },
+        "phongCach": {
+          "field": "phongCach",
+          "label": "Phong cách sống",
+          "type": "SELECT",
+          "description": "Thời trang / phong cách sống.",
+          "options": [
+            {
+              "value": "CLASS_A",
+              "label": "Class A - Hàng hiệu"
+            },
+            {
+              "value": "CLASS_B",
+              "label": "Class B"
+            },
+            {
+              "value": "CLASS_C",
+              "label": "Class C"
+            }
+          ]
+        },
+        "thoiQuen": {
+          "field": "thoiQuen",
+          "label": "Thói quen giờ giấc",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "DI_MUON",
+              "label": "Đi muộn"
+            },
+            {
+              "value": "DUNG_GIO",
+              "label": "Đúng giờ"
+            }
+          ]
+        },
+        "cauTrucThoiGian": {
+          "field": "cauTrucThoiGian",
+          "label": "Cấu trúc thời gian",
+          "type": "SELECT",
+          "description": "",
+          "options": [
+            {
+              "value": "PHAI_SAP_XEP",
+              "label": "Phải sắp xếp thời gian"
+            },
+            {
+              "value": "SAN_SANG_THOI_GIAN_HOC",
+              "label": "Sẵn sàng cao về thời gian học tập"
+            },
+            {
+              "value": "SAN_SANG_DI_CHUYEN",
+              "label": "Sẵn sàng di chuyển đi lại"
+            }
+          ]
+        },
+        "coDonHang": {
+          "field": "coDonHang",
+          "label": "Có đơn hàng",
+          "type": "BOOLEAN",
+          "description": "Hệ thống tự đặt: là Khách mua của ít nhất 1 Đơn hàng. Dùng cho quyền xem của Kế toán."
+        },
+        "picId": {
+          "field": "pic",
+          "label": "pic",
+          "type": "RELATION",
+          "description": "",
+          "target": "workspaceMember"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "taskTarget": {
+      "object": "taskTarget",
+      "label": "Task Target",
+      "description": "A task target",
+      "columns": {
+        "targetPayment": {
+          "field": "targetPayment",
+          "label": "Payment",
+          "type": "MORPH_RELATION",
+          "description": "Payment Payment"
+        },
+        "targetMauTaiLieu": {
+          "field": "targetMauTaiLieu",
+          "label": "MauTaiLieu",
+          "type": "MORPH_RELATION",
+          "description": "MauTaiLieu Mẫu tài liệu"
+        },
+        "targetOrder": {
+          "field": "targetOrder",
+          "label": "Order",
+          "type": "MORPH_RELATION",
+          "description": "Order Order"
+        },
+        "targetCourse": {
+          "field": "targetCourse",
+          "label": "Course",
+          "type": "MORPH_RELATION",
+          "description": "Course Course"
+        },
+        "targetSepayWebhookLog": {
+          "field": "targetSepayWebhookLog",
+          "label": "SepayWebhookLog",
+          "type": "MORPH_RELATION",
+          "description": "SepayWebhookLog Nhật ký webhook SePay"
+        },
+        "targetClass": {
+          "field": "targetClass",
+          "label": "Class",
+          "type": "MORPH_RELATION",
+          "description": "Class Class"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    },
+    "timelineActivity": {
+      "object": "timelineActivity",
+      "label": "Timeline Activity",
+      "description": "Aggregated / filtered event to be displayed on the timeline",
+      "columns": {
+        "targetPayment": {
+          "field": "targetPayment",
+          "label": "Payment",
+          "type": "MORPH_RELATION",
+          "description": "Payment Payment"
+        },
+        "targetSepayWebhookLog": {
+          "field": "targetSepayWebhookLog",
+          "label": "SepayWebhookLog",
+          "type": "MORPH_RELATION",
+          "description": "SepayWebhookLog Nhật ký webhook SePay"
+        },
+        "targetCourse": {
+          "field": "targetCourse",
+          "label": "Course",
+          "type": "MORPH_RELATION",
+          "description": "Course Course"
+        },
+        "targetMauTaiLieu": {
+          "field": "targetMauTaiLieu",
+          "label": "MauTaiLieu",
+          "type": "MORPH_RELATION",
+          "description": "MauTaiLieu Mẫu tài liệu"
+        },
+        "targetClass": {
+          "field": "targetClass",
+          "label": "Class",
+          "type": "MORPH_RELATION",
+          "description": "Class Class"
+        },
+        "targetOrder": {
+          "field": "targetOrder",
+          "label": "Order",
+          "type": "MORPH_RELATION",
+          "description": "Order Order"
+        },
+        "id": {
+          "field": "id",
+          "label": "ID",
+          "type": "UUID",
+          "description": "khoá chính"
+        },
+        "createdAt": {
+          "field": "createdAt",
+          "label": "Ngày tạo bản ghi",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "updatedAt": {
+          "field": "updatedAt",
+          "label": "Ngày cập nhật",
+          "type": "DATE_TIME",
+          "description": ""
+        },
+        "deletedAt": {
+          "field": "deletedAt",
+          "label": "Ngày xoá mềm",
+          "type": "DATE_TIME",
+          "description": "LUÔN lọc \"deletedAt\" IS NULL"
+        }
+      }
+    }
+  },
+  "relations": [
+    {
+      "source": "course",
+      "field": "danhSachLop",
+      "type": "ONE_TO_MANY",
+      "target": "class"
+    },
+    {
+      "source": "class",
+      "field": "khoaHoc",
+      "type": "MANY_TO_ONE",
+      "target": "course"
+    },
+    {
+      "source": "class",
+      "field": "dangKy",
+      "type": "ONE_TO_MANY",
+      "target": "enrollment"
+    },
+    {
+      "source": "enrollment",
+      "field": "lopHoc",
+      "type": "MANY_TO_ONE",
+      "target": "class"
+    },
+    {
+      "source": "class",
+      "field": "dsChuyenDen",
+      "type": "ONE_TO_MANY",
+      "target": "enrollment"
+    },
+    {
+      "source": "enrollment",
+      "field": "chuyenToi",
+      "type": "MANY_TO_ONE",
+      "target": "class"
+    },
+    {
+      "source": "opportunity",
+      "field": "khachMua",
+      "type": "MANY_TO_ONE",
+      "target": "person"
+    },
+    {
+      "source": "person",
+      "field": "coHoiMua",
+      "type": "ONE_TO_MANY",
+      "target": "opportunity"
+    },
+    {
+      "source": "opportunity",
+      "field": "congTyMua",
+      "type": "MANY_TO_ONE",
+      "target": "company"
+    },
+    {
+      "source": "company",
+      "field": "coHoiCty",
+      "type": "ONE_TO_MANY",
+      "target": "opportunity"
+    },
+    {
+      "source": "enrollment",
+      "field": "hocVien",
+      "type": "MANY_TO_ONE",
+      "target": "person"
+    },
+    {
+      "source": "person",
+      "field": "ghiDanhHocVien",
+      "type": "ONE_TO_MANY",
+      "target": "enrollment"
+    },
+    {
+      "source": "person",
+      "field": "pic",
+      "type": "MANY_TO_ONE",
+      "target": "workspaceMember"
+    },
+    {
+      "source": "workspaceMember",
+      "field": "picPeople",
+      "type": "ONE_TO_MANY",
+      "target": "person"
+    },
+    {
+      "source": "company",
+      "field": "pic",
+      "type": "MANY_TO_ONE",
+      "target": "workspaceMember"
+    },
+    {
+      "source": "workspaceMember",
+      "field": "picCompanies",
+      "type": "ONE_TO_MANY",
+      "target": "company"
+    },
+    {
+      "source": "opportunity",
+      "field": "pic",
+      "type": "MANY_TO_ONE",
+      "target": "workspaceMember"
+    },
+    {
+      "source": "workspaceMember",
+      "field": "picOpportunities",
+      "type": "ONE_TO_MANY",
+      "target": "opportunity"
+    },
+    {
+      "source": "enrollment",
+      "field": "pic",
+      "type": "MANY_TO_ONE",
+      "target": "workspaceMember"
+    },
+    {
+      "source": "workspaceMember",
+      "field": "picEnrollments",
+      "type": "ONE_TO_MANY",
+      "target": "enrollment"
+    },
+    {
+      "source": "order",
+      "field": "pic",
+      "type": "MANY_TO_ONE",
+      "target": "workspaceMember"
+    },
+    {
+      "source": "workspaceMember",
+      "field": "picOrders",
+      "type": "ONE_TO_MANY",
+      "target": "order"
+    },
+    {
+      "source": "opportunity",
+      "field": "dsDonHang",
+      "type": "ONE_TO_MANY",
+      "target": "order"
+    },
+    {
+      "source": "order",
+      "field": "coHoi",
+      "type": "MANY_TO_ONE",
+      "target": "opportunity"
+    },
+    {
+      "source": "order",
+      "field": "dsDong",
+      "type": "ONE_TO_MANY",
+      "target": "orderItem"
+    },
+    {
+      "source": "orderItem",
+      "field": "donHang",
+      "type": "MANY_TO_ONE",
+      "target": "order"
+    },
+    {
+      "source": "opportunity",
+      "field": "dsDongDon",
+      "type": "ONE_TO_MANY",
+      "target": "orderItem"
+    },
+    {
+      "source": "orderItem",
+      "field": "coHoi",
+      "type": "MANY_TO_ONE",
+      "target": "opportunity"
+    },
+    {
+      "source": "order",
+      "field": "dsThanhToan",
+      "type": "ONE_TO_MANY",
+      "target": "payment"
+    },
+    {
+      "source": "payment",
+      "field": "thuocDonHang",
+      "type": "MANY_TO_ONE",
+      "target": "order"
+    },
+    {
+      "source": "person",
+      "field": "donHangMua",
+      "type": "ONE_TO_MANY",
+      "target": "order"
+    },
+    {
+      "source": "order",
+      "field": "khachMua",
+      "type": "MANY_TO_ONE",
+      "target": "person"
+    },
+    {
+      "source": "company",
+      "field": "donHangCty",
+      "type": "ONE_TO_MANY",
+      "target": "order"
+    },
+    {
+      "source": "order",
+      "field": "congTyMua",
+      "type": "MANY_TO_ONE",
+      "target": "company"
+    },
+    {
+      "source": "person",
+      "field": "dsDongDon",
+      "type": "ONE_TO_MANY",
+      "target": "orderItem"
+    },
+    {
+      "source": "orderItem",
+      "field": "hocVien",
+      "type": "MANY_TO_ONE",
+      "target": "person"
+    },
+    {
+      "source": "class",
+      "field": "dsDongDon",
+      "type": "ONE_TO_MANY",
+      "target": "orderItem"
+    },
+    {
+      "source": "orderItem",
+      "field": "lopHoc",
+      "type": "MANY_TO_ONE",
+      "target": "class"
+    },
+    {
+      "source": "salesPolicy",
+      "field": "dongDonApDung",
+      "type": "ONE_TO_MANY",
+      "target": "orderItem"
+    },
+    {
+      "source": "orderItem",
+      "field": "chinhSachBanHang",
+      "type": "MANY_TO_ONE",
+      "target": "salesPolicy"
+    },
+    {
+      "source": "orderItem",
+      "field": "dsGhiDanh",
+      "type": "ONE_TO_MANY",
+      "target": "enrollment"
+    },
+    {
+      "source": "enrollment",
+      "field": "dongDon",
+      "type": "MANY_TO_ONE",
+      "target": "orderItem"
+    },
+    {
+      "source": "enrollment",
+      "field": "dsDongDieuChinh",
+      "type": "ONE_TO_MANY",
+      "target": "orderItem"
+    },
+    {
+      "source": "orderItem",
+      "field": "ghiDanhHoanTac",
+      "type": "MANY_TO_ONE",
+      "target": "enrollment"
+    },
+    {
+      "source": "order",
+      "field": "dsGhiDanh",
+      "type": "ONE_TO_MANY",
+      "target": "enrollment"
+    },
+    {
+      "source": "enrollment",
+      "field": "donHang",
+      "type": "MANY_TO_ONE",
+      "target": "order"
+    },
+    {
+      "source": "opportunity",
+      "field": "dsGhiDanh",
+      "type": "ONE_TO_MANY",
+      "target": "enrollment"
+    },
+    {
+      "source": "enrollment",
+      "field": "coHoi",
+      "type": "MANY_TO_ONE",
+      "target": "opportunity"
+    }
+  ]
+}
