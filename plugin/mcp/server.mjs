@@ -3,9 +3,55 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRpcServer } from './rpc.mjs';
 import { loadDictionary, sliceTables, findModel } from './dict.mjs';
+import { makeConfigStore } from './config.mjs';
+import { loadPassword } from './secrets.mjs';
+import { createMetabase } from './metabase.mjs';
 
 const DICT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'dictionary');
 const dict = loadDictionary(DICT_DIR);
+
+const MB_URL = process.env.MB_URL || 'https://insight.xteam.edu.vn';
+const MB_DB = Number(process.env.MB_DB || 2);
+const MB_WS = process.env.MB_WS || 'workspace_6ytci89jf3kflsl9aaaxrr5hw';
+const MODELS_COLLECTION = 'XLeaders – Models';
+const store = makeConfigStore();
+
+export const getConfig = async () => ({
+  baseUrl: MB_URL, databaseId: MB_DB, ws: MB_WS, modelsCollection: MODELS_COLLECTION,
+});
+
+let _mb = null;
+
+/** Trả client đã đăng nhập. Phiên hết hạn thì tự đăng nhập lại bằng mật khẩu trong Keychain. */
+export async function connect() {
+  const cfg = await store.readConfig();
+  if (!cfg) throw new Error('Chưa cấu hình. Anh/chị gõ /start để em thiết lập giúp nhé.');
+  if (_mb) return _mb;
+  const mb = createMetabase({ baseUrl: MB_URL });
+  const token = await store.readSession();
+  if (token) {
+    mb.setSession(token);
+    try { await mb.me(); _mb = mb; return mb; } catch { /* hết hạn → đăng nhập lại bên dưới */ }
+  }
+  const pw = await loadPassword(cfg.email);
+  if (!pw) throw new Error('Không đọc được mật khẩu đã lưu. Anh/chị chạy lại /start giúp em nhé.');
+  await store.writeSession(await mb.login(cfg.email, pw));
+  _mb = mb;
+  return mb;
+}
+
+/** Đặt lại client sau khi /start đăng nhập mới — Task 10 dùng. */
+export function setClient(mb) { _mb = mb; }
+
+export async function getCtx() {
+  const cfg = await store.readConfig();
+  if (!cfg) throw new Error('Chưa cấu hình. Anh/chị gõ /start để em thiết lập giúp nhé.');
+  return {
+    myUserId: cfg.myUserId,
+    personalCollectionId: cfg.personalCollectionId,
+    cwiCollectionId: cfg.cwiCollectionId,
+  };
+}
 
 const TOOLS = [
   {
