@@ -25,6 +25,7 @@ const me = await user.me();
 
 const cols = await admin.api('/api/collection');
 const chung = cols.find((c) => c.name === 'XLeaders – Models');
+if (!chung) throw new Error(`Không thấy collection "XLeaders – Models" trên ${BASE} — kiểm lại MB_URL.`);
 
 async function thu(nhan, fn) {
   try { await fn(); console.log(`  ${nhan}: ĐƯỢC (200)`); return 'ĐƯỢC'; }
