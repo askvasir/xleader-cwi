@@ -61,3 +61,18 @@ test('phương thức lạ trả lỗi -32601', async () => {
   await send({ jsonrpc: '2.0', id: 9, method: 'khong/ton/tai' });
   assert.equal(out[0].error.code, -32601);
 });
+
+test('phản hồi LẠC (có id, không method, không khớp pending) bị bỏ qua im lặng', async () => {
+  // JSON-RPC: không bao giờ "trả lời" một response. Nếu tụt xuống nhánh mặc định,
+  // server sẽ bắn ngược {error: "chưa hỗ trợ: undefined"} — sai giao thức.
+  const { send, out } = harness([], async () => '');
+  await send({ jsonrpc: '2.0', id: 'id-khong-ton-tai', result: { foo: 'bar' } });
+  assert.deepEqual(out, [], 'không được gửi gì cả');
+});
+
+test('notification (có method, không id) không sinh phản hồi', async () => {
+  const { send, out } = harness([], async () => '');
+  await send({ jsonrpc: '2.0', method: 'notifications/initialized' });
+  await send({ jsonrpc: '2.0', method: 'mot/notification/la' });
+  assert.deepEqual(out, [], 'notification không bao giờ được trả lời');
+});

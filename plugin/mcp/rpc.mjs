@@ -16,9 +16,16 @@ export function createRpcServer({ name, version, tools, onCall, input = process.
   }
 
   async function handle(msg) {
-    // Phản hồi cho request do chính server gửi đi (vd elicitation/create)
-    if (msg.method === undefined && msg.id !== undefined && pending.has(msg.id)) {
-      const p = pending.get(msg.id); pending.delete(msg.id);
+    // Ba loại thông điệp đến, phân loại theo đúng thứ tự này:
+    //   1. response cho request do CHÍNH server gửi đi (có id, KHÔNG method)
+    //   2. notification từ client (có method, KHÔNG id)  → xử lý rồi im lặng
+    //   3. request từ client (có method + id)            → phải trả lời
+    if (msg.method === undefined) {
+      // Là response. Khớp được thì giải quyết; LẠC thì bỏ qua IM LẶNG —
+      // JSON-RPC cấm "trả lời" một response, tụt xuống switch sẽ bắn ngược lỗi giả.
+      const p = pending.get(msg.id);
+      if (!p) return;
+      pending.delete(msg.id);
       msg.error ? p.reject(new Error(msg.error.message)) : p.resolve(msg.result);
       return;
     }
