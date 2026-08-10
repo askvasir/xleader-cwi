@@ -2,9 +2,9 @@
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRpcServer } from './rpc.mjs';
-import { loadDictionary, sliceTables, findModel } from './dict.mjs';
+import { loadDictionary, sliceTables, findModel, compareFingerprint } from './dict.mjs';
 import { makeConfigStore } from './config.mjs';
-import { loadPassword } from './secrets.mjs';
+import { loadPassword, savePassword, lenhNapThuCong } from './secrets.mjs';
 import { createMetabase } from './metabase.mjs';
 import { resolveModelId, runModelQuery, runSql } from './query.mjs';
 import { listMine, createCard, updateCard, createDashboard, putDashcards, archive } from './report.mjs';
@@ -77,6 +77,20 @@ export async function getCtx() {
   };
 }
 
+/** Đọc cấu trúc THẬT trên DB để so vân tay. Một truy vấn, không lấy dữ liệu kinh doanh. */
+async function docCauTrucThat(mb) {
+  const cfg = await getConfig();
+  const res = await mb.api('/api/dataset', {
+    method: 'POST',
+    body: { database: cfg.databaseId, type: 'native', native: { query:
+      `select table_name, column_name from information_schema.columns where table_schema = '${cfg.ws}'` } },
+  });
+  if (res?.status !== 'completed') throw new Error(`Không đọc được cấu trúc dữ liệu: ${res?.error || res?.status}`);
+  const tables = {};
+  for (const [t, c] of res.data.rows) (tables[t] ||= []).push(c);
+  return { tables, enums: {} };
+}
+
 const TOOLS = [
   {
     name: 'cwi_ping',
@@ -139,9 +153,25 @@ const TOOLS = [
       additionalProperties: false,
     },
   },
+  {
+    name: 'cwi_setup',
+    description: 'Thiết lập lần đầu: đăng nhập insight và tạo thư mục báo cáo riêng. Chỉ lệnh /start dùng tool này.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Chỉ cần khi máy không hiện được ô nhập liệu (đường dự phòng).' },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: 'cwi_health',
+    description: 'Kiểm tra kết nối, quyền, và xem từ điển còn khớp cấu trúc dữ liệu thật không.',
+    inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+  },
 ];
 
-async function onCall(name, args) {
+async function onCall(name, args, ctxRpc) {
   if (name === 'cwi_ping') return 'cwi sẵn sàng';
   if (name === 'cwi_dict') {
     if (args.list) {
@@ -211,6 +241,82 @@ async function onCall(name, args) {
       case 'archive': return JSON.stringify(await archive(mb, ctx, { kind: args.kind, id: args.id }), null, 1);
       default: throw new Error(`Hành động lạ: ${args.action}`);
     }
+  }
+  if (name === 'cwi_setup') {
+    // Đường CHÍNH: xin email + mật khẩu qua form native ⇒ mật khẩu KHÔNG đi vào nội dung hội thoại.
+    // Đường DỰ PHÒNG (tự động, khi client không hỗ trợ form): đọc mật khẩu từ Keychain / biến môi trường,
+    // chưa có thì trả về lệnh để người dùng dán vào Terminal — vẫn không để mật khẩu qua hội thoại.
+    let email = args.email;
+    let password;
+    try {
+      const r = await ctxRpc.request('elicitation/create', {
+        mode: 'form',
+        message: 'Đăng nhập insight.xteam.edu.vn',
+        requestedSchema: {
+          type: 'object',
+          properties: {
+            email: { type: 'string', title: 'Email insight' },
+            password: { type: 'string', title: 'Mật khẩu', format: 'password' },
+          },
+          required: ['email', 'password'],
+        },
+      });
+      if (r?.action !== 'accept') return 'Anh/chị đã huỷ. Khi nào cần thì gõ /start lại nhé.';
+      ({ email, password } = r.content);
+    } catch {
+      if (!email) {
+        return 'Máy này chưa hiện được ô nhập liệu. Anh/chị cho em biết email đăng nhập insight để em hướng dẫn tiếp nhé.';
+      }
+      password = await loadPassword(email);
+      if (!password) {
+        return `Máy này chưa hiện được ô nhập liệu, nên mình làm cách khác cho an toàn nhé.\n\n`
+          + `Anh/chị mở Terminal, dán đúng dòng này rồi nhập mật khẩu insight (màn hình sẽ không hiện ký tự):\n\n`
+          + `${lenhNapThuCong(email)}\n\nXong rồi gõ /start lại giúp em.`;
+      }
+    }
+    const mb = createMetabase({ baseUrl: MB_URL });
+    try { await mb.login(email, password); }
+    catch { throw new Error('Email hoặc mật khẩu chưa đúng. Anh/chị thử đăng nhập ở insight.xteam.edu.vn xem sao nhé.'); }
+    const me = await mb.me();
+    if (!me.personal_collection_id) {
+      throw new Error('Tài khoản này chưa có thư mục cá nhân trên insight — nhờ quản trị kiểm tra giúp.');
+    }
+    // Tạo (hoặc tìm lại) thư mục riêng — idempotent theo tên, chạy /start lần hai không tạo trùng.
+    const ten = `Báo cáo của ${me.common_name || email}`;
+    const all = await mb.api('/api/collection');
+    const daCo = all.find((c) => c.name === ten
+      && String(c.location || '').split('/').filter(Boolean).includes(String(me.personal_collection_id)));
+    const thuMuc = daCo || await mb.api('/api/collection', {
+      method: 'POST', body: { name: ten, parent_id: me.personal_collection_id } });
+    await savePassword(email, password);
+    await store.writeSession(mb.getSession());
+    await store.writeConfig({
+      email, myUserId: me.id, personalCollectionId: me.personal_collection_id,
+      cwiCollectionId: thuMuc.id, thuMucTen: ten,
+    });
+    setClient(mb);
+    return JSON.stringify({
+      ten_nguoi_dung: me.common_name, thu_muc: ten,
+      da_luu_mat_khau: process.platform === 'darwin' ? 'Keychain' : 'biến môi trường CWI_MB_PASSWORD',
+      lenh_nap_thu_cong: process.platform === 'darwin' ? null : lenhNapThuCong(email),
+    }, null, 1);
+  }
+  if (name === 'cwi_health') {
+    const cfg = await getConfig();
+    let mb;
+    try { mb = await connect(); }
+    catch (e) { return JSON.stringify({ da_cau_hinh: false, thong_bao: e.message }, null, 1); }
+    const ket = { da_cau_hinh: true, ket_noi: 'ok' };
+    try { await resolveModelId(mb, cfg.modelsCollection, 'Cơ hội (Lead)'); ket.xem_duoc_model = true; }
+    catch (e) { ket.xem_duoc_model = false; ket.model_loi = e.message; }
+    try { await runSql(mb, { databaseId: cfg.databaseId, sql: 'select 1' }); ket.chay_duoc_sql = true; }
+    catch (e) { ket.chay_duoc_sql = false; ket.sql_loi = e.message; }
+    try {
+      const ss = compareFingerprint({ tables: dict.fingerprint.tables, enums: {} }, await docCauTrucThat(mb));
+      ket.tu_dien_khop = ss.ok;
+      if (!ss.ok) ket.cot_thieu = ss.thieuCot.slice(0, 20);
+    } catch (e) { ket.tu_dien_khop = null; ket.tu_dien_loi = e.message; }
+    return JSON.stringify(ket, null, 1);
   }
   throw new Error(`Chưa có công cụ tên "${name}".`);
 }
