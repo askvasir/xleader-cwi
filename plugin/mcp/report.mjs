@@ -29,8 +29,16 @@ async function chanTruocKhiSua(mb, ctx, kind, id) {
  * `dataset_query` của báo cáo chung để chép lại.
  * Quyền đọc thật vẫn do Metabase quyết định: user không xem được thì API trả 403.
  */
+const LOAI_DOC_DUOC = new Set(['card', 'dashboard']);
+
 export async function getEntity(mb, { kind, id }) {
-  const e = await mb.api(`/api/${kind}/${id}`);
+  // ⚠ `kind` và `id` được ghép THẲNG vào đường dẫn API. `rpc.mjs` không ép `inputSchema`, nên nếu
+  // không kiểm ở đây thì đây là một proxy GET tự do vào MỌI endpoint `/api/*` của Metabase
+  // (`kind:'user'` → `/api/user/1`, `kind:'setting'` → `/api/setting/`…). Không ghi được gì và vẫn
+  // bị chặn bởi quyền thật của người dùng, nhưng vượt xa hợp đồng "đọc thẻ / báo cáo" đã công bố.
+  if (!LOAI_DOC_DUOC.has(kind)) throw new Error(`Em chỉ đọc được thẻ hoặc báo cáo, không đọc "${kind}".`);
+  if (!Number.isInteger(Number(id))) throw new Error(`Mã báo cáo không hợp lệ: "${id}".`);
+  const e = await mb.api(`/api/${kind}/${Number(id)}`);
   if (!e?.id) throw new Error(`Em không tìm thấy ${kind === 'card' ? 'thẻ' : 'báo cáo'} #${id} trên insight.`);
   return e;
 }

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createCard, updateCard, createDashboard, putDashcards, archive } from '../plugin/mcp/report.mjs';
+import { getEntity, createCard, updateCard, createDashboard, putDashcards, archive } from '../plugin/mcp/report.mjs';
 import { GuardError } from '../plugin/mcp/guard.mjs';
 
 const CTX = { myUserId: 3, personalCollectionId: 108 };
@@ -56,6 +56,17 @@ test('sửa thẻ của chính mình thì được', async () => {
   });
   await updateCard(mb, CTX, { id: 55, patch: { name: 'đổi' } });
   assert.ok(mb.calls.some((c) => c.path === '/api/card/55' && c.method === 'PUT'));
+});
+
+test('getEntity CHỈ đọc được card/dashboard, không phải endpoint tuỳ ý', async () => {
+  // `kind` ghép thẳng vào URL và rpc.mjs không ép inputSchema ⇒ thiếu chốt này thì
+  // cwi_report{action:'get'} thành proxy GET vào mọi /api/* của Metabase.
+  const mb = fakeMb({});
+  for (const kind of ['user', 'session', 'setting', 'database', '../../api/card/1', 'card/1/query']) {
+    await assert.rejects(() => getEntity(mb, { kind, id: 1 }), /chỉ đọc được thẻ hoặc báo cáo/);
+  }
+  await assert.rejects(() => getEntity(mb, { kind: 'card', id: 'abc' }), /không hợp lệ/);
+  assert.equal(mb.calls.length, 0, 'không được gọi API nào cả');
 });
 
 test('archive dùng PUT archived:true, KHÔNG dùng DELETE', async () => {
