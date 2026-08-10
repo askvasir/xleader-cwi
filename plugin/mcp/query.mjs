@@ -36,9 +36,9 @@ function boc(res) {
 
 const cacheModelId = new Map();
 
-export async function resolveModelId(mb, collectionName, modelName) {
+export async function resolveModelId(mb, collectionName, modelName, { boQuaCache = false } = {}) {
   const key = `${collectionName}::${modelName}`;
-  if (cacheModelId.has(key)) return cacheModelId.get(key);
+  if (!boQuaCache && cacheModelId.has(key)) return cacheModelId.get(key);
   const cols = await mb.api('/api/collection');
   const col = cols.find((c) => c.name === collectionName);
   if (!col) throw new Error(`Không thấy thư mục "${collectionName}" trên insight.`);

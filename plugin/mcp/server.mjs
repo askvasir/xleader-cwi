@@ -8,6 +8,7 @@ import { loadPassword, savePassword, lenhNapThuCong } from './secrets.mjs';
 import { createMetabase } from './metabase.mjs';
 import { resolveModelId, runModelQuery, runSql } from './query.mjs';
 import { listMine, createCard, updateCard, createDashboard, putDashcards, archive } from './report.mjs';
+import { isMine } from './guard.mjs';
 
 const DICT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'dictionary');
 const dict = loadDictionary(DICT_DIR);
@@ -284,8 +285,9 @@ async function onCall(name, args, ctxRpc) {
     // Tạo (hoặc tìm lại) thư mục riêng — idempotent theo tên, chạy /start lần hai không tạo trùng.
     const ten = `Báo cáo của ${me.common_name || email}`;
     const all = await mb.api('/api/collection');
-    const daCo = all.find((c) => c.name === ten
-      && String(c.location || '').split('/').filter(Boolean).includes(String(me.personal_collection_id)));
+    // Dùng lại `isMine` của guard.mjs thay vì chép logic tách `location` — chính hàm đó được viết
+    // và có test riêng để tránh ca "1080 dính vào 108". Chép tay lần hai là mời lỗi đó quay lại.
+    const daCo = all.find((c) => c.name === ten && isMine(c, me.personal_collection_id));
     const thuMuc = daCo || await mb.api('/api/collection', {
       method: 'POST', body: { name: ten, parent_id: me.personal_collection_id } });
     await savePassword(email, password);
@@ -307,7 +309,8 @@ async function onCall(name, args, ctxRpc) {
     try { mb = await connect(); }
     catch (e) { return JSON.stringify({ da_cau_hinh: false, thong_bao: e.message }, null, 1); }
     const ket = { da_cau_hinh: true, ket_noi: 'ok' };
-    try { await resolveModelId(mb, cfg.modelsCollection, 'Cơ hội (Lead)'); ket.xem_duoc_model = true; }
+    // boQuaCache: health phải HỎI LẠI Metabase mỗi lần, nếu không nó chỉ báo lại kết quả lần đầu.
+    try { await resolveModelId(mb, cfg.modelsCollection, 'Cơ hội (Lead)', { boQuaCache: true }); ket.xem_duoc_model = true; }
     catch (e) { ket.xem_duoc_model = false; ket.model_loi = e.message; }
     try { await runSql(mb, { databaseId: cfg.databaseId, sql: 'select 1' }); ket.chay_duoc_sql = true; }
     catch (e) { ket.chay_duoc_sql = false; ket.sql_loi = e.message; }
