@@ -7,7 +7,7 @@ import { makeConfigStore } from './config.mjs';
 import { loadPassword, savePassword, lenhNapThuCong } from './secrets.mjs';
 import { createMetabase } from './metabase.mjs';
 import { resolveModelId, runModelQuery, runSql } from './query.mjs';
-import { listMine, createCard, updateCard, createDashboard, putDashcards, archive } from './report.mjs';
+import { getEntity, listMine, createCard, updateCard, createDashboard, putDashcards, archive } from './report.mjs';
 import { isMine } from './guard.mjs';
 
 const DICT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'dictionary');
@@ -137,7 +137,7 @@ const TOOLS = [
     inputSchema: {
       type: 'object',
       properties: {
-        action: { type: 'string', enum: ['list', 'create_card', 'update_card', 'create_dashboard', 'put_dashcards', 'archive'] },
+        action: { type: 'string', enum: ['list', 'get', 'create_card', 'update_card', 'create_dashboard', 'put_dashcards', 'archive'] },
         id: { type: 'number' },
         kind: { type: 'string', enum: ['card', 'dashboard'] },
         name: { type: 'string' },
@@ -231,6 +231,8 @@ async function onCall(name, args, ctxRpc) {
     const ctx = await getCtx();               // getCtx() từ Task 7
     switch (args.action) {
       case 'list': return JSON.stringify(await listMine(mb, ctx), null, 1);
+      // 'get' KHÔNG qua guard — đọc là tự do, xem spec §5. Cần cho luồng "tạo bản sao báo cáo chung".
+      case 'get': return JSON.stringify(await getEntity(mb, { kind: args.kind || 'card', id: args.id }), null, 1);
       case 'create_card': return JSON.stringify(await createCard(mb, ctx, {
         name: args.name, collectionId: ctx.cwiCollectionId, display: args.display,
         datasetQuery: args.dataset_query, visualizationSettings: args.visualization_settings }), null, 1);

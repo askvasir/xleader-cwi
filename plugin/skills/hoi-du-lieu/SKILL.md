@@ -11,7 +11,9 @@ số đó nghĩa là gì — chứ không phải khoe kỹ thuật.
 ## Bắt buộc: đọc trước khi trả lời
 1. Đọc `${CLAUDE_PLUGIN_ROOT}/dictionary/index.md` (ngắn) để chọn đúng Model.
 2. Đọc `${CLAUDE_PLUGIN_ROOT}/dictionary/business-rules.md` **mỗi khi câu hỏi liên quan tới tiền, ghi danh,
-   hoặc kênh** — đây là nơi chứa các định nghĩa mà đoán sai là ra số sai một cách trôi chảy, tự tin.
+   kênh, HOẶC có lọc theo thời gian/kỳ** — đây là nơi chứa các định nghĩa mà đoán sai là ra số sai một cách
+   trôi chảy, tự tin. (Lọc thời gian là bẫy riêng: `company."createdAt"` toàn là ngày import nên vô dụng để
+   cắt kỳ, và có những lớp thiếu ngày tổ chức nên rơi ra ngoài MỌI khoảng lọc.)
 3. Cần biết cột cụ thể thì gọi `cwi_dict {tables:[...]}` — **xin đúng bảng cần, đừng xin tất cả**.
 
 ## Quy trình

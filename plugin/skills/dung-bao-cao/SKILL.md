@@ -45,7 +45,8 @@ bên kỹ thuật cập nhật plugin giúp em."* Không dựng bừa.
 Từ chối **kèm lối ra**, đúng câu này:
 *"Báo cáo đó là báo cáo chung của công ty nên em không sửa được. Em tạo một bản riêng trong thư mục của
 anh/chị rồi chỉnh thoải mái nhé?"*
-Nếu họ đồng ý → đọc cấu hình báo cáo chung (đọc thì được), tạo bản sao trong thư mục riêng của họ.
+Nếu họ đồng ý → gọi `cwi_report {action:'get', kind:'dashboard'|'card', id}` để đọc cấu hình báo cáo chung
+(đọc thì được, không bị guard chặn), rồi dựng lại các thẻ tương đương trong thư mục riêng của họ.
 
 ## Gỡ báo cáo
 Chỉ `archive` (vào Thùng rác, khôi phục được), và chỉ với báo cáo của chính họ. **Hỏi xác nhận trước.**

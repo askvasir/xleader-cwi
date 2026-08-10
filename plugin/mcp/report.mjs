@@ -22,6 +22,19 @@ async function chanTruocKhiSua(mb, ctx, kind, id) {
   return entity;
 }
 
+/**
+ * ĐỌC một thẻ/dashboard bất kỳ — KHÔNG qua guard, cố ý.
+ * Spec: "Đọc thì tự do; chỉ GHI mới bị nhốt." Thiếu hàm này thì lời hứa "em tạo một bản sao
+ * trong thư mục của anh/chị" trở thành lời hứa suông — không có đường nào lấy được
+ * `dataset_query` của báo cáo chung để chép lại.
+ * Quyền đọc thật vẫn do Metabase quyết định: user không xem được thì API trả 403.
+ */
+export async function getEntity(mb, { kind, id }) {
+  const e = await mb.api(`/api/${kind}/${id}`);
+  if (!e?.id) throw new Error(`Em không tìm thấy ${kind === 'card' ? 'thẻ' : 'báo cáo'} #${id} trên insight.`);
+  return e;
+}
+
 export async function listMine(mb, { myUserId }) {
   const res = await mb.api(`/api/search?created_by=${myUserId}&models=card&models=dashboard&archived=false`);
   return (res.data || []).map((x) => ({ id: x.id, name: x.name, type: x.model, collection_id: x.collection?.id }));
