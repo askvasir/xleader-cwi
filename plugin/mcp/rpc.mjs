@@ -2,15 +2,34 @@
 // Chỉ biết giao thức — không biết gì về Metabase, guardrail hay từ điển.
 import { createInterface } from 'node:readline';
 
-export function createRpcServer({ name, version, tools, onCall, input = process.stdin, output = process.stdout }) {
+export function createRpcServer({
+  name, version, tools, onCall,
+  input = process.stdin, output = process.stdout,
+  requestTimeoutMs = 5 * 60_000,   // form đợi người dùng gõ tay → phải rộng rãi
+}) {
   const pending = new Map();
   let nextId = 1;
   const send = (msg) => output.write(JSON.stringify(msg) + '\n');
 
+  /** Lấy entry ra khỏi `pending` và dọn timer. Trả null nếu không còn (đã giải quyết rồi). */
+  function nhanVe(id) {
+    const p = pending.get(id);
+    if (!p) return null;
+    pending.delete(id);
+    clearTimeout(p.timer);
+    return p;
+  }
+
   function request(method, params) {
     const id = `srv-${nextId++}`;
     return new Promise((resolve, reject) => {
-      pending.set(id, { resolve, reject });
+      // Không có timeout thì client im lặng = Promise treo vĩnh viễn và `pending` phình dần.
+      // Người dùng sẽ thấy /start "đứng hình" mà không có lời giải thích nào.
+      const timer = setTimeout(() => {
+        if (nhanVe(id)) reject(new Error('Không nhận được phản hồi từ giao diện. Anh/chị thử lại giúp em nhé.'));
+      }, requestTimeoutMs);
+      timer.unref?.();                 // đừng giữ tiến trình sống chỉ vì một request đang chờ
+      pending.set(id, { resolve, reject, timer });
       send({ jsonrpc: '2.0', id, method, params });
     });
   }
@@ -23,9 +42,8 @@ export function createRpcServer({ name, version, tools, onCall, input = process.
     if (msg.method === undefined) {
       // Là response. Khớp được thì giải quyết; LẠC thì bỏ qua IM LẶNG —
       // JSON-RPC cấm "trả lời" một response, tụt xuống switch sẽ bắn ngược lỗi giả.
-      const p = pending.get(msg.id);
+      const p = nhanVe(msg.id);
       if (!p) return;
-      pending.delete(msg.id);
       msg.error ? p.reject(new Error(msg.error.message)) : p.resolve(msg.result);
       return;
     }
@@ -37,8 +55,14 @@ export function createRpcServer({ name, version, tools, onCall, input = process.
           serverInfo: { name, version },
         }});
       case 'notifications/initialized':
-      case 'notifications/cancelled':
         return;
+      case 'notifications/cancelled': {
+        // Client huỷ một request server→client (vd người dùng đóng form). Phải reject để
+        // bên gọi biết mà báo lại tử tế, thay vì chờ hết timeout rồi mới nói.
+        const p = nhanVe(msg.params?.requestId);
+        if (p) p.reject(new Error('Thao tác đã bị huỷ.'));
+        return;
+      }
       case 'tools/list':
         return send({ jsonrpc: '2.0', id: msg.id, result: { tools } });
       case 'tools/call': {

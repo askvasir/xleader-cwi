@@ -76,3 +76,24 @@ test('notification (có method, không id) không sinh phản hồi', async () =
   await send({ jsonrpc: '2.0', method: 'mot/notification/la' });
   assert.deepEqual(out, [], 'notification không bao giờ được trả lời');
 });
+
+test('notifications/cancelled huỷ đúng request đang chờ', async () => {
+  const input = new PassThrough();
+  const out = [];
+  const srv = createRpcServer({ name: 't', version: '0', tools: [], onCall: async () => '',
+    input, output: { write: (s) => out.push(JSON.parse(s)) } });
+  srv.start();
+  const p = srv.request('elicitation/create', { mode: 'form' });
+  const id = out[0].id;
+  input.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/cancelled',
+    params: { requestId: id } }) + '\n');
+  await assert.rejects(() => p, /huỷ/);
+});
+
+test('request() hết thời gian chờ thì reject, không treo vĩnh viễn', async () => {
+  const input = new PassThrough();
+  const srv = createRpcServer({ name: 't', version: '0', tools: [], onCall: async () => '',
+    input, output: { write: () => {} }, requestTimeoutMs: 20 });
+  srv.start();
+  await assert.rejects(() => srv.request('elicitation/create', {}), /không nhận được phản hồi/i);
+});
