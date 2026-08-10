@@ -100,6 +100,29 @@ test('CHẶN trường lạ trong patch (vd creator_id)', async () => {
   assert.equal(mb.calls.filter((c) => c.method === 'PUT').length, 0);
 });
 
+test('patch vắng / null / mảng → GuardError tiếng Việt, KHÔNG phải TypeError', async () => {
+  const mb = fakeMb({
+    collections: { 130: { id: 130, location: '/108/' } },
+    cards: { 55: { id: 55, name: 'Thẻ của tôi', creator_id: 3, collection_id: 130 } },
+  });
+  for (const patch of [undefined, null, []]) {
+    await assert.rejects(() => updateCard(mb, CTX, { id: 55, patch }),
+      (e) => e instanceof GuardError && /Thiếu nội dung cần sửa/.test(e.message));
+  }
+  assert.equal(mb.calls.filter((c) => c.method === 'PUT').length, 0);
+});
+
+test('sửa báo cáo không tồn tại → GuardError tiếng Việt, KHÔNG phải TypeError', async () => {
+  const mb = fakeMb({ collections: {}, cards: {} });   // GET /api/card/999 trả {id:999} giả
+  const mbRong = { calls: [], api: async (p, o = {}) => {
+    mbRong.calls.push({ path: p, method: o.method || 'GET' });
+    return null;                                        // Metabase trả rỗng cho id không tồn tại
+  } };
+  await assert.rejects(() => updateCard(mbRong, CTX, { id: 999, patch: { name: 'x' } }),
+    (e) => e instanceof GuardError && /không tìm thấy báo cáo/.test(e.message));
+  assert.equal(mbRong.calls.filter((c) => c.method === 'PUT').length, 0);
+});
+
 test('createDashboard bị chặn ngoài thư mục riêng, KHÔNG có POST nào', async () => {
   const mb = fakeMb({ collections: { 74: { id: 74, location: '/' } } });
   await assert.rejects(() => createDashboard(mb, CTX, { name: 'x', collectionId: 74 }),

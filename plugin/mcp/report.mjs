@@ -14,6 +14,9 @@ const layCollection = (mb, id) => mb.api(`/api/collection/${id}`);
 
 async function chanTruocKhiSua(mb, ctx, kind, id) {
   const entity = await mb.api(`/api/${kind}/${id}`);
+  // Không kiểm thì `entity.collection_id` trên một id không tồn tại ném TypeError tiếng Anh
+  // ra thẳng mặt người dùng — đúng thứ plugin này sinh ra để tránh.
+  if (!entity?.id) throw new GuardError(`Em không tìm thấy báo cáo #${id} trên insight.`);
   const collection = await layCollection(mb, entity.collection_id);
   assertCanModify({ entity, collection, myUserId: ctx.myUserId, personalCollectionId: ctx.personalCollectionId });
   return entity;
@@ -33,8 +36,12 @@ export async function createCard(mb, ctx, { name, collectionId, display, dataset
 }
 
 export async function updateCard(mb, ctx, { id, patch }) {
+  // `rpc.mjs` không ép inputSchema, nên `patch` có thể vắng hoặc null khi tới đây.
+  if (!patch || typeof patch !== 'object' || Array.isArray(patch)) {
+    throw new GuardError('Thiếu nội dung cần sửa. Anh/chị cho em biết muốn đổi gì trong báo cáo nhé.');
+  }
   await chanTruocKhiSua(mb, ctx, 'card', id);
-  const la = Object.keys(patch || {}).filter((k) => !PATCH_CHO_PHEP.has(k));
+  const la = Object.keys(patch).filter((k) => !PATCH_CHO_PHEP.has(k));
   if (la.length) throw new GuardError(`Em không sửa được trường: ${la.join(', ')}.`);
   if (patch.collection_id !== undefined) {
     // Kiểm ĐÍCH chứ không chỉ NGUỒN. Thiếu chỗ này thì đổi chỗ thẻ sang collection dùng chung
