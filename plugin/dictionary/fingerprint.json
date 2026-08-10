@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T08:31:35.775Z",
+  "generatedAt": "2026-08-10T12:29:00.938Z",
   "tables": {
     "_class": [
       "createdAt",
@@ -486,6 +486,16 @@
       "DA_CHUYEN",
       "DA_HUY"
     ],
+    "attachment.fileCategory": [
+      "ARCHIVE",
+      "AUDIO",
+      "IMAGE",
+      "OTHER",
+      "PRESENTATION",
+      "SPREADSHEET",
+      "TEXT_DOCUMENT",
+      "VIDEO"
+    ],
     "company.nganhNghe": [
       "AM_THUC_BEP_TRUNG_TAM_SUAT_AN",
       "AM_THUC_CHUOI_F_B_NHA_HANG_CA_PHE",
@@ -755,6 +765,13 @@
       "CHUA_DAU_TU",
       "DA_DAU_TU_CA_NHAN_DOI_NGU",
       "DA_DAU_TU_QUAN_TRI"
+    ],
+    "opportunity.stage": [
+      "CUSTOMER",
+      "MEETING",
+      "NEW",
+      "PROPOSAL",
+      "SCREENING"
     ],
     "person.sale": [
       "CHAM_SOC_CHU_DONG",

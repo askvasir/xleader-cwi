@@ -7,10 +7,23 @@
 import { createMetabase } from '../plugin/mcp/metabase.mjs';
 
 const APPLY = process.argv.includes('--apply');
+const XAC_NHAN_PROD = process.argv.includes('--toi-hieu-day-la-prod');
 const BASE = process.env.MB_URL || 'http://localhost:3001';
 const USER = process.env.MB_USER;
 const PASS = process.env.MB_PASS;
 if (!USER || !PASS) throw new Error('Thiếu MB_USER / MB_PASS trong biến môi trường');
+
+console.log(`ĐANG NHẮM VÀO: ${BASE}`);
+
+const LA_LOCALHOST = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(BASE);
+// Một lần export MB_URL nhầm là đụng prod — --apply lên bất cứ đâu KHÔNG PHẢI localhost bắt buộc
+// phải kèm thêm cờ xác nhận tường minh, không thì dừng lại.
+if (APPLY && !LA_LOCALHOST && !XAC_NHAN_PROD) {
+  throw new Error(
+    `Đích "${BASE}" KHÔNG PHẢI localhost. Chạy --apply lên đây là ghi quyền THẬT lên một server không phải máy dev.\n`
+    + `Nếu chắc chắn muốn vậy, thêm cờ --toi-hieu-day-la-prod vào lệnh.`,
+  );
+}
 
 const mb = createMetabase({ baseUrl: BASE });
 await mb.login(USER, PASS);
@@ -40,6 +53,12 @@ for (const c of chung) truoc[c.id] = graph.groups[allUsers.id]?.[c.id] ?? '(khô
 
 console.log(`Group "All Users" (id ${allUsers.id}) trên ${chung.length} collection dùng chung:`);
 for (const c of chung) console.log(`  #${c.id} ${c.name}: ${truoc[c.id]} → read`);
+
+// Script này KHÔNG đụng tới collection "root" (Our analytics) — đo thật trên local: "All Users" vẫn
+// giữ quyền "write" ở root. Bất kỳ báo cáo/thẻ nào tạo trực tiếp ở root (không nằm trong một collection
+// con) vẫn sửa được bởi mọi người dùng thường, dù script này báo "✓ đã áp dụng".
+console.log(`\n⚠ Script này KHÔNG siết collection "root": đo thật trên local "All Users" vẫn có quyền "write" `
+  + `ở root. Nếu có báo cáo chung nằm trực tiếp ở root (ngoài mọi thư mục con), báo cáo đó KHÔNG được bảo vệ.`);
 
 // Bỏ sót IM LẶNG là cách guardrail chết mà không ai biết: khách đổi tên một collection ra khỏi
 // tiền tố "XLeaders" là nó không còn được bảo vệ, trong khi script vẫn báo "xong".

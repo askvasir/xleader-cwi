@@ -37,9 +37,35 @@ bên kỹ thuật cập nhật plugin giúp em."* Không dựng bừa.
      `coalesce({{tu}}, '0001-01-01'::date)` / `coalesce({{den}}, '9999-12-31'::date)`.
 
 ## Sau khi dựng
-- Lưu công thức báo cáo vào `~/.xleader-cwi/reports/<slug>.json` (tên thẻ, câu truy vấn, bố cục) để lần sau
-  sửa được. **Không nhắc file này với người dùng** — đó là chuyện nội bộ.
 - Đưa link dashboard và mô tả một câu mỗi thẻ bằng tiếng Việt.
+
+## Muốn sửa báo cáo cũ (của chính người dùng)
+Không có file nào lưu lại công thức báo cáo — tìm và đọc lại thẳng từ insight:
+1. `cwi_report {action:'list'}` để tìm đúng thẻ/dashboard theo tên.
+2. `cwi_report {action:'get', kind, id}` để đọc lại cấu hình hiện tại (`dataset_query`, `display`, `dashcards`…).
+3. Sửa trên cấu hình vừa đọc rồi gọi `update_card` (thẻ) hoặc `put_dashcards` (bố cục dashboard) — xem
+   "Hợp đồng payload dashboard" bên dưới khi sửa `dashcards`.
+
+## Trùng tên khi tạo lại một báo cáo đã có (bài học đã trả giá trên prod)
+Metabase **không tự chặn trùng tên** — dashboard #7 từng bị tạo trùng #6 vì đi tạo mới thay vì tìm bản cũ.
+Trước khi `create_card` / `create_dashboard`:
+1. `cwi_report {action:'list'}` rồi tìm theo **tiền tố tên** (đừng đòi khớp tuyệt đối — khách có quyền đổi
+   tên thêm chữ phía sau).
+2. Thấy rồi → `update_card` / `put_dashcards` để cập nhật bản đã có, **KHÔNG gửi lại `name` trong patch**
+   (khách có thể đã tự đổi tên; gửi lại `name` cũ sẽ ghi đè tên họ vừa đặt).
+3. Không thấy → mới `create_card` / `create_dashboard`.
+
+## Hợp đồng payload dashboard (`put_dashcards`)
+Metabase đòi đúng hình dạng này cho `dashcards`, không phải danh sách tuỳ ý:
+- Mỗi thẻ MỚI phải có `id` là số **ÂM tạm thời** (vd `-1`, `-2`…, khác nhau trong cùng một lần PUT) — Metabase
+  tự đổi thành id thật khi lưu.
+- Bắt buộc kèm `dashboard_id`, `card_id`, `col`/`row`/`size_x`/`size_y`, `series: []`, `parameter_mappings: []`
+  (rỗng nếu thẻ không nhận tham số dashboard).
+- Thẻ SQL gốc (native) muốn nhận tham số dashboard thì câu SQL phải khai `{{ten_bien}}` VÀ card phải có
+  `template-tags` khai đúng tên biến đó; `parameter_mappings` trỏ vào bằng
+  `target: ['variable', ['template-tag', 'ten_bien']]`.
+- Xem ví dụ thật đã chạy trên prod: `~/project/xleaders-crm-app/metabase/build-revenue-dashboard.mjs`
+  (đoạn dựng biến `dashcards`).
 
 ## Khi người dùng đòi sửa báo cáo chung
 Từ chối **kèm lối ra**, đúng câu này:

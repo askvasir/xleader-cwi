@@ -13,6 +13,9 @@
 | `Đối tác doanh nghiệp` | 1 công ty có học viên | số HV, lượt, doanh thu theo doanh nghiệp |
 
 ## Bảng gốc (chỉ dùng khi Model không đủ, ví dụ cần tỉ lệ giữa các dòng hoặc lọc kỳ gộp)
+⚠ Viết SQL trên bảng gốc: MỌI bảng phải ghi đủ `"<schema>"."<bảng>"` — tên bảng trần (vd `"_class"` một mình)
+báo lỗi `relation does not exist`. Tên schema hiện tại lấy bằng `cwi_dict {list:true}` (khoá `schema`).
+
 `_class` lớp học · `_course` khoá học · `_order` đơn hàng · `_orderItem` dòng đơn hàng (TIỀN nằm ở đây) ·
 `_payment` thanh toán · `_enrollment` ghi danh · `_salesPolicy` chính sách bán hàng ·
 `opportunity` cơ hội/lead · `person` người · `company` công ty

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T08:31:35.775Z",
+  "generatedAt": "2026-08-10T12:29:00.938Z",
   "tables": {
     "_class": {
       "object": "class",
@@ -1352,7 +1352,41 @@
           "label": "fileCategory",
           "type": "DB",
           "description": "",
-          "nguon": "db"
+          "nguon": "db",
+          "options": [
+            {
+              "value": "OTHER",
+              "label": "OTHER"
+            },
+            {
+              "value": "VIDEO",
+              "label": "VIDEO"
+            },
+            {
+              "value": "TEXT_DOCUMENT",
+              "label": "TEXT_DOCUMENT"
+            },
+            {
+              "value": "SPREADSHEET",
+              "label": "SPREADSHEET"
+            },
+            {
+              "value": "PRESENTATION",
+              "label": "PRESENTATION"
+            },
+            {
+              "value": "IMAGE",
+              "label": "IMAGE"
+            },
+            {
+              "value": "AUDIO",
+              "label": "AUDIO"
+            },
+            {
+              "value": "ARCHIVE",
+              "label": "ARCHIVE"
+            }
+          ]
         },
         "targetOrderItemId": {
           "field": "targetOrderItemId",
@@ -2989,7 +3023,29 @@
           "label": "stage",
           "type": "DB",
           "description": "",
-          "nguon": "db"
+          "nguon": "db",
+          "options": [
+            {
+              "value": "CUSTOMER",
+              "label": "CUSTOMER"
+            },
+            {
+              "value": "PROPOSAL",
+              "label": "PROPOSAL"
+            },
+            {
+              "value": "MEETING",
+              "label": "MEETING"
+            },
+            {
+              "value": "SCREENING",
+              "label": "SCREENING"
+            },
+            {
+              "value": "NEW",
+              "label": "NEW"
+            }
+          ]
         },
         "amountCurrencyCode": {
           "field": "amountCurrencyCode",

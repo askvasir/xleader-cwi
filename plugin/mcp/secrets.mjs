@@ -26,6 +26,17 @@ export async function loadPassword(email) {
   } catch { return null; }
 }
 
+// ⚠ Trên macOS mật khẩu VÀO Keychain (loadPassword đọc lại được ở lần sau). Trên nơi khác KHÔNG có
+// chỗ lưu bền — lệnh chỉ đặt biến môi trường CWI_MB_PASSWORD cho đúng CỬA SỔ terminal đang mở, người
+// dùng phải gõ lại mỗi phiên làm việc mới. Đừng trả lệnh `security` (chỉ macOS có) cho Windows/Linux —
+// đo thật: lệnh đó không tồn tại trên máy khách, người dùng kẹt với hướng dẫn không dùng được.
 export function lenhNapThuCong(email) {
-  return `read -s -p "Mật khẩu insight: " P && security add-generic-password -U -s ${SERVICE} -a "${email}" -w "$P" && unset P && echo " ✓ đã lưu"`;
+  if (laMac()) {
+    return `read -s -p "Mật khẩu insight: " P && security add-generic-password -U -s ${SERVICE} -a "${email}" -w "$P" && unset P && echo " ✓ đã lưu"`;
+  }
+  if (process.platform === 'win32') {
+    return `Trên PowerShell, gõ: $env:CWI_MB_PASSWORD = "<mật khẩu insight của anh/chị>"\n`
+      + `(thay đúng mật khẩu vào chỗ trống — biến này chỉ tồn tại trong cửa sổ PowerShell đang mở, phải gõ lại mỗi phiên mới)`;
+  }
+  return `read -s -p "Mật khẩu insight: " CWI_MB_PASSWORD && export CWI_MB_PASSWORD && echo " ✓ đã đặt (chỉ áp dụng cho cửa sổ terminal đang mở, phải gõ lại mỗi phiên mới)"`;
 }

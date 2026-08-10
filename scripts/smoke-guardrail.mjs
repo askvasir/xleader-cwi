@@ -6,6 +6,7 @@
 import { createMetabase, MetabaseError } from '../plugin/mcp/metabase.mjs';
 
 const BASE = process.env.MB_URL || 'http://localhost:3001';
+console.log(`ĐANG NHẮM VÀO: ${BASE}`);
 const ADMIN = { u: process.env.MB_USER, p: process.env.MB_PASS };
 if (!ADMIN.u || !ADMIN.p) throw new Error('Thiếu MB_USER / MB_PASS trong biến môi trường');
 const TEST = { u: 'cwi.smoke@xleaders.local', p: 'CwiSmoke2026!' };

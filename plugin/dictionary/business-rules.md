@@ -3,6 +3,11 @@
 Đúc kết từ nhiều tháng đối soát báo cáo thật (nguồn: `recipe-metabase-local.md` trong repo CRM). Mỗi quy tắc
 từng gây SAI SỐ THẬT trên báo cáo — và báo cáo vẫn "chạy tốt", không báo lỗi. Đừng đoán, đọc file này.
 
+⚠ **Mọi con số cụ thể trong file này (17.000 dòng, 4888 vé, 390 ghi danh…) là VÍ DỤ ĐO TẠI MỘT THỜI ĐIỂM
+khi phát hiện lỗi — KHÔNG PHẢI số liệu hiện tại.** Chỉ giữ lại để minh hoạ mức độ nghiêm trọng của quy tắc.
+Người dùng cần con số THẬT thì luôn phải TRUY VẤN (`cwi_query`) — tuyệt đối không trích số trong tài liệu
+này ra trả lời như thể đó là số hiện tại.
+
 ## Tiền
 
 1. **Doanh thu NET (chưa VAT)** = `Σ _orderItem."thanhTienAmountMicros" / (1 + "vat") / 1e6`.
@@ -53,6 +58,8 @@ từng gây SAI SỐ THẬT trên báo cáo — và báo cáo vẫn "chạy tố
 
 ## Luôn luôn
 
+- Viết SQL trên bảng gốc: MỌI bảng phải ghi đủ `"<schema>"."<bảng>"` — tên bảng trần (vd `"_class"` một mình)
+  báo lỗi `relation does not exist`. Tên schema hiện tại lấy bằng `cwi_dict {list:true}` (khoá `schema`).
 - Lọc `"deletedAt" IS NULL` trên MỌI bảng khi viết SQL trực tiếp.
 - Bảng của object tuỳ chỉnh có tiền tố `_` (`_class`, `_course`, `_order`, `_orderItem`, `_payment`,
   `_enrollment`, `_salesPolicy`); object chuẩn của CRM thì không có tiền tố (`opportunity`, `person`,

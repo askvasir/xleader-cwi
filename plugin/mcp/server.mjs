@@ -78,8 +78,8 @@ export async function getCtx() {
   };
 }
 
-/** Đọc cấu trúc THẬT trên DB để so vân tay. Một truy vấn, không lấy dữ liệu kinh doanh. */
-async function docCauTrucThat(mb) {
+/** Đọc cấu trúc THẬT trên DB để so vân tay. Hai truy vấn (cột + giá trị enum), không lấy dữ liệu kinh doanh. */
+export async function docCauTrucThat(mb) {
   const cfg = await getConfig();
   const res = await mb.api('/api/dataset', {
     method: 'POST',
@@ -89,7 +89,29 @@ async function docCauTrucThat(mb) {
   if (res?.status !== 'completed') throw new Error(`Không đọc được cấu trúc dữ liệu: ${res?.error || res?.status}`);
   const tables = {};
   for (const [t, c] of res.data.rows) (tables[t] ||= []).push(c);
-  return { tables, enums: {} };
+
+  // Giá trị enum THẬT: khoá của fingerprint.enums là "<bảng>.<cột>", nhưng pg_enum chỉ biết type OID —
+  // phải bắc cầu qua information_schema.columns.udt_name (= tên type) để quy về đúng bảng.cột.
+  // ⚠ Cột MULTI_SELECT là MẢNG: `udt_name` trỏ vào type MẢNG (`ct.typcategory = 'A'`), không phải type
+  // enum gốc — phải theo `typelem` để lấy type PHẦN TỬ rồi mới join pg_enum. ĐỪNG tự bỏ tiền tố "_" bằng
+  // tay: bảng object tuỳ chỉnh có tiền tố "_" (vd "_class") nên type enum GỐC của nó vốn dĩ ĐÃ bắt đầu
+  // bằng "_" (vd "_class_trangThai_enum") — bỏ nhầm một dấu "_" làm mất luôn enum của MỌI bảng "_*"
+  // (đo thật khi sửa: 15 cột enumLech giả trên các bảng "_class", "_order", "_enrollment"…).
+  const resEnum = await mb.api('/api/dataset', {
+    method: 'POST',
+    body: { database: cfg.databaseId, type: 'native', native: { query:
+      `select c.table_name, c.column_name, e.enumlabel
+       from information_schema.columns c
+       join pg_type ct on ct.typname = c.udt_name
+       join pg_type bt on bt.oid = case when ct.typcategory = 'A' then ct.typelem else ct.oid end
+       join pg_enum e on e.enumtypid = bt.oid
+       where c.table_schema = '${cfg.ws}'` } },
+  });
+  if (resEnum?.status !== 'completed') throw new Error(`Không đọc được giá trị enum: ${resEnum?.error || resEnum?.status}`);
+  const enums = {};
+  for (const [t, c, v] of resEnum.data.rows) (enums[`${t}.${c}`] ||= []).push(v);
+
+  return { tables, enums };
 }
 
 const TOOLS = [
@@ -114,7 +136,9 @@ const TOOLS = [
   {
     name: 'cwi_query',
     description: 'Chạy truy vấn CHỈ ĐỌC trên insight. Ưu tiên mode "model" (định nghĩa nghiệp vụ đã đối soát sẵn); ' +
-      'chỉ dùng mode "sql" khi Model không làm được (tỉ lệ giữa các dòng, YoY, kỳ gộp).',
+      'chỉ dùng mode "sql" khi Model không làm được (tỉ lệ giữa các dòng, YoY, kỳ gộp). ' +
+      'mode "sql": MỌI bảng phải ghi đủ "<schema>"."<bảng>" — KHÔNG được viết tên bảng trần (vd "_class" một mình ' +
+      'sẽ báo lỗi "relation does not exist"). Tên schema hiện tại lấy bằng cwi_dict {list:true} (khoá "schema").',
     inputSchema: {
       type: 'object',
       properties: {
@@ -177,6 +201,7 @@ async function onCall(name, args, ctxRpc) {
   if (name === 'cwi_dict') {
     if (args.list) {
       return JSON.stringify({
+        schema: MB_WS,
         bang: Object.keys(dict.schema.tables),
         model: dict.models.models.map((m) => m.name),
       }, null, 1);
@@ -273,7 +298,7 @@ async function onCall(name, args, ctxRpc) {
       password = await loadPassword(email);
       if (!password) {
         return `Máy này chưa hiện được ô nhập liệu, nên mình làm cách khác cho an toàn nhé.\n\n`
-          + `Anh/chị mở Terminal, dán đúng dòng này rồi nhập mật khẩu insight (màn hình sẽ không hiện ký tự):\n\n`
+          + `Anh/chị mở Terminal (hoặc PowerShell), làm theo hướng dẫn dưới đây:\n\n`
           + `${lenhNapThuCong(email)}\n\nXong rồi gõ /start lại giúp em.`;
       }
     }
@@ -299,9 +324,14 @@ async function onCall(name, args, ctxRpc) {
       cwiCollectionId: thuMuc.id, thuMucTen: ten,
     });
     setClient(mb);
+    // ⚠ Trên macOS mật khẩu vào Keychain (đọc lại được ở phiên sau). Nơi khác KHÔNG có chỗ lưu bền —
+    // đừng nói "đã lưu vào biến môi trường" khi chưa ai đặt biến đó; nói THẲNG là chưa lưu được.
     return JSON.stringify({
       ten_nguoi_dung: me.common_name, thu_muc: ten,
-      da_luu_mat_khau: process.platform === 'darwin' ? 'Keychain' : 'biến môi trường CWI_MB_PASSWORD',
+      da_luu_mat_khau: process.platform === 'darwin' ? 'Keychain' : false,
+      ghi_chu: process.platform === 'darwin' ? null
+        : 'Máy này CHƯA lưu được mật khẩu (chỉ macOS tự lưu vào Keychain). Anh/chị cần tự đặt biến môi trường '
+          + 'CWI_MB_PASSWORD mỗi khi mở phiên làm việc mới, xem hướng dẫn ở "lenh_nap_thu_cong".',
       lenh_nap_thu_cong: process.platform === 'darwin' ? null : lenhNapThuCong(email),
     }, null, 1);
   }
@@ -317,13 +347,24 @@ async function onCall(name, args, ctxRpc) {
     try { await runSql(mb, { databaseId: cfg.databaseId, sql: 'select 1' }); ket.chay_duoc_sql = true; }
     catch (e) { ket.chay_duoc_sql = false; ket.sql_loi = e.message; }
     try {
-      const ss = compareFingerprint({ tables: dict.fingerprint.tables, enums: {} }, await docCauTrucThat(mb));
+      const ss = compareFingerprint(
+        { tables: dict.fingerprint.tables, enums: dict.fingerprint.enums },
+        await docCauTrucThat(mb),
+      );
       ket.tu_dien_khop = ss.ok;
-      if (!ss.ok) ket.cot_thieu = ss.thieuCot.slice(0, 20);
+      if (!ss.ok) {
+        ket.cot_thieu = ss.thieuCot.slice(0, 20);
+        if (ss.enumLech.length) ket.enum_lech = ss.enumLech.slice(0, 20);
+      }
     } catch (e) { ket.tu_dien_khop = null; ket.tu_dien_loi = e.message; }
     return JSON.stringify(ket, null, 1);
   }
   throw new Error(`Chưa có công cụ tên "${name}".`);
 }
 
-createRpcServer({ name: 'cwi', version: '0.1.0', tools: TOOLS, onCall }).start();
+// Chỉ khởi động server stdio khi file này được CHẠY TRỰC TIẾP (`node server.mjs`, đúng như
+// plugin/.mcp.json gọi) — KHÔNG khi bị import (test import docCauTrucThat để kiểm I4 sẽ tự nhiên
+// mở một readline trên stdin, treo `node --test` vô thời hạn nếu thiếu chốt này).
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  createRpcServer({ name: 'cwi', version: '0.1.0', tools: TOOLS, onCall }).start();
+}
