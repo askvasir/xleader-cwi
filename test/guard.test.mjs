@@ -59,6 +59,26 @@ test('CA 4 — tạo và sửa trong thư mục riêng của mình thì ĐƯỢC
   }));
 });
 
+test('CHẶN khi thiếu danh tính người tạo (đừng để undefined === undefined lọt qua)', () => {
+  // Đây là ca nguy hiểm nhất: `entity.creator_id !== myUserId` với cả hai đều undefined
+  // cho ra `false` ⇒ KHÔNG ném lỗi ⇒ sửa được thứ chưa hề xác minh chủ sở hữu.
+  assert.throws(() => assertCanModify({
+    entity: {}, collection: myChild, myUserId: ME, personalCollectionId: MY_PERSONAL,
+  }), (e) => e instanceof GuardError && /chưa xác định được ai tạo/.test(e.message));
+  assert.throws(() => assertCanModify({
+    entity: { id: 1, name: 'x', creator_id: ME }, collection: myChild,
+    myUserId: undefined, personalCollectionId: MY_PERSONAL,
+  }), (e) => e instanceof GuardError);
+});
+
+test('isMine nhất quán khi personalCollectionId là CHUỖI (Metabase trả kiểu không cố định)', () => {
+  // Thư mục con và thư mục gốc phải cho cùng một câu trả lời.
+  assert.equal(isMine(myChild, '108'), true, 'thư mục con');
+  assert.equal(isMine(myRoot, '108'), true, 'thư mục GỐC — nhánh hay bị bỏ sót');
+  assert.equal(isMine(shared, '108'), false);
+  assert.equal(isMine({ id: 1080, location: '/' }, '108'), false, 'không dính tiền tố');
+});
+
 test('thông điệp lỗi là tiếng Việt và có gợi ý lối ra', () => {
   try {
     assertCanCreate({ collection: shared, personalCollectionId: MY_PERSONAL });
