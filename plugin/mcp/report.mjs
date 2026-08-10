@@ -1,6 +1,14 @@
 // ĐƯỜNG GHI DUY NHẤT của plugin. Mọi hàm ở đây gọi guard TRƯỚC khi chạm API ghi.
 // Không có hàm nào gọi DELETE — gỡ báo cáo = archived:true (vào Thùng rác, khôi phục được).
-import { assertCanCreate, assertCanModify } from './guard.mjs';
+import { assertCanCreate, assertCanModify, GuardError } from './guard.mjs';
+
+// `patch` là dữ liệu do người gọi đưa vào và được chuyển THẲNG vào body PUT. Không lọc thì
+// `patch.collection_id` trở thành một đường DI CHUYỂN thẻ ra khỏi thư mục riêng — guard chỉ
+// kiểm vị trí HIỆN TẠI nên hoàn toàn không thấy. Chỉ cho phép đúng những trường cần thiết.
+const PATCH_CHO_PHEP = new Set([
+  'name', 'description', 'display', 'dataset_query', 'visualization_settings',
+  'collection_id', 'collection_position', 'archived', 'result_metadata',
+]);
 
 const layCollection = (mb, id) => mb.api(`/api/collection/${id}`);
 
@@ -26,6 +34,16 @@ export async function createCard(mb, ctx, { name, collectionId, display, dataset
 
 export async function updateCard(mb, ctx, { id, patch }) {
   await chanTruocKhiSua(mb, ctx, 'card', id);
+  const la = Object.keys(patch || {}).filter((k) => !PATCH_CHO_PHEP.has(k));
+  if (la.length) throw new GuardError(`Em không sửa được trường: ${la.join(', ')}.`);
+  if (patch.collection_id !== undefined) {
+    // Kiểm ĐÍCH chứ không chỉ NGUỒN. Thiếu chỗ này thì đổi chỗ thẻ sang collection dùng chung
+    // là hợp lệ dưới mắt guard — thẻ vẫn "của mình", chỉ là không còn ở thư mục riêng nữa.
+    assertCanCreate({
+      collection: await layCollection(mb, patch.collection_id),
+      personalCollectionId: ctx.personalCollectionId,
+    });
+  }
   return mb.api(`/api/card/${id}`, { method: 'PUT', body: patch });
 }
 
