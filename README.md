@@ -5,11 +5,10 @@ ngay trong Claude Code. Không cần biết SQL.
 
 ## Cài đặt (làm một lần)
 
-> ⚠ `<org>` là CHỖ TRỐNG — chưa chốt tên tổ chức/tài khoản GitHub sẽ lưu repo này. Thay `<org>` bằng giá trị
-> thật (ví dụ `github.com/<org>/xleader-cwi`) trước khi dùng lệnh dưới đây; xem mục "Dành cho người bảo trì".
+> Repo: `github.com/askvasir/xleader-cwi` (**private** — cần quyền đọc repo mới cài được).
 
 ```
-/plugin marketplace add <org>/xleader-cwi
+/plugin marketplace add askvasir/xleader-cwi
 /plugin install xleader-cwi@xleader-cwi
 /start
 ```
@@ -52,5 +51,5 @@ Gỡ báo cáo = đưa vào Thùng rác Metabase (khôi phục được), không
 - Quy trình nạp lại khi schema đổi nằm trong skill `/build-metabase-report`.
 - Chạy test: `node --test`
 - Siết quyền collection (guardrail lớp 1): `node scripts/siet-quyen-collection.mjs [--apply]`
-- `<org>` ở mục Cài đặt: repo này CHƯA có remote GitHub — cần người dùng chốt tên tổ chức/tài khoản trước khi
-  tạo remote riêng tư và push (xem báo cáo Task 13).
+- Repo ở `askvasir/xleader-cwi`, để **private** vì từ điển mô tả cấu trúc kinh doanh và tên đội Sale.
+  Người dùng phải được cấp quyền đọc repo thì lệnh cài mới chạy.
