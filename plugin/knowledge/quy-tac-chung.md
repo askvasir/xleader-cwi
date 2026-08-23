@@ -9,7 +9,7 @@ Người dùng cần con số THẬT thì luôn phải TRUY VẤN (`execute_sql`
 trích số trong tài liệu này ra trả lời như thể đó là số hiện tại.
 
 Muốn xem SQL chuẩn đã đối soát cho từng chỉ số → `chi-so/*.md`. Muốn xem 2 câu hỏi chưa chốt quy ước →
-`chua-chot.md`.
+`chua-chot/dinh-nghia-doanh-thu.md` và `chua-chot/quy-ket-sale.md`.
 
 ## Tiền
 

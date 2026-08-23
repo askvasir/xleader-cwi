@@ -24,4 +24,4 @@ select sum(oi."soLuong")::int as so_ve
   thổi số vé lên gấp nhiều lần.
 
 ⚠ Số này tính theo đơn ĐÃ CHỐT (tầng LEAD_C4/LEAD_C41). Khi trả lời phải nói rõ điều đó. Người dùng thắc
-mắc lệch sổ sách → đọc chua-chot.md.
+mắc lệch sổ sách → đọc chua-chot/dinh-nghia-doanh-thu.md.

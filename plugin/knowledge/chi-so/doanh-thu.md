@@ -30,4 +30,4 @@ select date_trunc('month', c."ngayToChuc")::date as thang,
   **vô dụng để cắt kỳ theo thời gian**, kể cả khi câu hỏi nghe như đang hỏi về công ty theo thời gian.
 
 ⚠ Số này tính theo đơn ĐÃ CHỐT (tầng LEAD_C4/LEAD_C41). Khi trả lời phải nói rõ điều đó. Người dùng thắc
-mắc lệch sổ sách → đọc chua-chot.md.
+mắc lệch sổ sách → đọc chua-chot/dinh-nghia-doanh-thu.md.

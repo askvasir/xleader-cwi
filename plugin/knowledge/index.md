@@ -1,15 +1,15 @@
-# Mục lục dữ liệu XLeaders (định hướng nhanh)
+# Mục lục dữ liệu XLeaders
 
 ## Đích Metabase
 
-`database_id = 2`, schema `workspace_6ytci89jf3kflsl9aaaxrr5hw`. Tự kiểm:
+`database_id = 2`, schema `workspace_6ytci89jf3kflsl9aaaxrr5hw`:
 
 ```sql
 select current_database(), table_schema from information_schema.tables
  where table_schema like 'workspace%' limit 1
 ```
 
-## Bảng gốc (khi Model không đủ, ghi đủ `"<schema>"."<bảng>"`)
+## Bảng gốc
 
 - `_class` lớp học
 - `_course` khoá học
@@ -24,10 +24,10 @@ select current_database(), table_schema from information_schema.tables
 
 ## Tra cấu trúc rẻ
 
-Đừng `select *` / `read_resource`. Gộp cột qua `string_agg`, chỉ xin bảng cần dùng:
+Đừng `select *`/`read_resource`. Gộp cột qua `string_agg`:
 
 ```sql
-select table_name, string_agg(column_name, ' · ' order by ordinal_position) as cols
+select table_name, string_agg(column_name, ' · ') as cols
   from information_schema.columns
  where table_schema = 'workspace_6ytci89jf3kflsl9aaaxrr5hw' and table_name in ('_orderItem','_order')
  group by 1
@@ -37,9 +37,11 @@ select table_name, string_agg(column_name, ' · ' order by ordinal_position) as 
 
 - Doanh thu → `chi-so/doanh-thu.md`
 - Số vé bán → `chi-so/so-ve.md`
-- Ghi danh / sĩ số / học viên → `chi-so/ghi-danh.md`
-- Lead / phễu / nguồn cơ hội → `chi-so/co-hoi-tang-pheu.md`
-- Lớp học / lịch / giảng viên → `chi-so/lop-hoc.md`
-- Công ty đối tác doanh nghiệp → `chi-so/doi-tac-doanh-nghiep.md`
-- Quy tắc chung, khoảng trống dữ liệu → `quy-tac-chung.md`
-- Lệch sổ sách, doanh số quy cho Sale → `chua-chot.md`
+- Ghi danh / sĩ số → `chi-so/ghi-danh.md`
+- Lead / phễu / nguồn → `chi-so/co-hoi-tang-pheu.md`
+- Lớp học / lịch → `chi-so/lop-hoc.md`
+- Công ty đối tác → `chi-so/doi-tac-doanh-nghiep.md`
+- Quy tắc chung → `quy-tac-chung.md`
+- Muốn đếm lại một con số bằng đường độc lập → `doi-soat.md`
+- Số liệu lệch sổ sách, doanh thu tổng → `chua-chot/dinh-nghia-doanh-thu.md`
+- Doanh số/hiệu suất của một Sale cụ thể → `chua-chot/quy-ket-sale.md`

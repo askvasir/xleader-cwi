@@ -1,9 +1,7 @@
-# Câu hỏi CHƯA CHỐT — hỏi lại người dùng, đừng tự chọn
+# ⚠ CHƯA CHỐT: doanh thu tính theo "có đơn hàng" hay "cơ hội đã chốt"?
 
 ⚠ Con số cụ thể trong file này là VÍ DỤ ĐO TẠI MỘT THỜI ĐIỂM khi phát hiện lỗi/khác biệt — không phải số
 liệu hiện tại. Cần số THẬT thì luôn TRUY VẤN lại.
-
-## ⚠ CHƯA CHỐT: doanh thu tính theo "có đơn hàng" hay "cơ hội đã chốt"?
 
 **Phát hiện quan trọng khi đối soát (24/08):** cột `opportunity."phanLoaiLead"` (tầng phễu C4/C41 = "đã
 chốt") và việc `_orderItem` có `donHangId` (có đơn hàng) là HAI điều kiện GẦN NHƯ nhưng KHÔNG HOÀN TOÀN
@@ -29,20 +27,3 @@ không gắn cơ hội −960.000.
 **Bắt buộc:** khi trả lời câu hỏi về tổng doanh thu công ty/kỳ, phải nói rõ *"tính theo đơn đã chốt"*.
 Nếu người dùng hỏi vì sao lệch với sổ sách, hoặc hỏi doanh thu theo đơn đã ký, thì nêu cả hai con số và
 nói thẳng là quy ước này chưa được chốt. Không tự đổi cách tính giữa chừng.
-
-## ⚠ CHƯA CHỐT: doanh số quy cho ai?
-
-Cùng một đơn đang có HAI đáp án khác nhau, chênh lệch thật:
-- `opportunity."sale"` — trường quy kết chính thức
-- người tạo đơn `_order."createdByName"`
-
-Ca thật 17/08/2026: đơn `DH_260817_sang.le_001` do **Nguyễn Hằng** tạo, cơ hội do **Sàng Xuân** tạo, nhưng
-`sale` gán **PHUONG_ANH**. Tính theo cách nào thì tuần đó Phương Anh có **5 vé / 77,76 triệu** hoặc
-**4 vé / 61,56 triệu** — chênh 16 triệu chỉ vì một quy ước chưa chốt.
-
-Model `Dòng đơn hàng (Vé)` còn thêm một tầng suy diễn: khi `sale` trống thì suy từ email `picId`
-(`anh.dau`→PHUONG_ANH, `hue.tran`→HUE, `hang.pham`→HANG).
-
-**Bắt buộc:** câu hỏi nào đụng tới hiệu suất/doanh số của một Sale cụ thể thì phải HỎI LẠI người dùng tính
-theo cách nào, và nói rõ mình đang tính theo cách đó. Tuyệt đối không tự chọn rồi trả số. Chưa chốt quy tắc
-thì chưa dựng báo cáo KPI cho Sale.
