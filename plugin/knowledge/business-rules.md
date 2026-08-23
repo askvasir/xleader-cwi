@@ -94,30 +94,30 @@ TỔNG toàn hệ thống (Model không lọc "Dòng đại diện" khi hiển t
 C1 22.756 = 22.756 · C2 11.365 = 11.365 · C3 5.080 = 5.080 · C4 4.712 = 4.712.
 
 ```sql
-with lop_theo_co_hoi as (
-  select oi."coHoiId" as co_hoi_id, oi."lopHocId" as lop_hoc_id
-    from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_orderItem" oi
-    join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_class" c on c.id = oi."lopHocId" and c."deletedAt" is null
-   where oi."deletedAt" is null and oi."lopHocId" is not null
-   group by 1, 2
-),
-tang_pheu as (
-  select * from (values
+select t.tang, count(*)::int as so_co_hoi
+  from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."opportunity" o
+  left join (
+    select oi."coHoiId" as co_hoi_id, oi."lopHocId" as lop_hoc_id
+      from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_orderItem" oi
+      join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_class" c on c.id = oi."lopHocId" and c."deletedAt" is null
+     where oi."deletedAt" is null and oi."lopHocId" is not null
+     group by 1, 2
+  ) l on l.co_hoi_id = o.id
+  cross join (values
     ('1. C1 · Lead tiềm năng',   array['LEAD_C1','LEAD_C2','LEAD_C3','LEAD_C31','LEAD_C4','LEAD_C41']),
     ('2. C2 · Quan tâm',         array['LEAD_C2','LEAD_C3','LEAD_C31','LEAD_C4','LEAD_C41']),
     ('3. C3 · Ghi danh',         array['LEAD_C3','LEAD_C31','LEAD_C4','LEAD_C41']),
     ('4. C4 · Đã chuyển khoản',  array['LEAD_C4','LEAD_C41'])
   ) as t(tang, ma_tang)
-)
-select t.tang, count(*)::int as so_co_hoi
-  from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."opportunity" o
-  left join lop_theo_co_hoi l on l.co_hoi_id = o.id
-  cross join tang_pheu t
  where o."deletedAt" is null
    and o."phanLoaiLead"::text = any(t.ma_tang)
  group by 1
  order by 1
 ```
+
+⚠ Không dùng `with … as (…)` (CTE) — qua server `insight` thật, middleware `apply_workspace_sql_remapping` từng
+viết lại câu CTE và gãy với lỗi `column "v" does not exist` (không phải lỗi cú pháp của câu gốc). Viết phẳng,
+dùng subquery lồng trong `FROM`/`JOIN`, không dùng `WITH`, cho MỌI câu SQL trong file này.
 
 ### Lớp học
 Cách tính: sĩ số CHÍNH THỨC (`trangThai = 'CHINH_THUC'`) theo từng lớp, sắp theo ngày tổ chức gần nhất.
@@ -207,6 +207,26 @@ select cty."name" as cong_ty,
   `_enrollment`, `_salesPolicy`); object chuẩn của CRM thì không có tiền tố (`opportunity`, `person`,
   `company`).
 - Các cột tiền tệ có hậu tố `AmountMicros` lưu đơn vị micro — chia cho 1.000.000 (1e6) để ra VND.
+
+## ⚠ CHƯA CHỐT: doanh thu tính theo "có đơn hàng" hay "cơ hội đã chốt"?
+
+Hai định nghĩa đang cùng tồn tại, chênh **4,25 tỷ** trên tổng doanh thu:
+
+| Cách tính | Doanh thu NET |
+|---|---|
+| Có đơn hàng thật (quy tắc #1) | 57.691.770.000 |
+| Cơ hội đã chốt — tầng LEAD_C4/LEAD_C41 (Model + 6 dashboard chính thức) | 53.439.410.000 |
+
+Chênh lệch nằm ở những **đơn hàng CÓ THẬT nhưng cơ hội chưa lên chốt**, đo ngày 24/08:
+LEAD_C3 3.994.420.000 · LEAD_C1 165.900.000 · LEAD_C2 66.000.000 · LEAD_C31 27.000.000 ·
+không gắn cơ hội −960.000.
+
+**SQL chuẩn trong file này theo cách thứ hai (C4/C41)** để plugin nói cùng con số với dashboard công ty
+đang dùng hằng ngày.
+
+**Bắt buộc:** khi trả lời câu hỏi về tổng doanh thu công ty/kỳ, phải nói rõ *"tính theo đơn đã chốt"*.
+Nếu người dùng hỏi vì sao lệch với sổ sách, hoặc hỏi doanh thu theo đơn đã ký, thì nêu cả hai con số và
+nói thẳng là quy ước này chưa được chốt. Không tự đổi cách tính giữa chừng.
 
 ## ⚠ CHƯA CHỐT: doanh số quy cho ai?
 
