@@ -3,6 +3,10 @@
     "cwi": {
       "command": "node",
       "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/server.mjs"]
+    },
+    "insight": {
+      "type": "http",
+      "url": "https://insight.xteam.edu.vn/api/metabase-mcp"
     }
   }
 }
