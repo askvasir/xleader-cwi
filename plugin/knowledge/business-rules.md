@@ -5,8 +5,8 @@ từng gây SAI SỐ THẬT trên báo cáo — và báo cáo vẫn "chạy tố
 
 ⚠ **Mọi con số cụ thể trong file này (17.000 dòng, 4888 vé, 390 ghi danh…) là VÍ DỤ ĐO TẠI MỘT THỜI ĐIỂM
 khi phát hiện lỗi — KHÔNG PHẢI số liệu hiện tại.** Chỉ giữ lại để minh hoạ mức độ nghiêm trọng của quy tắc.
-Người dùng cần con số THẬT thì luôn phải TRUY VẤN (`cwi_query`) — tuyệt đối không trích số trong tài liệu
-này ra trả lời như thể đó là số hiện tại.
+Người dùng cần con số THẬT thì luôn phải TRUY VẤN (`execute_sql` / `execute_question`) — tuyệt đối không
+trích số trong tài liệu này ra trả lời như thể đó là số hiện tại.
 
 ## Tiền
 
@@ -20,6 +20,147 @@ này ra trả lời như thể đó là số hiện tại.
    Nếu người dùng muốn tính theo ngày thu tiền thì phải hỏi rõ và dùng `_payment."ngayChuyenKhoan"` thay vào.
 4. **`company."createdAt"` = ngày import dữ liệu vào CRM** (gần như toàn bộ đều là một tháng) ⇒ cột này
    **vô dụng để cắt kỳ theo thời gian**, kể cả khi câu hỏi nghe như đang hỏi về công ty theo thời gian.
+
+## SQL chuẩn cho chỉ số lõi
+
+7 khối dưới đây đã chạy qua `execute_sql`, đối chiếu số ra với Model tương ứng qua `execute_question` (hoặc
+qua định nghĩa đã lưu của câu hỏi khi câu hỏi đó có tham số — xem ghi chú từng khối), và KHỚP tuyệt đối tại
+thời điểm đối soát. Coi đây là công thức THAM CHIẾU — khi viết SQL mới cho câu hỏi tương tự, xuất phát từ
+đây thay vì đoán lại từ đầu. Vẫn phải tự chạy lại và đối chiếu nếu nghi ngờ số liệu đã đổi kể từ ngày đối soát.
+
+⚠ **Phát hiện quan trọng khi đối soát (24/08):** cột `opportunity."phanLoaiLead"` (tầng phễu C4/C41 = "đã
+chốt") và việc `_orderItem` có `donHangId` (có đơn hàng) là HAI điều kiện GẦN NHƯ nhưng KHÔNG HOÀN TOÀN
+giống nhau — hệ thống hiện có 356 dòng `_orderItem` có đơn hàng thật nhưng cơ hội chưa/không còn ở tầng
+C4/C41. Model chính thức "Dòng đơn hàng (Vé)" dùng điều kiện **tầng phễu C4/C41**, không phải "có đơn
+hàng", để định nghĩa doanh thu — SQL dưới đây theo đúng Model (chênh lệch giữa 2 cách tính là ~4,25 tỷ đồng
+trên tổng doanh thu, đo ngày 24/08).
+
+### Doanh thu NET (chưa VAT)
+Cách tính: tiền vé đã bán, chưa VAT, tính theo ngày lớp khai giảng, chỉ tính dòng đơn ở cơ hội đã "chốt"
+(tầng phễu C4 hoặc C41).
+Đã đối soát với Model "Dòng đơn hàng (Vé)" (câu hỏi tổng hợp "Doanh thu thực tế (net)") ngày 2026-08-24:
+53.439.410.000 = 53.439.410.000.
+
+```sql
+select date_trunc('month', c."ngayToChuc")::date as thang,
+       round(sum(oi."thanhTienAmountMicros" / (1 + coalesce(oi."vat", 0)) / 1e6)) as doanh_thu_net
+  from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_orderItem" oi
+  join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_order"      o  on o.id = oi."donHangId"  and o."deletedAt" is null
+  join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_class"      c  on c.id = oi."lopHocId"   and c."deletedAt" is null
+  join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."opportunity" op on op.id = oi."coHoiId"   and op."deletedAt" is null
+ where oi."deletedAt" is null
+   and op."phanLoaiLead" in ('LEAD_C4', 'LEAD_C41')
+ group by 1
+ order by 1
+```
+
+### Số vé bán
+Cách tính: tổng số lượng vé (`Σ soLuong`, không phải đếm dòng) trong các dòng đơn ở cơ hội đã "chốt"
+(tầng phễu C4 hoặc C41).
+Đã đối soát với Model "Dòng đơn hàng (Vé)" (câu hỏi "Vé đã bán (dòng đơn chốt)") ngày 2026-08-24:
+4.730 = 4.730.
+
+```sql
+select sum(oi."soLuong")::int as so_ve
+  from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_orderItem" oi
+  join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_order"      o  on o.id = oi."donHangId" and o."deletedAt" is null
+  join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."opportunity" op on op.id = oi."coHoiId"  and op."deletedAt" is null
+ where oi."deletedAt" is null
+   and op."phanLoaiLead" in ('LEAD_C4', 'LEAD_C41')
+```
+
+### Ghi danh chính thức
+Cách tính: đếm `_enrollment` có `trangThai = 'CHINH_THUC'`, bắt buộc join sang `_class` còn tồn tại
+(`deletedAt is null`) — hệ thống hiện có đúng 1 ghi danh CHÍNH THỨC trỏ tới một lớp không còn tồn tại; bỏ
+join này đếm ra 5.067 thay vì con số đúng 5.066.
+Đã đối soát với Model "Ghi danh (HV theo lớp)" (định nghĩa đã lưu của câu hỏi "Số ghi danh chính thức",
+đọc qua `read_resource` vì câu hỏi có tham số nên `execute_question` không chạy trực tiếp được — chạy lại
+đúng công thức đó qua `execute_sql` cho ra cùng một số) ngày 2026-08-24: 5.066 = 5.066.
+
+```sql
+select count(*)::int as ghi_danh_chinh_thuc
+  from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_enrollment" e
+  join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_class" c on c.id = e."lopHocId" and c."deletedAt" is null
+ where e."deletedAt" is null
+   and e."trangThai" = 'CHINH_THUC'
+```
+
+### Cơ hội theo tầng phễu
+Cách tính: phễu CỘNG DỒN — một cơ hội đang ở tầng C4 vẫn được tính ở CẢ 4 tầng (C1≥C2≥C3≥C4), khác với
+phân loại rời-từng-tầng (nháp ban đầu lệch hẳn với Model vì lý do này, đúng như cảnh báo trước khi đối
+soát). Một cơ hội gắn nhiều lớp thì tính lặp lại ở mỗi lớp nó gắn — đúng theo cách Model đang hiển thị cho
+TỔNG toàn hệ thống (Model không lọc "Dòng đại diện" khi hiển thị tổng theo tầng).
+Đã đối soát với Model "Cơ hội theo tầng phễu" (câu hỏi "Phễu chuyển đổi (C1 → C4)") ngày 2026-08-24:
+C1 22.756 = 22.756 · C2 11.365 = 11.365 · C3 5.080 = 5.080 · C4 4.712 = 4.712.
+
+```sql
+with lop_theo_co_hoi as (
+  select oi."coHoiId" as co_hoi_id, oi."lopHocId" as lop_hoc_id
+    from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_orderItem" oi
+    join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_class" c on c.id = oi."lopHocId" and c."deletedAt" is null
+   where oi."deletedAt" is null and oi."lopHocId" is not null
+   group by 1, 2
+),
+tang_pheu as (
+  select * from (values
+    ('1. C1 · Lead tiềm năng',   array['LEAD_C1','LEAD_C2','LEAD_C3','LEAD_C31','LEAD_C4','LEAD_C41']),
+    ('2. C2 · Quan tâm',         array['LEAD_C2','LEAD_C3','LEAD_C31','LEAD_C4','LEAD_C41']),
+    ('3. C3 · Ghi danh',         array['LEAD_C3','LEAD_C31','LEAD_C4','LEAD_C41']),
+    ('4. C4 · Đã chuyển khoản',  array['LEAD_C4','LEAD_C41'])
+  ) as t(tang, ma_tang)
+)
+select t.tang, count(*)::int as so_co_hoi
+  from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."opportunity" o
+  left join lop_theo_co_hoi l on l.co_hoi_id = o.id
+  cross join tang_pheu t
+ where o."deletedAt" is null
+   and o."phanLoaiLead"::text = any(t.ma_tang)
+ group by 1
+ order by 1
+```
+
+### Lớp học
+Cách tính: sĩ số CHÍNH THỨC (`trangThai = 'CHINH_THUC'`) theo từng lớp, sắp theo ngày tổ chức gần nhất.
+Model "Lớp học (Buổi đào tạo)" không có sẵn cột "sĩ số chỉ tính chính thức" theo từng lớp nên đối soát ở
+mức TỔNG hệ thống, qua 2 đường độc lập:
+Đã đối soát với Model "Lớp học (Buổi đào tạo)" ngày 2026-08-24: (a) tổng "Doanh thu net (VND)" cộng dồn
+qua toàn bộ 197 lớp (cùng công thức Model dùng, nối qua `_enrollment."dongDonId"`) = 53.582.870.000 =
+53.582.870.000 — xác nhận cấu trúc join theo từng lớp ở SQL dưới đây là đúng; (b) tổng sĩ số chính thức
+cộng dồn qua 197 lớp = 5.066, khớp đúng số đã đối soát ở mục "Ghi danh chính thức" phía trên.
+
+```sql
+select c."maLopHoc", k."tenKhoaHoc", c."ngayToChuc", c."siSoMucTieu",
+       count(e.id) filter (where e."trangThai" = 'CHINH_THUC')::int as si_so_chinh_thuc
+  from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_class" c
+  left join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_course"     k on k.id = c."khoaHocId"  and k."deletedAt" is null
+  left join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_enrollment" e on e."lopHocId" = c.id   and e."deletedAt" is null
+ where c."deletedAt" is null
+ group by 1, 2, 3, 4
+ order by c."ngayToChuc" desc nulls last
+ limit 50
+```
+
+### Đối tác doanh nghiệp
+Cách tính: theo từng công ty của học viên, đếm số học viên (distinct) và số lượt ghi danh CHÍNH THỨC.
+Đã đối soát với Model "Đối tác doanh nghiệp" ngày 2026-08-24: số công ty 940 = 940, tổng số học viên
+1.683 = 1.683 (khớp tuyệt đối). Tổng số lượt ghi danh: SQL (chỉ tính CHINH_THUC) ra 4.880, Model (tính
+TẤT CẢ trạng thái ghi danh, không lọc CHINH_THUC) ra 4.883 — chênh 3, đúng bằng đúng số ghi danh
+không-CHINH_THUC còn lại của hệ thống tại các công ty đó (đã xác minh riêng qua `execute_sql`), không phải
+sai số đếm.
+
+```sql
+select cty."name" as cong_ty,
+       count(distinct e."hocVienId")::int as so_hoc_vien,
+       count(e.id)::int                   as so_luot_ghi_danh
+  from "workspace_6ytci89jf3kflsl9aaaxrr5hw"."_enrollment" e
+  join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."person"  p   on p.id = e."hocVienId"  and p."deletedAt" is null
+  join "workspace_6ytci89jf3kflsl9aaaxrr5hw"."company" cty on cty.id = p."companyId" and cty."deletedAt" is null
+ where e."deletedAt" is null
+   and e."trangThai" = 'CHINH_THUC'
+ group by 1
+ order by 2 desc
+ limit 50
+```
 
 ## Học viên & ghi danh
 
@@ -59,9 +200,27 @@ này ra trả lời như thể đó là số hiện tại.
 ## Luôn luôn
 
 - Viết SQL trên bảng gốc: MỌI bảng phải ghi đủ `"<schema>"."<bảng>"` — tên bảng trần (vd `"_class"` một mình)
-  báo lỗi `relation does not exist`. Tên schema hiện tại lấy bằng `cwi_dict {list:true}` (khoá `schema`).
+  báo lỗi `relation does not exist`. Tên schema hiện tại: `workspace_6ytci89jf3kflsl9aaaxrr5hw` (tự kiểm bằng
+  câu ở `index.md`).
 - Lọc `"deletedAt" IS NULL` trên MỌI bảng khi viết SQL trực tiếp.
 - Bảng của object tuỳ chỉnh có tiền tố `_` (`_class`, `_course`, `_order`, `_orderItem`, `_payment`,
   `_enrollment`, `_salesPolicy`); object chuẩn của CRM thì không có tiền tố (`opportunity`, `person`,
   `company`).
 - Các cột tiền tệ có hậu tố `AmountMicros` lưu đơn vị micro — chia cho 1.000.000 (1e6) để ra VND.
+
+## ⚠ CHƯA CHỐT: doanh số quy cho ai?
+
+Cùng một đơn đang có HAI đáp án khác nhau, chênh lệch thật:
+- `opportunity."sale"` — trường quy kết chính thức
+- người tạo đơn `_order."createdByName"`
+
+Ca thật 17/08/2026: đơn `DH_260817_sang.le_001` do **Nguyễn Hằng** tạo, cơ hội do **Sàng Xuân** tạo, nhưng
+`sale` gán **PHUONG_ANH**. Tính theo cách nào thì tuần đó Phương Anh có **5 vé / 77,76 triệu** hoặc
+**4 vé / 61,56 triệu** — chênh 16 triệu chỉ vì một quy ước chưa chốt.
+
+Model `Dòng đơn hàng (Vé)` còn thêm một tầng suy diễn: khi `sale` trống thì suy từ email `picId`
+(`anh.dau`→PHUONG_ANH, `hue.tran`→HUE, `hang.pham`→HANG).
+
+**Bắt buộc:** câu hỏi nào đụng tới hiệu suất/doanh số của một Sale cụ thể thì phải HỎI LẠI người dùng tính
+theo cách nào, và nói rõ mình đang tính theo cách đó. Tuyệt đối không tự chọn rồi trả số. Chưa chốt quy tắc
+thì chưa dựng báo cáo KPI cho Sale.
