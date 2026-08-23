@@ -32,12 +32,12 @@ Nối thẳng vào MCP gốc nghĩa là code của ta không nằm trên đườ
 |---|---|
 | `select 1 as x, 'a' as y` (1 dòng × 2 cột) | ~2.600 ký tự ≈ **700 token**; dữ liệu thật 10 ký tự |
 | Chi phí mỗi cột | ~100–150 token, **bị trả hai lần** (`results_metadata` + `cols`) |
-| `read_resource` mô tả cột một bảng | **158.288 ký tự** (§3, đo 23/08) |
-| Một câu SQL lỗi | ~20.000 token stack trace (§3, đo 23/08) |
+| `read_resource` mô tả cột một bảng | **158.288 ký tự** (định hướng §3, đo 23/08) |
+| Một câu SQL lỗi | ~20.000 token stack trace (định hướng §3, đo 23/08) |
 
-Đối trọng: con số "hiện tại ~15.000 token" trong §3 phần lớn đến từ **đọc từ điển đóng gói + vòng lặp lỗi** —
+Đối trọng: con số "hiện tại ~15.000 token" trong định hướng §3 phần lớn đến từ **đọc từ điển đóng gói + vòng lặp lỗi** —
 cả hai đều bị xoá. Ước tính còn ~1.500–3.000 token cho câu hỏi nghiệm thu. **Chưa đo thì chưa biết**, nên
-§7 đặt phép đo bắt buộc và một đường lui.
+§7 dưới đây đặt phép đo bắt buộc và một đường lui.
 
 **b) Mất toàn bộ 64 test tự động** cùng với code. Thay bằng checklist chạy tay (§8).
 
@@ -46,7 +46,7 @@ không còn chốt nào bắt dừng khi dữ liệu đổi. Kỷ luật đó ch
 
 **d) Mất guardrail — theo quyết định §6 của tài liệu định hướng.** Lỗ hổng "nhân viên ghi được vào collection
 dùng chung" **có sẵn từ trước**, không phải do refactor sinh ra. Nhưng plugin không còn được phép hứa điều
-ngược lại với người dùng (§6 dưới đây).
+ngược lại với người dùng (xem §6 — Hai skill và /start).
 
 ## 3. Kiến trúc đích
 
@@ -64,7 +64,7 @@ xleader-cwi/
     ├── commands/start.md
     ├── knowledge/index.md
     ├── knowledge/business-rules.md
-    └── skills/hoi-du-lieu/SKILL.md
+    ├── skills/hoi-du-lieu/SKILL.md
     └── skills/dung-bao-cao/SKILL.md
 ```
 
@@ -105,7 +105,7 @@ phân loại kênh · lớp học (lịch/sĩ số/doanh thu lớp) · đối t�
 Mọi khối phải mang sẵn ba luật sống còn: ghi đủ `"<schema>"."<bảng>"`, `INNER JOIN _order` khi tính tiền,
 `"deletedAt" is null`.
 
-**b) §7 — quy kết doanh số cho ai — ghi vào như một câu hỏi CHƯA CHỐT.** Hai đáp án đang tồn tại trên cùng
+**b) Định hướng §7 — quy kết doanh số cho ai — ghi vào như một câu hỏi CHƯA CHỐT.** Hai đáp án đang tồn tại trên cùng
 một đơn (`opportunity.sale` vs người tạo đơn `_order.createdByName`), ca thật `DH_260817_sang.le_001` lệch
 16 triệu, và tầng suy diễn từ email `picId` trong Model "Dòng đơn hàng (Vé)". Skill **phải hỏi lại** khi câu
 hỏi đụng tới hiệu suất Sale; tuyệt đối không tự chọn một cách rồi trả số trôi chảy.
@@ -164,17 +164,17 @@ dùng nói rõ.
 
 ## 7. Nghiệm thu
 
-**Chỉ tiêu §3:** câu *"tuần rồi Phương Anh bán bao nhiêu vé, những Opp nào"* trả lời đúng trong **dưới 3.000
+**Chỉ tiêu (định hướng §3):** câu *"tuần rồi Phương Anh bán bao nhiêu vé, những Opp nào"* trả lời đúng trong **dưới 3.000
 token** cho cả hỏi lẫn đáp.
 
 **Cách đo:** chạy trong một phiên Claude Code sạch; cộng ký tự của mọi lời gọi tool và mọi response, chia 4.
-Đo với quy ước tạm `opportunity.sale`, ghi rõ là quy ước tạm vì §7 chưa chốt. Ghi số vào memory làm mốc.
+Đo với quy ước tạm `opportunity.sale`, ghi rõ là quy ước tạm vì định hướng §7 chưa chốt. Ghi số vào memory làm mốc.
 
 **Đường lui:** nếu vượt 3.000 token, **báo lại người dùng** và mở lại hướng B (proxy stdio ~250 dòng tự lo
 OAuth DCR+PKCE, forward `execute_sql` rồi nén theo hợp đồng §3 của tài liệu định hướng). Không lặng lẽ bỏ
 chỉ tiêu.
 
-**Ghi chú §5:** đường SQL né được lỗi tuần lệch — `date_trunc('week')` của Postgres luôn bắt đầu Thứ Hai. Cài
+**Ghi chú (định hướng §5):** đường SQL né được lỗi tuần lệch — `date_trunc('week')` của Postgres luôn bắt đầu Thứ Hai. Cài
 đặt *first day of week* trong Metabase Admin vẫn cần đổi, nhưng chỉ ảnh hưởng dashboard, không ảnh hưởng hỏi–đáp.
 
 **Chỗ thử GHI:** kiểm `localhost:3001` có `/api/metabase-mcp` không (cần v0.63+). Có thì học hợp đồng
