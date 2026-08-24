@@ -20,13 +20,14 @@ Tên kỹ thuật (hàm, biến, tool id) giữ tiếng Anh/snake_case.
 ## Vòng lặp
 
 ```
-sửa code → node --test (TRẦN, không phải `node --test test/`) → thử tool qua stdio → commit
+sửa skill/knowledge → thử tool qua MCP `insight` (vd `execute_sql`) → commit
 ```
 
 ## RÀNG BUỘC — đọc lại trước khi sửa code
 
-1. **KHÔNG thêm dependency npm.** Plugin phân phối qua git marketplace, máy người dùng không chạy
-   `npm install`. `plugin/mcp/*.mjs` chỉ được import thư viện chuẩn Node.
+1. **KHÔNG thêm mã nguồn hay dependency ngoài kho chuẩn.** Plugin phân phối qua git marketplace, máy
+   người dùng không tự cài gói qua npm. Từ v0.2 plugin chỉ còn skill/knowledge dạng Markdown gọi thẳng MCP
+   gốc của Metabase — không còn thư mục mã nguồn nào trong plugin để thêm dependency vào.
 2. **`report.mjs` là đường GHI DUY NHẤT** và mọi hàm ghi phải gọi guard **TRƯỚC** khi chạm API. Không có
    `DELETE` ở đâu — gỡ báo cáo = `archived:true`. → [[guardrail-hai-lop]]
 3. **`rpc.mjs` KHÔNG ép `inputSchema`** — mọi tool tự validate tham số, đặt TRƯỚC `connect()`.

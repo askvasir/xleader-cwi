@@ -47,9 +47,6 @@ Gỡ báo cáo = đưa vào Thùng rác Metabase (khôi phục được), không
 
 ## Dành cho người bảo trì
 
-- Từ điển dữ liệu sinh bằng `node scripts/gen-cwi-dictionary.mjs` trong repo `xleaders-crm-app`.
-- Quy trình nạp lại khi schema đổi nằm trong skill `/build-metabase-report`.
-- Chạy test: `node --test`
-- Siết quyền collection (guardrail lớp 1): `node scripts/siet-quyen-collection.mjs [--apply]`
-- Repo ở `askvasir/xleader-cwi`, để **private** vì từ điển mô tả cấu trúc kinh doanh và tên đội Sale.
+- Tri thức nghiệp vụ nằm dưới `plugin/knowledge/` (Markdown, cắt lát theo chỉ số) — sửa tay khi số liệu đổi.
+- Repo ở `askvasir/xleader-cwi`, để **private** vì tri thức mô tả cấu trúc kinh doanh và tên đội Sale.
   Người dùng phải được cấp quyền đọc repo thì lệnh cài mới chạy.

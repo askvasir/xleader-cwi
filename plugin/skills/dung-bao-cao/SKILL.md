@@ -5,27 +5,49 @@ description: Dùng khi người dùng muốn tạo, sửa, hoặc gỡ một bá
 
 # Dựng báo cáo riêng trên insight
 
-Báo cáo được tạo trong **thư mục riêng của chính người dùng**. Bạn **không có cách nào** đụng tới báo cáo
-chung — `cwi_report` sẽ từ chối. Đó là thiết kế, không phải giới hạn cần lách.
+Báo cáo được tạo trong **thư mục riêng của chính người dùng**, mặc định. Mọi thao tác đi qua các tool của
+server `insight`.
+
+## Đọc đúng LÁT CẮT, đừng đọc cả kho
+
+| Câu hỏi về | Đọc đúng file này |
+|---|---|
+| Doanh thu | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/doanh-thu.md` |
+| Số vé bán | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/so-ve.md` |
+| Ghi danh / sĩ số / học viên | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/ghi-danh.md` |
+| Lead / phễu / nguồn cơ hội | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/co-hoi-tang-pheu.md` |
+| Lớp học / lịch / giảng viên | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/lop-hoc.md` |
+| Công ty đối tác | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/doi-tac-doanh-nghiep.md` |
+| Doanh số của MỘT Sale cụ thể | + `${CLAUDE_PLUGIN_ROOT}/knowledge/chua-chot/quy-ket-sale.md` |
+| Người dùng nói số lệch sổ sách | + `${CLAUDE_PLUGIN_ROOT}/knowledge/chua-chot/dinh-nghia-doanh-thu.md` |
+| Không khớp chỉ số nào ở trên | `${CLAUDE_PLUGIN_ROOT}/knowledge/quy-tac-chung.md` |
+| Cần tên bảng, tên schema, database_id | `${CLAUDE_PLUGIN_ROOT}/knowledge/index.md` |
+| Cần đếm lại bằng đường độc lập / danh sách 7 Model có sẵn | `${CLAUDE_PLUGIN_ROOT}/knowledge/doi-soat.md` |
+
+Đọc ĐÚNG một hàng. Không đọc cả thư mục. Không đọc `quy-tac-chung.md` khi đã có file chỉ số —
+mỗi file chỉ số đã tự mang theo bẫy của nó.
 
 ## Trước khi dựng
-Gọi `cwi_health`. Nếu `tu_dien_khop` là `false` → **DỪNG**, báo:
-*"Cấu trúc dữ liệu trên insight vừa thay đổi nên em chưa dám dựng báo cáo — số có thể sai. Nhờ anh/chị báo
-bên kỹ thuật cập nhật plugin giúp em."* Không dựng bừa.
+
+Chạy một truy vấn thử (`execute_sql`, `database_id: 2`) trên bảng liên quan để chắc cấu trúc còn đúng —
+đừng dựng bừa trên giả định cũ.
 
 ## Hỏi đúng 3 câu nghiệp vụ (đừng hỏi hơn)
+
 1. Báo cáo này trả lời câu hỏi gì?
 2. Nhìn theo lát cắt nào — lớp, Sale, khoá học, hay thời gian?
 3. Cần lọc gì không (khoảng thời gian, một lớp cụ thể)?
 
 ## Dựng
-1. Ưu tiên thẻ dựng trên Model (`cwi_dict` / `cwi_query {mode:'model'}`) — thẻ kiểu này người dùng bấm vào
-   xem được bản ghi gốc.
+
+1. Ưu tiên thẻ dựng trên Model đã có sẵn trên insight (xem danh sách ở `knowledge/doi-soat.md`) — thẻ kiểu
+   này người dùng bấm vào xem được bản ghi gốc. Dùng `construct_query`/`create_question` trỏ nguồn vào Model
+   đó; chỉ viết SQL tay (`construct_native_query`/`execute_sql`) khi Model không đáp ứng được lát cắt cần.
 2. Chỉ 5 kiểu hiển thị: `scalar` · `table` · `bar` · `line` · `funnel`.
-3. **Chạy thử NGAY từng thẻ sau khi tạo** bằng `cwi_query`. Thẻ lỗi thì sửa — **không bao giờ bàn giao báo
-   cáo còn thẻ đỏ**.
-4. **Kiểm tra chéo bắt buộc:** với mỗi con số KPI, đếm lại bằng **một đường độc lập** (thẻ dựng trên Model thì
-   đếm lại bằng `mode:'sql'` từ bảng gốc, và ngược lại).
+3. **Chạy thử NGAY từng thẻ sau khi tạo** bằng `execute_question`. Thẻ lỗi thì sửa — **không bao giờ bàn
+   giao báo cáo còn thẻ đỏ**.
+4. **Kiểm tra chéo bắt buộc:** với mỗi con số KPI, đếm lại bằng **một đường độc lập** (thẻ dựng trên Model
+   thì đếm lại bằng `execute_sql` từ bảng gốc theo đúng công thức trong `chi-so/*.md`, và ngược lại).
    - Khớp → nói ✅ "đã đối chiếu, số khớp".
    - Lệch → nói thẳng: *"⚠ số này em chưa chắc — cách đếm khác ra <X>, lệch <Y>."* **Tuyệt đối không im
      lặng.**
@@ -37,43 +59,65 @@ bên kỹ thuật cập nhật plugin giúp em."* Không dựng bừa.
      `coalesce({{tu}}, '0001-01-01'::date)` / `coalesce({{den}}, '9999-12-31'::date)`.
 
 ## Sau khi dựng
+
 - Đưa link dashboard và mô tả một câu mỗi thẻ bằng tiếng Việt.
 
 ## Muốn sửa báo cáo cũ (của chính người dùng)
+
 Không có file nào lưu lại công thức báo cáo — tìm và đọc lại thẳng từ insight:
-1. `cwi_report {action:'list'}` để tìm đúng thẻ/dashboard theo tên.
-2. `cwi_report {action:'get', kind, id}` để đọc lại cấu hình hiện tại (`dataset_query`, `display`, `dashcards`…).
-3. Sửa trên cấu hình vừa đọc rồi gọi `update_card` (thẻ) hoặc `put_dashcards` (bố cục dashboard) — xem
+
+1. `search` (server `insight`) để tìm đúng thẻ/dashboard theo tên.
+2. `read_resource` trên đúng card/dashboard đó để đọc lại cấu hình hiện tại (`dataset_query`, `display`,
+   `dashcards`…) — đọc MỘT thẻ cụ thể, không phải quét mô tả cả bảng.
+3. Sửa trên cấu hình vừa đọc rồi gọi `update_question` (thẻ) hoặc `update_dashboard` (bố cục dashboard) — xem
    "Hợp đồng payload dashboard" bên dưới khi sửa `dashcards`.
 
 ## Trùng tên khi tạo lại một báo cáo đã có (bài học đã trả giá trên prod)
+
 Metabase **không tự chặn trùng tên** — dashboard #7 từng bị tạo trùng #6 vì đi tạo mới thay vì tìm bản cũ.
-Trước khi `create_card` / `create_dashboard`:
-1. `cwi_report {action:'list'}` rồi tìm theo **tiền tố tên** (đừng đòi khớp tuyệt đối — khách có quyền đổi
-   tên thêm chữ phía sau).
-2. Thấy rồi → `update_card` / `put_dashcards` để cập nhật bản đã có, **KHÔNG gửi lại `name` trong patch**
-   (khách có thể đã tự đổi tên; gửi lại `name` cũ sẽ ghi đè tên họ vừa đặt).
-3. Không thấy → mới `create_card` / `create_dashboard`.
+Trước khi `create_question` / `create_dashboard`:
 
-## Hợp đồng payload dashboard (`put_dashcards`)
-Metabase đòi đúng hình dạng này cho `dashcards`, không phải danh sách tuỳ ý:
-- Mỗi thẻ MỚI phải có `id` là số **ÂM tạm thời** (vd `-1`, `-2`…, khác nhau trong cùng một lần PUT) — Metabase
-  tự đổi thành id thật khi lưu.
-- Bắt buộc kèm `dashboard_id`, `card_id`, `col`/`row`/`size_x`/`size_y`, `series: []`, `parameter_mappings: []`
-  (rỗng nếu thẻ không nhận tham số dashboard).
-- Thẻ SQL gốc (native) muốn nhận tham số dashboard thì câu SQL phải khai `{{ten_bien}}` VÀ card phải có
-  `template-tags` khai đúng tên biến đó; `parameter_mappings` trỏ vào bằng
-  `target: ['variable', ['template-tag', 'ten_bien']]`.
-- Xem ví dụ thật đã chạy trên prod: `~/project/xleaders-crm-app/metabase/build-revenue-dashboard.mjs`
-  (đoạn dựng biến `dashcards`).
+1. `search` rồi tìm theo **tiền tố tên** (đừng đòi khớp tuyệt đối — khách có quyền đổi tên thêm chữ phía
+   sau).
+2. Thấy rồi → `update_question` / `update_dashboard` để cập nhật bản đã có, **KHÔNG gửi lại `name` trong
+   patch** (khách có thể đã tự đổi tên; gửi lại `name` cũ sẽ ghi đè tên họ vừa đặt).
+3. Không thấy → mới `create_question` / `create_dashboard`.
 
-## Khi người dùng đòi sửa báo cáo chung
-Từ chối **kèm lối ra**, đúng câu này:
-*"Báo cáo đó là báo cáo chung của công ty nên em không sửa được. Em tạo một bản riêng trong thư mục của
-anh/chị rồi chỉnh thoải mái nhé?"*
-Nếu họ đồng ý → gọi `cwi_report {action:'get', kind:'dashboard'|'card', id}` để đọc cấu hình báo cáo chung
-(đọc thì được, không bị guard chặn), rồi dựng lại các thẻ tương đương trong thư mục riêng của họ.
+## Hợp đồng payload dashboard
+
+Hợp đồng payload — xem Task 6, sẽ điền sau khi chạy thật trên local.
+
+## Báo cáo chung của công ty
+
+Mặc định LUÔN dựng trong thư mục cá nhân của người dùng. Không tự ý sửa báo cáo chung, kể cả khi tài khoản
+của họ có quyền ghi — 6 dashboard chính thức đang điều hành công việc thật của công ty.
+Người dùng yêu cầu sửa báo cáo chung → nói rõ: *"Báo cáo đó đang được cả công ty dùng. Em tạo một bản riêng
+trong thư mục của anh/chị rồi chỉnh thoải mái nhé?"* Họ vẫn khăng khăng → hỏi xác nhận một lần nữa, nói rõ
+việc này ảnh hưởng tới mọi người đang xem, rồi mới làm.
 
 ## Gỡ báo cáo
-Chỉ `archive` (vào Thùng rác, khôi phục được), và chỉ với báo cáo của chính họ. **Hỏi xác nhận trước.**
-Không có xoá vĩnh viễn.
+
+Chỉ archive (`update_question`/`update_dashboard` với `archived: true` — vào Thùng rác, khôi phục được), và
+chỉ với báo cáo của chính họ. **Hỏi xác nhận trước.** Không có xoá vĩnh viễn.
+
+## Kỷ luật token — bắt buộc
+
+Response của MCP gốc rất tốn. Đo thật 24/08: một truy vấn 1 dòng × 2 cột đã tốn ~700 token, vì mỗi cột bị trả
+HAI lần (`results_metadata` có `fingerprint` thống kê, và `cols`). Một câu SQL lỗi tốn ~20.000 token.
+
+1. **KHÔNG dùng `read_resource` để tra cấu trúc bảng** — một bảng trả về 158.288 ký tự. Tra bằng SQL:
+   `select table_name, string_agg(column_name, ' · ' order by ordinal_position) from information_schema.columns
+    where table_schema = '<schema>' and table_name in (...) group by 1`
+2. **KHÔNG `select *`.** Chọn cột đích danh. Loại hẳn `searchVector`, `rawWebhook`, `*Blocknote`, `*Context`.
+   Cắt cột là đòn bẩy mạnh hơn cắt dòng.
+3. Luôn có `limit` (mặc định 50). Ô văn bản dài bọc `left(cot, 300)`.
+4. Gộp và tính ngay trong SQL, đừng kéo dữ liệu thô về rồi tự cộng.
+5. **Viết đúng ngay lần đầu:** ghi đủ `"<schema>"."<bảng>"` · `"deletedAt" is null` trên mọi bảng · một câu
+   lệnh mỗi lần. Gặp lỗi thì DỪNG, đọc lại cấu trúc bằng `information_schema` rồi mới chạy tiếp — thử lại mù
+   tốn thêm 20.000 token nữa.
+6. **Response echo lại nguyên câu SQL HAI lần** (`json_query.native.query` và `native_form.query`). Câu SQL
+   1.000 ký tự tốn 2.000 ký tự chỉ để vọng lại. Viết SQL một dòng, alias ngắn, bỏ khoảng trắng thừa.
+7. **KHÔNG dùng CTE (`with … as`)** — đã gặp lỗi thật `column "v" does not exist` do middleware
+   `apply_workspace_sql_remapping` viết lại câu lệnh. Dùng subquery trong FROM.
+8. **Nhãn enum có tiền tố:** `LEAD_C4`, `LEAD_C41` (KHÔNG phải `C4`), `CHINH_THUC`. So sánh sai nhãn gây lỗi
+   cứng `invalid input value for enum`, tốn ~20.000 token. Chưa chắc nhãn thì ép `::text` rồi so.
