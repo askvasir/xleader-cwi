@@ -5,8 +5,11 @@ từng gây SAI SỐ THẬT trên báo cáo — và báo cáo vẫn "chạy tố
 
 ⚠ **Mọi con số cụ thể trong file này (17.000 dòng, 4888 vé, 390 ghi danh…) là VÍ DỤ ĐO TẠI MỘT THỜI ĐIỂM
 khi phát hiện lỗi — KHÔNG PHẢI số liệu hiện tại.** Chỉ giữ lại để minh hoạ mức độ nghiêm trọng của quy tắc.
-Người dùng cần con số THẬT thì luôn phải TRUY VẤN (`cwi_query`) — tuyệt đối không trích số trong tài liệu
-này ra trả lời như thể đó là số hiện tại.
+Người dùng cần con số THẬT thì luôn phải TRUY VẤN (`execute_sql` / `execute_question`) — tuyệt đối không
+trích số trong tài liệu này ra trả lời như thể đó là số hiện tại.
+
+Muốn xem SQL chuẩn đã đối soát cho từng chỉ số → `chi-so/*.md`. Muốn xem 2 câu hỏi chưa chốt quy ước →
+`chua-chot/dinh-nghia-doanh-thu.md` và `chua-chot/quy-ket-sale.md`.
 
 ## Tiền
 
@@ -59,9 +62,13 @@ này ra trả lời như thể đó là số hiện tại.
 ## Luôn luôn
 
 - Viết SQL trên bảng gốc: MỌI bảng phải ghi đủ `"<schema>"."<bảng>"` — tên bảng trần (vd `"_class"` một mình)
-  báo lỗi `relation does not exist`. Tên schema hiện tại lấy bằng `cwi_dict {list:true}` (khoá `schema`).
+  báo lỗi `relation does not exist`. Tên schema hiện tại: `workspace_6ytci89jf3kflsl9aaaxrr5hw` (tự kiểm bằng
+  câu ở `index.md`).
 - Lọc `"deletedAt" IS NULL` trên MỌI bảng khi viết SQL trực tiếp.
 - Bảng của object tuỳ chỉnh có tiền tố `_` (`_class`, `_course`, `_order`, `_orderItem`, `_payment`,
   `_enrollment`, `_salesPolicy`); object chuẩn của CRM thì không có tiền tố (`opportunity`, `person`,
   `company`).
 - Các cột tiền tệ có hậu tố `AmountMicros` lưu đơn vị micro — chia cho 1.000.000 (1e6) để ra VND.
+- Không dùng `with … as (…)` (CTE) — qua server `insight` thật, middleware `apply_workspace_sql_remapping` từng
+  viết lại câu CTE và gãy với lỗi `column "v" does not exist` (không phải lỗi cú pháp của câu gốc). Viết phẳng,
+  dùng subquery lồng trong `FROM`/`JOIN`, không dùng `WITH`, cho MỌI câu SQL.
