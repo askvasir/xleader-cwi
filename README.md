@@ -27,21 +27,20 @@ Mỗi câu trả lời đều kèm **"Cách tính:"** để bạn biết con s�
 
 ## Phạm vi an toàn
 
-Công cụ **chỉ tạo và sửa báo cáo trong thư mục riêng của bạn**. Có HAI lớp bảo vệ, không phải một:
+Plugin đăng nhập bằng **chính tài khoản insight của bạn**, qua OAuth khi bạn bấm Authenticate ở `/mcp` —
+không có ô nhập mật khẩu nào cả, và plugin **không lưu mật khẩu** ở bất cứ đâu.
 
-- **Lớp 1 — Metabase từ chối ở phía máy chủ** (quyền collection: group "All Users" chỉ `read` trên các
-  collection dùng chung). Đây là lớp bảo vệ THẬT SỰ, không phụ thuộc plugin cư xử đúng — nhưng **phải được
-  quản trị bật riêng trên từng server** bằng `scripts/siet-quyen-collection.mjs --apply`. **Trạng thái hiện
-  tại: đã bật trên local, CHƯA bật trên prod (`insight.xteam.edu.vn`)** — tới khi bật, việc plugin "không sửa
-  được báo cáo chung" chỉ còn là hành vi của LỚP 2, tức là hành vi của phần mềm này, không phải một chốt chặn
-  độc lập ở máy chủ.
-- **Lớp 2 — guardrail trong code plugin** (`plugin/mcp/guard.mjs`): chặn SỚM, báo lỗi tiếng Việt dễ hiểu, và
-  chỉ cho phép ghi qua đúng một đường (`plugin/mcp/report.mjs`). Đây là lớp tiện dụng, KHÔNG phải lớp an toàn
-  cuối cùng — chạy độc lập với việc Lớp 1 đã bật hay chưa.
+Vì vậy, bạn làm được gì trên insight qua plugin cũng chính là **đúng những gì tài khoản của bạn vốn đã làm
+được**. Plugin không mở rộng thêm quyền, và cũng không tự siết bớt quyền của bạn.
 
-**Giới hạn đã biết:** phiên đăng nhập insight (`~/.xleader-cwi/session.json`, quyền file 0600) là phiên THẬT
-của chính người dùng. Trên máy đã đăng nhập, ai có quyền đọc file đó vẫn gọi thẳng API Metabase ngoài plugin
-— đường đó không đi qua guardrail của plugin và plugin không kiểm soát được.
+Mặc định, plugin **luôn dựng báo cáo trong thư mục riêng của bạn**, và **không tự ý sửa báo cáo chung của
+công ty** — kể cả khi tài khoản của bạn có quyền sửa. Đây là quy ước được ghi trong hướng dẫn của plugin,
+không phải một rào chặn kỹ thuật không thể vượt qua; nếu bạn thật sự cần sửa báo cáo chung, plugin sẽ hỏi
+xác nhận trước khi làm. Muốn chặn cứng việc sửa báo cáo chung ở mức không thể lách, phải siết **quyền
+collection phía Metabase** cho tài khoản đó — việc này nằm ngoài phạm vi plugin.
+
+Mọi truy vấn số liệu là chỉ đọc theo thiết kế của plugin; plugin không tự chạy các thao tác ghi ngoài việc
+tạo/sửa báo cáo mà bạn yêu cầu.
 
 Gỡ báo cáo = đưa vào Thùng rác Metabase (khôi phục được), không xoá vĩnh viễn.
 

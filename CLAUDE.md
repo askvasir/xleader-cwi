@@ -28,23 +28,21 @@ sửa skill/knowledge → thử tool qua MCP `insight` (vd `execute_sql`) → co
 1. **KHÔNG thêm mã nguồn hay dependency ngoài kho chuẩn.** Plugin phân phối qua git marketplace, máy
    người dùng không tự cài gói qua npm. Từ v0.2 plugin chỉ còn skill/knowledge dạng Markdown gọi thẳng MCP
    gốc của Metabase — không còn thư mục mã nguồn nào trong plugin để thêm dependency vào.
-2. **`report.mjs` là đường GHI DUY NHẤT** và mọi hàm ghi phải gọi guard **TRƯỚC** khi chạm API. Không có
-   `DELETE` ở đâu — gỡ báo cáo = `archived:true`. → [[guardrail-hai-lop]]
-3. **`rpc.mjs` KHÔNG ép `inputSchema`** — mọi tool tự validate tham số, đặt TRƯỚC `connect()`.
-   → [[gotcha-rpc-khong-ep-tham-so]]
-4. **Mọi SQL phải ghi đủ `"<schema>"."<bảng>"`.** → [[gotcha-sql-phai-ghi-schema]]
-5. **KHÔNG hardcode thông tin đăng nhập**, kể cả làm giá trị mặc định — các file này được publish.
-6. Bump version ở **CẢ HAI** manifest (`.claude-plugin/marketplace.json` + `plugin/.claude-plugin/plugin.json`)
+2. **Mọi SQL phải ghi đủ `"<schema>"."<bảng>"` và lọc `"deletedAt" is null`** trên mọi bảng tham gia câu
+   lệnh. → [[gotcha-sql-phai-ghi-schema]]
+3. **Không đóng gói snapshot cấu trúc dữ liệu vào repo** — cấu trúc đọc SỐNG bằng `information_schema` mỗi
+   lần cần, không cache thành file trong plugin.
+4. **KHÔNG hardcode thông tin đăng nhập**, kể cả làm giá trị mặc định — các file này được publish.
+5. Bump version ở **CẢ HAI** manifest (`.claude-plugin/marketplace.json` + `plugin/.claude-plugin/plugin.json`)
    thì auto-update mới nhận.
 
 ## Chạm vào Metabase
 
-- **Mặc định trong code trỏ PROD.** Khi thử phải export `MB_URL=http://localhost:3001` và
-  `MB_WS=workspace_1wgvd1injqtife6y4rvfbu3h5`, và đặt env cho **chính tiến trình `node`**.
-- **Prod là hệ thống LIVE đang điều hành công ty khách** (6 dashboard chính thức). Mọi thao tác GHI lên prod —
-  siết quyền collection, tạo user, dựng báo cáo — **phải hỏi người dùng trước, mỗi lần**.
-- `scripts/smoke-guardrail.mjs` **tạo user thật**; `scripts/siet-quyen-collection.mjs --apply` **ghi quyền
-  thật**. Cả hai bắt buộc cờ `--toi-hieu-day-la-prod` khi đích không phải localhost.
+- **Server `insight` khai trong `plugin/.mcp.json` trỏ thẳng PROD** (`insight.xteam.edu.vn`) — không còn cờ
+  đổi đích trong plugin nữa. Muốn thử trên một server Metabase khác (vd local) thì tự thêm/đổi server MCP
+  qua `/mcp` cho phiên đang làm việc, không sửa `.mcp.json` của plugin.
+- **Prod là hệ thống LIVE đang điều hành công ty khách** (6 dashboard chính thức). Mọi thao tác GHI lên prod
+  — tạo user, siết quyền collection, dựng/sửa báo cáo — **phải hỏi người dùng trước, mỗi lần**.
 
 ## Số liệu
 
