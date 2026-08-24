@@ -10,8 +10,12 @@ ngay trong Claude Code. Không cần biết SQL.
 ```
 /plugin marketplace add askvasir/xleader-cwi
 /plugin install xleader-cwi@xleader-cwi
-/start
+/mcp
 ```
+
+Trong màn hình `/mcp`, chọn dòng `insight` và bấm **Authenticate** — trình duyệt mở trang đăng nhập
+`insight.xteam.edu.vn`, đăng nhập bằng chính tài khoản insight của bạn rồi bấm đồng ý. Xong quay lại gõ
+`/start`.
 
 Bật **auto update** trong màn hình `/plugin` để máy tự cập nhật khi cấu trúc dữ liệu thay đổi.
 

@@ -1,75 +1,89 @@
 ---
 name: kien-truc-plugin
-description: Kiến trúc plugin xleader-cwi — 6 tool MCP, vai trò từng file, ràng buộc không-npm, vòng lặp phát triển và cách cài
+description: Kiến trúc plugin xleader-cwi v0.2 — plugin không có dòng code nào, khai remote MCP gốc của Metabase, OAuth 2.1 per-user, cấu trúc knowledge/ cắt lát, vòng lặp phát triển mới
 type: foundation
 ---
 
 Plugin Claude Code cho nhân viên XLeaders (Sale, kế toán, sếp — **không biết code, không biết SQL**) hỏi dữ
 liệu kinh doanh và tự dựng dashboard trên Metabase `insight.xteam.edu.vn`.
 
-## Repo vừa là marketplace vừa là plugin
+## Plugin không có dòng code nào
 
-`github.com/askvasir/xleader-cwi` — **private** (từ điển mô tả cấu trúc kinh doanh + tên đội Sale).
-Cài: `/plugin marketplace add askvasir/xleader-cwi` → `/plugin install xleader-cwi@xleader-cwi` → `/start`.
-Người dùng phải được cấp quyền đọc repo thì lệnh đầu mới chạy.
+Từ v0.2, `plugin/` chỉ còn Markdown + một file JSON. Toàn bộ năng lực kỹ thuật (chạy SQL, tìm báo cáo, tạo/sửa
+thẻ và dashboard) đến từ **remote MCP gốc do Metabase tự host**, không phải server tự viết. `plugin/.mcp.json`:
 
-**Phát hành = bump version ở CẢ HAI chỗ rồi push** (phải trùng nhau, nếu không auto-update không nhận):
-`.claude-plugin/marketplace.json` → `plugins[0].version` · `plugin/.claude-plugin/plugin.json` → `version`.
+```json
+{
+  "mcpServers": {
+    "insight": {
+      "type": "http",
+      "url": "https://insight.xteam.edu.vn/api/metabase-mcp"
+    }
+  }
+}
+```
 
-## Ràng buộc sống còn: KHÔNG phụ thuộc npm
+Xác thực là **OAuth 2.1 per-user**: người dùng gõ `/mcp` → chọn `insight` → `Authenticate`, Claude Code tự lo
+toàn bộ luồng OAuth (mở trình duyệt, PKCE, lưu token) và tự quản lý việc lưu token. Plugin **không chạm vào
+mật khẩu hay bất kỳ thông tin đăng nhập nào** — không có chỗ nào trong plugin đọc, ghi, hay yêu cầu nhập mật
+khẩu.
 
-Plugin phân phối qua git marketplace, **máy người dùng không chạy `npm install`**. Vì vậy `plugin/mcp/*.mjs`
-chỉ được import thư viện chuẩn Node. Giao thức MCP (JSON-RPC 2.0 qua stdio) **tự cài đặt** trong `rpc.mjs`
-(~120 dòng) thay vì dùng `@modelcontextprotocol/sdk`. Đừng "tiện tay" thêm dependency — nó phá cách phân phối.
+## Vai trò từng phần
 
-## Sáu tool MCP
+| Phần | Trách nhiệm |
+|---|---|
+| `plugin/.mcp.json` | khai server `insight` — toàn bộ "hạ tầng" của plugin |
+| `plugin/knowledge/` | tri thức nghiệp vụ, cắt lát theo chỉ số (xem dưới) |
+| `plugin/skills/hoi-du-lieu/SKILL.md` | kỷ luật trả lời câu hỏi số liệu + kỷ luật token |
+| `plugin/skills/dung-bao-cao/SKILL.md` | quy trình dựng/sửa/gỡ báo cáo + hợp đồng payload MCP |
+| `plugin/commands/start.md` | nối MCP, kiểm nhanh, 5 câu hỏi mẫu |
 
-| Tool | Việc | Ghi/đọc |
-|---|---|---|
-| `cwi_ping` | kiểm plugin nạp được chưa | — |
-| `cwi_dict` | tra từ điển theo **lát cắt** (`tables[]` / `model` / `list:true`) | đọc file |
-| `cwi_query` | truy vấn chỉ đọc: `mode:'model'` (mặc định) hoặc `mode:'sql'` | đọc DB |
-| `cwi_report` | `list · get · create_card · update_card · create_dashboard · put_dashcards · archive` | **đường GHI DUY NHẤT** |
-| `cwi_setup` | thiết lập lần đầu (chỉ `/start` gọi) | ghi cấu hình |
-| `cwi_health` | kết nối · quyền · từ điển còn khớp DB không | đọc |
+Tool hay dùng của server `insight`: `execute_sql` (chỉ đọc, mọi câu trả lời số liệu đi qua đây) ·
+`execute_question` (chạy một Model có sẵn, dùng để đối soát) · `search` · `read_resource` (đọc MỘT card/dashboard
+cụ thể — đắt, đừng dùng để tra cấu trúc bảng) · `create_question` / `update_question` ·
+`create_dashboard` / `update_dashboard` · `create_collection` · `create_metric`.
 
-`cwi_dict {list:true}` trả `{schema, bang[], model[]}` — **`schema` là tên schema Postgres**, bắt buộc cho
-`mode:'sql'` (xem [[gotcha-sql-phai-ghi-schema]]).
+## Đích Metabase
 
-## Vai trò từng file
+| | database_id | schema | Metabase |
+|---|---|---|---|
+| **Prod** `insight.xteam.edu.vn` | `2` | `workspace_6ytci89jf3kflsl9aaaxrr5hw` (883 cột, đo 24/08) | v0.63.14.2 |
+| **Local** `localhost:3001` | tự kiểm, ĐỪNG giả định bằng 2 | `workspace_1wgvd1injqtife6y4rvfbu3h5` | v0.63.14.2, cũng có `/api/metabase-mcp` |
 
-| File | Trách nhiệm | Ranh giới |
-|---|---|---|
-| `plugin/mcp/rpc.mjs` | giao thức MCP qua stdio | không biết gì về Metabase |
-| `plugin/mcp/server.mjs` | khai báo 6 tool + `getConfig`/`connect`/`getCtx`/`docCauTrucThat` | file lớn nhất (~330 dòng) và **duy nhất không có test riêng** — cẩn thận khi sửa |
-| `plugin/mcp/metabase.mjs` | HTTP client + phiên | không biết guardrail |
-| `plugin/mcp/guard.mjs` | `isMine` · `assertCanCreate` · `assertCanModify` | **logic thuần, không I/O** |
-| `plugin/mcp/report.mjs` | mọi lời gọi POST/PUT | gọi guard TRƯỚC khi chạm API; **không có DELETE ở đâu** |
-| `plugin/mcp/query.mjs` | `assertReadOnly` · `resolveModelId` · `runModelQuery` · `runSql` | |
-| `plugin/mcp/config.mjs` · `secrets.mjs` | `~/.xleader-cwi/` + Keychain | xem [[gotcha-moi-truong-va-metabase-api]] |
-| `plugin/dictionary/` | tri thức dữ liệu | xem [[tu-dien-du-lieu]] |
-| `plugin/skills/` · `plugin/commands/start.md` | quy trình cư xử với người dùng | |
-| `scripts/siet-quyen-collection.mjs` · `smoke-guardrail.mjs` | vận hành guardrail lớp 1 | xem [[guardrail-hai-lop]] |
+## Cấu trúc `knowledge/` — vì sao cắt lát
+
+`plugin/knowledge/` là Markdown thuần, không có snapshot cấu trúc dữ liệu (`.json`) đóng gói trong repo —
+cấu trúc bảng đọc SỐNG bằng `information_schema` mỗi lần cần.
+
+Một file tri thức gộp đủ mọi chỉ số sẽ nặng hàng nghìn token — đọc cả file mỗi câu hỏi vỡ trần ngân sách
+token trước khi chạm dữ liệu. Vì vậy tri thức được cắt lát để mỗi skill chỉ đọc đúng phần cần:
+
+| File | Nội dung |
+|---|---|
+| `knowledge/index.md` | database_id, schema, 10 bảng gốc dùng vào việc gì, cách tra cấu trúc rẻ, bảng điều hướng "hỏi về X → đọc file nào" |
+| `knowledge/quy-tac-chung.md` | 10 quy tắc nghiệp vụ đúc kết từ nhiều tháng đối soát + khoảng trống dữ liệu |
+| `knowledge/chi-so/*.md` | một file mỗi chỉ số lõi (doanh thu, số vé, ghi danh, cơ hội/phễu, lớp học, đối tác doanh nghiệp) — mỗi file có "Cách tính:", câu SQL đã đối soát với Model, và bẫy riêng của chỉ số đó |
+| `knowledge/doi-soat.md` | 7 Model dùng làm đường đối chứng độc lập (không dùng để trả lời trực tiếp) |
+| `knowledge/chua-chot/*.md` | các câu hỏi nghiệp vụ chưa chốt quy tắc — xem [[chua-chot-nghiep-vu]] |
+
+Hai skill chỉ đọc đúng một hàng trong bảng điều hướng của `index.md` theo loại câu hỏi, không đọc cả thư mục.
 
 ## Vòng lặp phát triển
 
-```bash
-export NVM_DIR="$HOME/.nvm"; . "$NVM_DIR/nvm.sh"; nvm use 24 >/dev/null
-cd ~/project/xleader-cwi
-node --test                     # TRẦN — `node --test test/` HỎNG, xem [[gotcha-moi-truong-va-metabase-api]]
-# thử tool qua stdio, không cần cài plugin:
-printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
-  '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"cwi_ping","arguments":{}}}' \
-  | node plugin/mcp/server.mjs | tail -1
+Không có test tự động — không còn logic runtime nào ngoài Markdown để chạy kiểm.
+
+```
+sửa tri thức/skill → chạy thật câu hỏi mẫu qua execute_sql của server insight → đối soát số →
+chạy đủ 7 phép trong nghiem-thu.md → commit
 ```
 
-Hiện **64 test xanh**. Mặc định `server.mjs` trỏ **prod** (`MB_URL`/`MB_WS` hardcode) — khi thử phải export
-biến môi trường trỏ local, và nhớ **đặt env cho chính tiến trình `node`**, không phải cho `printf` đứng trước.
+`nghiem-thu.md` ở gốc repo là checklist kiểm tay trước mỗi lần phát hành, thay cho 64 test tự động của kiến
+trúc cũ.
 
-## Trạng thái chưa hoàn tất
+## Phát hành
 
-- **`/start` chưa chạy thật đầu-cuối lần nào.** Đường form nhập mật khẩu (`elicitation/create`) đã có trong
-  Claude Code nhưng chưa ai xác nhận nó vẽ form thật. `cwi_setup` **tự rơi xuống** đường dự phòng nếu client
-  không hỗ trợ, nên không kẹt — nhưng đường chính chưa được kiểm.
-- **Chưa lần nào tạo card/dashboard thật qua plugin.** `smoke-guardrail.mjs` chỉ tạo *collection*.
-- Guardrail lớp 1 **chưa áp lên prod** — xem [[guardrail-hai-lop]].
+`github.com/askvasir/xleader-cwi` — **private**. Cài: `/plugin marketplace add askvasir/xleader-cwi` →
+`/plugin install xleader-cwi@xleader-cwi` → `/mcp` chọn `insight` bấm `Authenticate` → `/start`.
+
+Bump version ở **CẢ HAI** manifest rồi push thì auto-update mới nhận:
+`.claude-plugin/marketplace.json` → `plugins[0].version` · `plugin/.claude-plugin/plugin.json` → `version`.

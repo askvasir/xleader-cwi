@@ -9,17 +9,15 @@ qua các cổng kiểm "thẻ có chạy không" một cách sạch sẽ.
 
 ## Bất biến nền: Model ↔ SQL phải bằng nhau
 
-`scripts/thu-truy-van.mjs` đếm cùng một thứ qua hai đường: aggregation trên Model, và `count(*)` thẳng từ bảng
-gốc. Đo trên local: **4974 = 4974**. Lệch là dừng, tìm nguyên nhân — **đừng sửa SQL cho khớp**.
-
-```bash
-MB_URL=http://localhost:3001 MB_USER=<admin> MB_PASS=<mk> \
-MB_WS=workspace_1wgvd1injqtife6y4rvfbu3h5 node scripts/thu-truy-van.mjs
-```
+Đếm cùng một thứ qua hai đường độc lập của server `insight`: `execute_question` trên Model chính thức (đường
+đối chứng, xem `plugin/knowledge/doi-soat.md`), và `execute_sql` thẳng từ bảng gốc theo công thức trong
+`plugin/knowledge/chi-so/*.md`. Lệch là dừng, tìm nguyên nhân — **đừng sửa SQL cho khớp mù**. Đây chính là
+phép kiểm số 7 trong `nghiem-thu.md`.
 
 ## Bảy quy tắc nghiệp vụ đã đo lại bằng SQL độc lập
 
-Toàn bộ `business-rules.md` đã được kiểm chứng bằng truy vấn thật trên dữ liệu local, không phải đọc tài liệu:
+Toàn bộ `plugin/knowledge/quy-tac-chung.md` đã được kiểm chứng bằng truy vấn thật trên dữ liệu local, không
+phải đọc tài liệu:
 
 | Quy tắc | Đo được |
 |---|---|
@@ -31,8 +29,8 @@ Toàn bộ `business-rules.md` đã được kiểm chứng bằng truy vấn th
 | Lớp thiếu `ngayToChuc` rơi khỏi mọi khoảng lọc | 21 lớp · `AIO.0001.K06` = 54 ghi danh |
 | `active` là cờ ĐÃ THANH TOÁN, không phải "có mặt" | khớp 100% `trangThai='CHINH_THUC'` nhưng **không** khớp `phanLoaiLead` |
 
-Con số trong `business-rules.md` là **ví dụ đo tại một thời điểm** — cần số thì phải TRUY VẤN, tuyệt đối
-không trích số trong tài liệu cho người dùng.
+Con số trong `quy-tac-chung.md`/`chi-so/*.md` là **ví dụ đo tại một thời điểm** — cần số thì phải TRUY VẤN,
+tuyệt đối không trích số trong tài liệu cho người dùng.
 
 ## Khi khách báo "lệch ở lớp X"
 
@@ -52,7 +50,7 @@ báo **1 dòng** ở `QTC.BCQT.K08` → đo ra **390 dòng / 89 lớp**.
 ## Với mỗi báo cáo dựng qua plugin
 
 Skill `dung-bao-cao` bắt buộc: mỗi KPI phải đếm lại bằng **một đường độc lập** (thẻ trên Model thì đếm lại
-bằng `mode:'sql'` từ bảng gốc, và ngược lại). Khớp → nói ✅. Lệch → nói thẳng *"⚠ số này em chưa chắc"*.
-**Tuyệt đối không im lặng.**
+bằng `execute_sql` từ bảng gốc, và ngược lại bằng `execute_question`). Khớp → nói ✅. Lệch → nói thẳng
+*"⚠ số này em chưa chắc"*. **Tuyệt đối không im lặng.**
 
-⚠ Bước này phụ thuộc `mode:'sql'` chạy được — xem [[gotcha-sql-phai-ghi-schema]].
+⚠ Bước này phụ thuộc `execute_sql` viết đúng schema — xem [[gotcha-sql-phai-ghi-schema]].
