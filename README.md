@@ -17,7 +17,9 @@ Trong màn hình `/mcp`, chọn dòng `insight` và bấm **Authenticate** — t
 `insight.xteam.edu.vn`, đăng nhập bằng chính tài khoản insight của bạn rồi bấm đồng ý. Xong quay lại gõ
 `/start`.
 
-Bật **auto update** trong màn hình `/plugin` để máy tự cập nhật khi cấu trúc dữ liệu thay đổi.
+Bật **auto update** trong màn hình `/plugin` để máy tự nhận bản plugin mới khi đội kỹ thuật phát hành (sửa
+tri thức nghiệp vụ, sửa skill…). Plugin **không** tự phát hiện khi dữ liệu/cấu trúc bảng bên Metabase thay
+đổi — không còn cơ chế theo dõi trôi schema nào trong plugin.
 
 ## Dùng thế nào
 
@@ -43,8 +45,10 @@ không phải một rào chặn kỹ thuật không thể vượt qua; nếu b�
 xác nhận trước khi làm. Muốn chặn cứng việc sửa báo cáo chung ở mức không thể lách, phải siết **quyền
 collection phía Metabase** cho tài khoản đó — việc này nằm ngoài phạm vi plugin.
 
-Mọi truy vấn số liệu là chỉ đọc theo thiết kế của plugin; plugin không tự chạy các thao tác ghi ngoài việc
-tạo/sửa báo cáo mà bạn yêu cầu.
+Mọi truy vấn số liệu là chỉ đọc theo **quy ước trong hướng dẫn** của plugin — plugin tự giác không chạy thao
+tác ghi ngoài việc tạo/sửa báo cáo bạn yêu cầu. Đây không phải một chặn cứng kỹ thuật: `execute_sql` chạy
+SQL tuỳ ý với đúng quyền tài khoản insight của bạn, và không còn dòng code nào của plugin đứng chắn trên
+đường đó. Muốn chặn cứng phải siết ở quyền Metabase, như đoạn trên đã nói.
 
 Gỡ báo cáo = đưa vào Thùng rác Metabase (khôi phục được), không xoá vĩnh viễn.
 

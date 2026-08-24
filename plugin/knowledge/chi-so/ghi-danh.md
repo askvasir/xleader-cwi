@@ -1,5 +1,9 @@
 # Ghi danh chính thức
 
+> ⚠ Con số trong dòng đối soát dưới đây là ẢNH CHỤP tại thời điểm đối chứng, KHÔNG phải số hiện tại — dữ
+> liệu đổi hằng giờ. Muốn có số thật thì luôn chạy lại câu SQL. Tuyệt đối không trích số trong tài liệu này
+> ra trả lời.
+
 Cách tính: đếm `_enrollment` có `trangThai = 'CHINH_THUC'`, bắt buộc join sang `_class` còn tồn tại
 (`deletedAt is null`) — hệ thống hiện có đúng 1 ghi danh CHÍNH THỨC trỏ tới một lớp không còn tồn tại; bỏ
 join này đếm ra 5.067 thay vì con số đúng 5.066.
@@ -12,9 +16,9 @@ select count(*)::int as ghi_danh_chinh_thuc
    and e."trangThai" = 'CHINH_THUC'
 ```
 
-Đã đối soát với Model "Ghi danh (HV theo lớp)" (định nghĩa đã lưu của câu hỏi "Số ghi danh chính thức",
-đọc qua `read_resource` vì câu hỏi có tham số nên `execute_question` không chạy trực tiếp được — chạy lại
-đúng công thức đó qua `execute_sql` cho ra cùng một số) ngày 2026-08-24: 5.066 = 5.066.
+Đã đối chứng CÔNG THỨC với Model "Ghi danh (HV theo lớp)" (định nghĩa đã lưu của câu hỏi "Số ghi danh chính
+thức", đọc qua `read_resource` vì câu hỏi có tham số nên `execute_question` không chạy trực tiếp được — chạy
+lại đúng công thức đó qua `execute_sql`) ngày 2026-08-24 — hai đường cho cùng một kết quả (khi đó: 5.066).
 
 ## Bẫy của chỉ số này
 

@@ -1,5 +1,9 @@
 # Đối tác doanh nghiệp
 
+> ⚠ Con số trong dòng đối soát dưới đây là ẢNH CHỤP tại thời điểm đối chứng, KHÔNG phải số hiện tại — dữ
+> liệu đổi hằng giờ. Muốn có số thật thì luôn chạy lại câu SQL. Tuyệt đối không trích số trong tài liệu này
+> ra trả lời.
+
 Cách tính: theo từng công ty của học viên, đếm số học viên (distinct) và số lượt ghi danh CHÍNH THỨC.
 
 ```sql
@@ -16,11 +20,12 @@ select cty."name" as cong_ty,
  limit 50
 ```
 
-Đã đối soát với Model "Đối tác doanh nghiệp" ngày 2026-08-24: số công ty 940 = 940, tổng số học viên
-1.683 = 1.683 (khớp tuyệt đối). Tổng số lượt ghi danh: SQL (chỉ tính CHINH_THUC) ra 4.880, Model (tính
-TẤT CẢ trạng thái ghi danh, không lọc CHINH_THUC) ra 4.883 — chênh 3, đúng bằng đúng số ghi danh
-không-CHINH_THUC còn lại của hệ thống tại các công ty đó (đã xác minh riêng qua `execute_sql`), không phải
-sai số đếm.
+Đã đối chứng CÔNG THỨC với Model "Đối tác doanh nghiệp" ngày 2026-08-24 — hai đường cho cùng một kết quả
+(khi đó: số công ty 940, tổng số học viên 1.683, khớp tuyệt đối). Tổng số lượt ghi danh: khi đó SQL (chỉ
+tính CHINH_THUC) ra 4.880, Model (tính TẤT CẢ trạng thái ghi danh, không lọc CHINH_THUC) ra 4.883 — chênh 3,
+đúng bằng đúng số ghi danh không-CHINH_THUC còn lại của hệ thống tại các công ty đó (đã xác minh riêng qua
+`execute_sql`), không phải sai số đếm — chênh lệch đó là do khác định nghĩa (cấu trúc), không đổi theo thời
+gian như con số tuyệt đối.
 
 ## Bẫy của chỉ số này
 

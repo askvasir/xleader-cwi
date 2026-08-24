@@ -17,16 +17,18 @@ số đó nghĩa là gì — chứ không phải khoe kỹ thuật. Mọi truy v
 | Số vé bán | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/so-ve.md` |
 | Ghi danh / sĩ số / học viên | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/ghi-danh.md` |
 | Lead / phễu / nguồn cơ hội | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/co-hoi-tang-pheu.md` |
+| Kênh / nguồn (Paid Sale · Organic Sale · Nguồn chưa rõ) | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/co-hoi-tang-pheu.md` |
 | Lớp học / lịch / giảng viên | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/lop-hoc.md` |
 | Công ty đối tác | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/doi-tac-doanh-nghiep.md` |
 | Doanh số của MỘT Sale cụ thể | + `${CLAUDE_PLUGIN_ROOT}/knowledge/chua-chot/quy-ket-sale.md` |
 | Người dùng nói số lệch sổ sách | + `${CLAUDE_PLUGIN_ROOT}/knowledge/chua-chot/dinh-nghia-doanh-thu.md` |
 | Không khớp chỉ số nào ở trên | `${CLAUDE_PLUGIN_ROOT}/knowledge/quy-tac-chung.md` |
 | Cần tên bảng, tên schema, database_id | `${CLAUDE_PLUGIN_ROOT}/knowledge/index.md` |
-| Cần đếm lại bằng đường độc lập | `${CLAUDE_PLUGIN_ROOT}/knowledge/doi-soat.md` |
+| Cần đếm lại bằng đường độc lập / danh sách 7 Model có sẵn | `${CLAUDE_PLUGIN_ROOT}/knowledge/doi-soat.md` |
 
-Đọc ĐÚNG một hàng. Không đọc cả thư mục. Không đọc `quy-tac-chung.md` khi đã có file chỉ số —
-mỗi file chỉ số đã tự mang theo bẫy của nó.
+Đọc ĐÚNG một hàng. Không đọc cả thư mục. Không cần đọc `quy-tac-chung.md` khi file chỉ số đã trả lời đủ —
+nhưng nếu câu hỏi chạm tới thứ file chỉ số không nói (một cách phân loại, một cột lạ, một khoảng trống dữ
+liệu), thì đọc.
 
 ## Bắt buộc: đọc trước khi trả lời
 

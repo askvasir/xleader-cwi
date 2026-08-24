@@ -1,5 +1,9 @@
 # Số vé bán
 
+> ⚠ Con số trong dòng đối soát dưới đây là ẢNH CHỤP tại thời điểm đối chứng, KHÔNG phải số hiện tại — dữ
+> liệu đổi hằng giờ. Muốn có số thật thì luôn chạy lại câu SQL. Tuyệt đối không trích số trong tài liệu này
+> ra trả lời.
+
 Cách tính: tổng số lượng vé (`Σ soLuong`, không phải đếm dòng) trong các dòng đơn ở cơ hội đã "chốt"
 (tầng phễu C4 hoặc C41).
 
@@ -12,8 +16,8 @@ select sum(oi."soLuong")::int as so_ve
    and op."phanLoaiLead" in ('LEAD_C4', 'LEAD_C41')
 ```
 
-Đã đối soát với Model "Dòng đơn hàng (Vé)" (câu hỏi "Vé đã bán (dòng đơn chốt)") ngày 2026-08-24:
-4.730 = 4.730.
+Đã đối chứng CÔNG THỨC với Model "Dòng đơn hàng (Vé)" (câu hỏi "Vé đã bán (dòng đơn chốt)") ngày 2026-08-24
+— hai đường cho cùng một kết quả (khi đó: 4.730).
 
 ## Bẫy của chỉ số này
 

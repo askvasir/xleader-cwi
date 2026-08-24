@@ -27,3 +27,17 @@ với Model rồi mới tiếp tục.
 
 Bump version ở **cả hai** manifest (`.claude-plugin/marketplace.json` và `plugin/.claude-plugin/plugin.json`)
 mới phát hành.
+
+## Trạng thái hiện tại — ĐỌC TRƯỚC KHI PHÁT HÀNH
+
+- **Bảy phép nghiệm thu chưa từng chạy đủ lần nào** — mỗi phép cần người bấm duyệt OAuth thật, chưa ai chạy
+  trọn vẹn cả bảy trong một phiên.
+- **Chỉ tiêu ngân sách token của spec §7 (dưới 3.000 token cho cả hỏi lẫn đáp) đang vượt** — ước đo cuối
+  3.120–3.874 token. Spec bắt buộc: vượt chỉ tiêu thì phải báo người dùng và cân nhắc lại kiến trúc,
+  **không được lặng lẽ bỏ chỉ tiêu**. Phép đo thật (chạy trong một phiên Claude Code sạch, theo cách đo ở
+  spec §7) chưa chạy — con số 3.120–3.874 là ước tính, chưa phải phép đo chính thức.
+- **Version cố ý giữ `0.1.0` ở cả hai manifest** vì hai lý do trên — bảy phép chưa chạy đủ và chỉ tiêu token
+  chưa đo thật — nên **không máy nào tự cập nhật** qua auto-update. Chỉ bump khi bảy phép xanh đủ và phép đo
+  token đã chạy thật (dù kết quả là đạt, hay là vượt nhưng đã báo người dùng và quyết định đi tiếp).
+- **Hợp đồng payload dashboard chưa kiểm bằng thực nghiệm** — xem mục "Hợp đồng payload dashboard" trong
+  `plugin/skills/dung-bao-cao/SKILL.md`.

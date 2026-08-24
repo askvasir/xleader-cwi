@@ -1,5 +1,9 @@
 # Cơ hội theo tầng phễu
 
+> ⚠ Con số trong dòng đối soát dưới đây là ẢNH CHỤP tại thời điểm đối chứng, KHÔNG phải số hiện tại — dữ
+> liệu đổi hằng giờ. Muốn có số thật thì luôn chạy lại câu SQL. Tuyệt đối không trích số trong tài liệu này
+> ra trả lời.
+
 Cách tính: phễu CỘNG DỒN — một cơ hội đang ở tầng C4 vẫn được tính ở CẢ 4 tầng (C1≥C2≥C3≥C4), khác với
 phân loại rời-từng-tầng (nháp ban đầu lệch hẳn với Model vì lý do này, đúng như cảnh báo trước khi đối
 soát). Một cơ hội gắn nhiều lớp thì tính lặp lại ở mỗi lớp nó gắn — đúng theo cách Model đang hiển thị cho
@@ -27,8 +31,8 @@ select t.tang, count(*)::int as so_co_hoi
  order by 1
 ```
 
-Đã đối soát với Model "Cơ hội theo tầng phễu" (câu hỏi "Phễu chuyển đổi (C1 → C4)") ngày 2026-08-24:
-C1 22.756 = 22.756 · C2 11.365 = 11.365 · C3 5.080 = 5.080 · C4 4.712 = 4.712.
+Đã đối chứng CÔNG THỨC với Model "Cơ hội theo tầng phễu" (câu hỏi "Phễu chuyển đổi (C1 → C4)") ngày
+2026-08-24 — hai đường cho cùng một kết quả (khi đó: C1 22.756 · C2 11.365 · C3 5.080 · C4 4.712).
 
 ## Bẫy của chỉ số này
 
@@ -40,3 +44,10 @@ C1 22.756 = 22.756 · C2 11.365 = 11.365 · C3 5.080 = 5.080 · C4 4.712 = 4.712
   biến mất khỏi mọi lớp còn lại của nó; lỗi thật đã làm mất 118 lượt (cơ hội × lớp) trên 18 lớp.
 - Phễu là CỘNG DỒN, không phải rời-từng-tầng — đừng lọc `phanLoaiLead = 'LEAD_C1'` đúng nghĩa đen để lấy
   số C1, phải dùng mảng `any()` gồm cả các tầng cao hơn như SQL trên.
+- **Phân loại Kênh của một cơ hội:** `nguon like '%ADS'` → **Paid Sale** · `nguon is null` → **Nguồn chưa
+  rõ** · còn lại → **Organic Sale**. Dùng đúng 3 tên nhãn này, đừng tự dịch khác.
+  ⚠ **Nhánh NULL riêng là BẮT BUỘC** — `NULL like '%ADS'` cho kết quả NULL nên rơi thẳng vào `else`, khiến
+  khoảng 284 cơ hội chưa nhập nguồn bị đếm nhầm thành "miễn phí". Ảnh hưởng không đều theo tầng phễu, tầng C3
+  từng lệch tới 17,3%.
+  ⚠ Chỉ số "Phân loại kênh" CHƯA đối soát được với Model nên không có khối SQL chuẩn — tự viết thì bắt buộc
+  theo quy tắc trên, và phải nói với người dùng là số này chưa được đối chứng.

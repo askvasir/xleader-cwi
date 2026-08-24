@@ -39,6 +39,7 @@ select table_name, string_agg(column_name, ' · ') as cols
 - Số vé bán → `chi-so/so-ve.md`
 - Ghi danh / sĩ số → `chi-so/ghi-danh.md`
 - Lead / phễu / nguồn → `chi-so/co-hoi-tang-pheu.md`
+- Kênh / nguồn (Paid Sale · Organic Sale · Nguồn chưa rõ) → `chi-so/co-hoi-tang-pheu.md`
 - Lớp học / lịch → `chi-so/lop-hoc.md`
 - Công ty đối tác → `chi-so/doi-tac-doanh-nghiep.md`
 - Quy tắc chung → `quy-tac-chung.md`

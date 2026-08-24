@@ -16,6 +16,7 @@ server `insight`.
 | Số vé bán | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/so-ve.md` |
 | Ghi danh / sĩ số / học viên | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/ghi-danh.md` |
 | Lead / phễu / nguồn cơ hội | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/co-hoi-tang-pheu.md` |
+| Kênh / nguồn (Paid Sale · Organic Sale · Nguồn chưa rõ) | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/co-hoi-tang-pheu.md` |
 | Lớp học / lịch / giảng viên | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/lop-hoc.md` |
 | Công ty đối tác | `${CLAUDE_PLUGIN_ROOT}/knowledge/chi-so/doi-tac-doanh-nghiep.md` |
 | Doanh số của MỘT Sale cụ thể | + `${CLAUDE_PLUGIN_ROOT}/knowledge/chua-chot/quy-ket-sale.md` |
@@ -24,8 +25,9 @@ server `insight`.
 | Cần tên bảng, tên schema, database_id | `${CLAUDE_PLUGIN_ROOT}/knowledge/index.md` |
 | Cần đếm lại bằng đường độc lập / danh sách 7 Model có sẵn | `${CLAUDE_PLUGIN_ROOT}/knowledge/doi-soat.md` |
 
-Đọc ĐÚNG một hàng. Không đọc cả thư mục. Không đọc `quy-tac-chung.md` khi đã có file chỉ số —
-mỗi file chỉ số đã tự mang theo bẫy của nó.
+Đọc ĐÚNG một hàng. Không đọc cả thư mục. Không cần đọc `quy-tac-chung.md` khi file chỉ số đã trả lời đủ —
+nhưng nếu câu hỏi chạm tới thứ file chỉ số không nói (một cách phân loại, một cột lạ, một khoảng trống dữ
+liệu), thì đọc.
 
 ## Trước khi dựng
 
@@ -51,7 +53,9 @@ Chạy một truy vấn thử (`execute_sql`, `database_id: 2`) trên bảng li�
    - Khớp → nói ✅ "đã đối chiếu, số khớp".
    - Lệch → nói thẳng: *"⚠ số này em chưa chắc — cách đếm khác ra <X>, lệch <Y>."* **Tuyệt đối không im
      lặng.**
-5. Bộ lọc — áp dụng sẵn 3 bài học đã trả giá thật khi làm báo cáo cho công ty này:
+5. Bộ lọc — áp dụng sẵn 3 bài học đã trả giá thật khi làm báo cáo cho công ty này. Ba điều này đúc từ REST
+   API của Metabase (kiến trúc cũ), **chưa được kiểm lại qua MCP gốc** — nếu tool báo lỗi tên trường thì tin
+   thông điệp lỗi của Metabase, đừng tin ba dòng dưới đây:
    - Biến native chỉ nhận MỘT giá trị ⇒ tham số dashboard phải đặt `isMultiSelect: false`.
    - Khi người dùng xoá trắng một ô lọc, Metabase gửi **chuỗi rỗng** chứ không phải "không gửi gì" ⇒ mọi khối
      lọc phải mở đầu bằng `{{x}} = '' or …` để chuỗi rỗng nghĩa là "không lọc".
@@ -85,7 +89,15 @@ Trước khi `create_question` / `create_dashboard`:
 
 ## Hợp đồng payload dashboard
 
-Hợp đồng payload — xem Task 6, sẽ điền sau khi chạy thật trên local.
+Hình dạng payload của `create_dashboard`/`update_dashboard` (và `create_question`/`update_question`) qua MCP
+gốc **chưa được kiểm bằng thực nghiệm**. Đừng đoán trường nào bắt buộc, tên trường, hay cấu trúc
+`dashcards`/`parameter_mappings`.
+
+Cách làm đúng: gọi tool với tham số **tối thiểu**, rồi đọc thông điệp lỗi Metabase trả về để biết trường nào
+còn thiếu/sai — thông điệp lỗi là nguồn sự thật, không phải suy đoán trước. Lặp lại cho tới khi tool chạy
+được. Nếu vẫn không dựng được sau vài lần thử, **nói thật với người dùng là chưa làm được việc này**
+("Em chưa dựng được phần bố cục này qua công cụ hiện có, để em báo lại đội kỹ thuật") — đừng bịa payload
+hay báo thành công khi thẻ/dashboard thực ra lỗi.
 
 ## Báo cáo chung của công ty
 

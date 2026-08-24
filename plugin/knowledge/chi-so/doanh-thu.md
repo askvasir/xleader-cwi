@@ -1,5 +1,9 @@
 # Doanh thu NET (chưa VAT)
 
+> ⚠ Con số trong dòng đối soát dưới đây là ẢNH CHỤP tại thời điểm đối chứng, KHÔNG phải số hiện tại — dữ
+> liệu đổi hằng giờ. Muốn có số thật thì luôn chạy lại câu SQL. Tuyệt đối không trích số trong tài liệu này
+> ra trả lời.
+
 Cách tính: tiền vé đã bán, chưa VAT, tính theo ngày lớp khai giảng, chỉ tính dòng đơn ở cơ hội đã "chốt"
 (tầng phễu C4 hoặc C41).
 
@@ -16,8 +20,8 @@ select date_trunc('month', c."ngayToChuc")::date as thang,
  order by 1
 ```
 
-Đã đối soát với Model "Dòng đơn hàng (Vé)" (câu hỏi tổng hợp "Doanh thu thực tế (net)") ngày 2026-08-24:
-53.439.410.000 = 53.439.410.000.
+Đã đối chứng CÔNG THỨC với Model "Dòng đơn hàng (Vé)" (câu hỏi tổng hợp "Doanh thu thực tế (net)") ngày
+2026-08-24 — hai đường cho cùng một kết quả (khi đó: 53.439.410.000).
 
 ## Bẫy của chỉ số này
 

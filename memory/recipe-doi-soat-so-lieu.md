@@ -14,10 +14,10 @@ qua các cổng kiểm "thẻ có chạy không" một cách sạch sẽ.
 `plugin/knowledge/chi-so/*.md`. Lệch là dừng, tìm nguyên nhân — **đừng sửa SQL cho khớp mù**. Đây chính là
 phép kiểm số 7 trong `nghiem-thu.md`.
 
-## Bảy quy tắc nghiệp vụ đã đo lại bằng SQL độc lập
+## 10 quy tắc nghiệp vụ, bảy trong số đó đã đo lại bằng SQL độc lập
 
-Toàn bộ `plugin/knowledge/quy-tac-chung.md` đã được kiểm chứng bằng truy vấn thật trên dữ liệu local, không
-phải đọc tài liệu:
+`plugin/knowledge/quy-tac-chung.md` có 10 quy tắc; bảy quy tắc dưới đây đã được kiểm chứng bằng truy vấn
+thật trên dữ liệu local, không phải đọc tài liệu:
 
 | Quy tắc | Đo được |
 |---|---|

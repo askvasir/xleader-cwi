@@ -1,5 +1,9 @@
 # Lớp học
 
+> ⚠ Con số trong dòng đối soát dưới đây là ẢNH CHỤP tại thời điểm đối chứng, KHÔNG phải số hiện tại — dữ
+> liệu đổi hằng giờ. Muốn có số thật thì luôn chạy lại câu SQL. Tuyệt đối không trích số trong tài liệu này
+> ra trả lời.
+
 Cách tính: sĩ số CHÍNH THỨC (`trangThai = 'CHINH_THUC'`) theo từng lớp, sắp theo ngày tổ chức gần nhất.
 Model "Lớp học (Buổi đào tạo)" không có sẵn cột "sĩ số chỉ tính chính thức" theo từng lớp nên đối soát ở
 mức TỔNG hệ thống, qua 2 đường độc lập.
@@ -16,10 +20,11 @@ select c."maLopHoc", k."tenKhoaHoc", c."ngayToChuc", c."siSoMucTieu",
  limit 50
 ```
 
-Đã đối soát với Model "Lớp học (Buổi đào tạo)" ngày 2026-08-24: (a) tổng "Doanh thu net (VND)" cộng dồn
-qua toàn bộ 197 lớp (cùng công thức Model dùng, nối qua `_enrollment."dongDonId"`) = 53.582.870.000 =
-53.582.870.000 — xác nhận cấu trúc join theo từng lớp ở SQL trên là đúng; (b) tổng sĩ số chính thức
-cộng dồn qua 197 lớp = 5.066, khớp đúng số đã đối soát ở `chi-so/ghi-danh.md`.
+Đã đối chứng CÔNG THỨC với Model "Lớp học (Buổi đào tạo)" ngày 2026-08-24 — hai đường cho cùng một kết quả:
+(a) tổng "Doanh thu net (VND)" cộng dồn qua toàn bộ 197 lớp (cùng công thức Model dùng, nối qua
+`_enrollment."dongDonId"`), khi đó 53.582.870.000 ở cả hai đường — xác nhận cấu trúc join theo từng lớp ở
+SQL trên là đúng; (b) tổng sĩ số chính thức cộng dồn qua 197 lớp, khi đó 5.066 ở cả hai đường, khớp đúng con
+số cùng thời điểm ở `chi-so/ghi-danh.md`.
 
 ## Bẫy của chỉ số này
 

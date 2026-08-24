@@ -23,6 +23,11 @@ Ba dữ kiện đo được trong phiên 24/08 dựng nên quyết định này:
 Hệ quả: mỗi nhân viên đăng nhập bằng **chính tài khoản insight của họ**, quyền trên Metabase là quyền thật của
 họ, và plugin không bao giờ chạm vào mật khẩu.
 
+**Ghi nhận khi thực thi:** Task 2b (cắt lát tri thức thành `chi-so/*.md` + `quy-tac-chung.md` + `chua-chot/*.md`
+thay vì một `knowledge/business-rules.md` gộp) được chèn thêm giữa kế hoạch, sau khi đo sàn token thật cho thấy
+file gộp một mình đã tốn ~4.300 token mỗi câu hỏi — vỡ trần trước khi chạm dữ liệu. Xem
+`.superpowers/sdd/2026-08-24-tinh-gon-v02/task-2b-brief.md`.
+
 ## 2. Cái phải trả giá, ghi rõ để không ai tưởng là miễn phí
 
 **a) Không còn chỗ nén response.** §3 của tài liệu định hướng đặt ngân sách token làm yêu cầu kỹ thuật chính.
@@ -52,21 +57,28 @@ ngược lại với người dùng (xem §6 — Hai skill và /start).
 
 ```
 xleader-cwi/
-├── .claude-plugin/marketplace.json     v0.2.0
+├── .claude-plugin/marketplace.json     giữ 0.1.0 cho tới khi 7 phép nghiệm thu + phép đo token chạy thật
 ├── CLAUDE.md                           viết lại
 ├── README.md                           viết lại (cài + duyệt OAuth)
-├── nghiem-thu.md                       6 phép kiểm tay trước mỗi lần phát hành
+├── nghiem-thu.md                       7 phép kiểm tay trước mỗi lần phát hành
 ├── docs/superpowers/specs/             tài liệu này
-├── memory/                             8 file → 5 + chỉ mục
+├── memory/                             8 file → 6 + chỉ mục
 └── plugin/
-    ├── .claude-plugin/plugin.json      v0.2.0
+    ├── .claude-plugin/plugin.json      giữ 0.1.0, đồng bộ với manifest trên
     ├── .mcp.json                       toàn bộ "hạ tầng", 6 dòng
     ├── commands/start.md
     ├── knowledge/index.md
-    ├── knowledge/business-rules.md
+    ├── knowledge/quy-tac-chung.md
+    ├── knowledge/doi-soat.md
+    ├── knowledge/chi-so/*.md           một file mỗi chỉ số lõi (6 file)
+    ├── knowledge/chua-chot/*.md        câu hỏi nghiệp vụ chưa chốt (2 file)
     ├── skills/hoi-du-lieu/SKILL.md
     └── skills/dung-bao-cao/SKILL.md
 ```
+
+Ghi chú thực thi: `knowledge/business-rules.md` được kế hoạch ban đầu ở đây nhưng chưa từng lên cây làm việc
+— Task 2b (xem ghi nhận ở §1) cắt nó thành `chi-so/*.md` + `quy-tac-chung.md` + `chua-chot/*.md` +
+`doi-soat.md` trước khi commit đầu tiên.
 
 `plugin/.mcp.json`:
 
@@ -92,7 +104,7 @@ mật khẩu/Keychain/phiên, đường elicitation, vân tay chống trôi sche
 
 ## 4. Tri thức: nội dung phải có
 
-### 4.1 `knowledge/business-rules.md`
+### 4.1 `knowledge/business-rules.md` (khi thực thi cắt thành `quy-tac-chung.md` + `chi-so/*.md` + `chua-chot/*.md`, xem ghi nhận Task 2b ở §1)
 
 Giữ nguyên 10 quy tắc hiện có và mục "Khoảng trống dữ liệu". Bổ sung hai khối:
 
@@ -100,7 +112,9 @@ Giữ nguyên 10 quy tắc hiện có và mục "Khoảng trống dữ liệu". 
 "Cách tính:" bằng tiếng Việt thường để skill chép thẳng vào câu trả lời · câu SQL đã đối soát.
 
 Bảy chỉ số: doanh thu NET (chưa VAT) · số vé bán (`Σ soLuong`) · ghi danh chính thức · cơ hội theo tầng phễu ·
-phân loại kênh · lớp học (lịch/sĩ số/doanh thu lớp) · đối tác doanh nghiệp.
+phân loại kênh · lớp học (lịch/sĩ số/doanh thu lớp) · đối tác doanh nghiệp. **Thực tế khi thực thi:** phân
+loại kênh không đạt được đối soát Model↔SQL (§4.2) trong thời gian refactor nên KHÔNG có khối SQL chuẩn
+riêng — chỉ còn quy tắc phân loại, chép trong `chi-so/co-hoi-tang-pheu.md`, đánh dấu rõ "chưa đối chứng".
 
 Mọi khối phải mang sẵn ba luật sống còn: ghi đủ `"<schema>"."<bảng>"`, `INNER JOIN _order` khi tính tiền,
 `"deletedAt" is null`.
@@ -120,8 +134,9 @@ dừng và báo người dùng. Đây là bất biến kiểu Model↔SQL của 
 ### 4.3 `knowledge/index.md`
 
 Định hướng nhanh: 10 bảng gốc dùng cho việc gì · `database_id` · tên schema + câu SQL tự kiểm · ba cạm bẫy hay
-gặp nhất · trỏ sang `business-rules.md`. Bỏ bảng 7 Model với vai trò "ưu tiên dùng", thay bằng vai trò
-"đường đối chứng".
+gặp nhất · bảng "hỏi về X → đọc file nào" trỏ sang đúng lát cắt trong `chi-so/*.md`/`quy-tac-chung.md`
+(khi thực thi thay chỗ trỏ sang `business-rules.md` gộp). Bỏ bảng 7 Model với vai trò "ưu tiên dùng", thay
+bằng vai trò "đường đối chứng".
 
 ## 5. Kỷ luật token (thay cho lớp nén đã bỏ)
 
@@ -183,24 +198,26 @@ tạo trong thư mục cá nhân, tên tiền tố `[thử nghiệm]`, archive n
 
 ## 8. Kiểm chứng thay cho test tự động
 
-`nghiem-thu.md` — 6 phép kiểm tay (~5 phút) chạy trước mỗi lần phát hành:
+`nghiem-thu.md` — 7 phép kiểm tay (~5-10 phút) chạy trước mỗi lần phát hành:
 
 1. Cài plugin sạch → server `insight` hiện trong `/mcp` và duyệt OAuth được.
 2. `select 1` chạy được.
 3. Tra cấu trúc một bảng bằng `information_schema` — dưới 1.000 token.
 4. Một câu hỏi thật trả lời đúng định dạng 3 phần, có "Cách tính:".
-5. Dựng một thẻ trong thư mục cá nhân, mở xem được, archive lại được.
-6. Đối soát chéo một số KPI: SQL chuẩn ↔ Model tương ứng, hai số khớp.
+5. Chặn đúng câu hỏi quy kết Sale chưa chốt — model hỏi lại thay vì tự chọn cách quy kết rồi trả thẳng số.
+6. Dựng một thẻ trong thư mục cá nhân, mở xem được, archive lại được.
+7. Đối soát chéo một số KPI: SQL chuẩn ↔ Model tương ứng, hai số khớp.
 
-## 9. Memory sau refactor (8 → 5 + chỉ mục)
+## 9. Memory sau refactor (8 → 6 + chỉ mục)
 
 | File | Số phận |
 |---|---|
 | `kien-truc-plugin` | **viết lại** — kiến trúc 0 dòng code, remote MCP, OAuth scope |
 | `recipe-doi-soat-so-lieu` | **giữ**, sửa chỗ nhắc `cwi_query`/Model |
 | `gotcha-sql-phai-ghi-schema` | **giữ** — quan trọng hơn trước, SQL là đường duy nhất |
-| `guardrail-hai-lop` | **co lại** thành ghi chú ngắn: lỗ hổng quyền collection vẫn còn + toạ độ commit script |
+| `quyen-collection-con-ho` (tên khi thực thi, kế hoạch ban đầu gọi `guardrail-hai-lop`) | **co lại** thành ghi chú ngắn: lỗ hổng quyền collection vẫn còn + toạ độ commit script |
 | `gotcha-mcp-goc-phinh-response` | **mới** — các số đo ở §2a |
+| `chua-chot-nghiep-vu` | **mới** khi thực thi — hai câu hỏi nghiệp vụ chưa chốt kèm số đo chênh lệch thật, không có trong kế hoạch ban đầu ở bảng này |
 | `tu-dien-du-lieu` · `gotcha-rpc-khong-ep-tham-so` · `gotcha-patch-thoat-thu-muc` · `gotcha-moi-truong-va-metabase-api` | **xoá** — mô tả code đã chết |
 
 ## 10. `CLAUDE.md` mới — ràng buộc

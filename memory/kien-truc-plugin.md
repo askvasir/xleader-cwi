@@ -35,7 +35,7 @@ khẩu.
 | `plugin/.mcp.json` | khai server `insight` — toàn bộ "hạ tầng" của plugin |
 | `plugin/knowledge/` | tri thức nghiệp vụ, cắt lát theo chỉ số (xem dưới) |
 | `plugin/skills/hoi-du-lieu/SKILL.md` | kỷ luật trả lời câu hỏi số liệu + kỷ luật token |
-| `plugin/skills/dung-bao-cao/SKILL.md` | quy trình dựng/sửa/gỡ báo cáo + hợp đồng payload MCP |
+| `plugin/skills/dung-bao-cao/SKILL.md` | quy trình dựng/sửa/gỡ báo cáo — mục "Hợp đồng payload dashboard" hiện thú nhận CHƯA kiểm bằng thực nghiệm, chưa phải hợp đồng thật |
 | `plugin/commands/start.md` | nối MCP, kiểm nhanh, 5 câu hỏi mẫu |
 
 Tool hay dùng của server `insight`: `execute_sql` (chỉ đọc, mọi câu trả lời số liệu đi qua đây) ·
@@ -62,7 +62,7 @@ token trước khi chạm dữ liệu. Vì vậy tri thức được cắt lát 
 |---|---|
 | `knowledge/index.md` | database_id, schema, 10 bảng gốc dùng vào việc gì, cách tra cấu trúc rẻ, bảng điều hướng "hỏi về X → đọc file nào" |
 | `knowledge/quy-tac-chung.md` | 10 quy tắc nghiệp vụ đúc kết từ nhiều tháng đối soát + khoảng trống dữ liệu |
-| `knowledge/chi-so/*.md` | một file mỗi chỉ số lõi (doanh thu, số vé, ghi danh, cơ hội/phễu, lớp học, đối tác doanh nghiệp) — mỗi file có "Cách tính:", câu SQL đã đối soát với Model, và bẫy riêng của chỉ số đó |
+| `knowledge/chi-so/*.md` | một file mỗi chỉ số lõi (doanh thu, số vé, ghi danh, cơ hội/phễu, lớp học, đối tác doanh nghiệp) — mỗi file có "Cách tính:", câu SQL đã đối soát với Model, và bẫy riêng của chỉ số đó. Chỉ số thứ 7 "Phân loại kênh" CÓ CHỦ Ý không có khối SQL chuẩn riêng — chưa đối soát được với Model nên chỉ có quy tắc phân loại (trong `chi-so/co-hoi-tang-pheu.md`), không có "Đã đối soát" |
 | `knowledge/doi-soat.md` | 7 Model dùng làm đường đối chứng độc lập (không dùng để trả lời trực tiếp) |
 | `knowledge/chua-chot/*.md` | các câu hỏi nghiệp vụ chưa chốt quy tắc — xem [[chua-chot-nghiep-vu]] |
 
@@ -77,8 +77,8 @@ sửa tri thức/skill → chạy thật câu hỏi mẫu qua execute_sql của 
 chạy đủ 7 phép trong nghiem-thu.md → commit
 ```
 
-`nghiem-thu.md` ở gốc repo là checklist kiểm tay trước mỗi lần phát hành, thay cho 64 test tự động của kiến
-trúc cũ.
+`nghiem-thu.md` ở gốc repo là checklist kiểm tay trước mỗi lần phát hành — kiến trúc hiện tại không có test
+tự động nào.
 
 ## Phát hành
 
