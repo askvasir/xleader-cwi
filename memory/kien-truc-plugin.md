@@ -35,7 +35,7 @@ khẩu.
 | `plugin/.mcp.json` | khai server `insight` — toàn bộ "hạ tầng" của plugin |
 | `plugin/knowledge/` | tri thức nghiệp vụ, cắt lát theo chỉ số (xem dưới) |
 | `plugin/skills/hoi-du-lieu/SKILL.md` | kỷ luật trả lời câu hỏi số liệu + kỷ luật token |
-| `plugin/skills/dung-bao-cao/SKILL.md` | quy trình dựng/sửa/gỡ báo cáo — mục "Hợp đồng payload dashboard" hiện thú nhận CHƯA kiểm bằng thực nghiệm, chưa phải hợp đồng thật |
+| `plugin/skills/dung-bao-cao/SKILL.md` | quy trình dựng/sửa/gỡ báo cáo — "Hợp đồng payload dashboard" đã đo thật 08/09; mục "Bộ lọc dashboard" là đường vòng cho việc MCP không tạo được filter → [[gotcha-mcp-khong-tao-duoc-filter]] |
 | `plugin/commands/start.md` | nối MCP, kiểm nhanh, 5 câu hỏi mẫu |
 
 Tool hay dùng của server `insight`: `execute_sql` (chỉ đọc, mọi câu trả lời số liệu đi qua đây) ·

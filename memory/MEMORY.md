@@ -31,6 +31,7 @@
 |---|---|
 | ⚠ Mọi SQL phải ghi đủ `"<schema>"."<bảng>"` — tên trần luôn lỗi. Từ v0.2 đây là đường ghi/đọc DUY NHẤT của plugin nên quên schema vô hiệu cả cơ chế đối soát số | [gotcha-sql-phai-ghi-schema](gotcha-sql-phai-ghi-schema.md) |
 | MCP gốc của Metabase phình response rất tốn token (số đo thật) + CTE có thể gãy qua middleware remap + nhãn enum có tiền tố `LEAD_*` | [gotcha-mcp-goc-phinh-response](gotcha-mcp-goc-phinh-response.md) |
+| ⚠ MCP **không tạo/đọc/sửa được bộ lọc dashboard** và trường thừa bị bỏ im lặng (thành công giả) — kèm đường vòng đã chốt và 4 phương án đã loại, đừng đề xuất lại | [gotcha-mcp-khong-tao-duoc-filter](gotcha-mcp-khong-tao-duoc-filter.md) |
 | Chứng minh trả SỐ ĐÚNG chứ không chỉ CHẠY ĐƯỢC: bất biến Model↔SQL qua `execute_question`/`execute_sql`, 7 quy tắc nghiệp vụ đã đo lại, và các bẫy làm số sai trong im lặng | [recipe-doi-soat-so-lieu](recipe-doi-soat-so-lieu.md) |
 
 ## Liên quan ở repo khác

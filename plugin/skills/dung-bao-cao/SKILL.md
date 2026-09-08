@@ -47,20 +47,54 @@ Chạy một truy vấn thử (`execute_sql`, `database_id: 2`) trên bảng li�
    đó; chỉ viết SQL tay (`construct_native_query`/`execute_sql`) khi Model không đáp ứng được lát cắt cần.
 2. Chỉ 5 kiểu hiển thị: `scalar` · `table` · `bar` · `line` · `funnel`.
 3. **Chạy thử NGAY từng thẻ sau khi tạo** bằng `execute_question`. Thẻ lỗi thì sửa — **không bao giờ bàn
-   giao báo cáo còn thẻ đỏ**.
+   giao báo cáo còn thẻ đỏ**. Thẻ có biến `{{…}}` thì `execute_question` từ chối ("takes parameters") —
+   chạy thử bằng `execute_sql` với giá trị thật thay vào, đừng bỏ qua bước chạy thử.
 4. **Kiểm tra chéo bắt buộc:** với mỗi con số KPI, đếm lại bằng **một đường độc lập** (thẻ dựng trên Model
    thì đếm lại bằng `execute_sql` từ bảng gốc theo đúng công thức trong `chi-so/*.md`, và ngược lại).
    - Khớp → nói ✅ "đã đối chiếu, số khớp".
    - Lệch → nói thẳng: *"⚠ số này em chưa chắc — cách đếm khác ra <X>, lệch <Y>."* **Tuyệt đối không im
      lặng.**
-5. Bộ lọc — áp dụng sẵn 3 bài học đã trả giá thật khi làm báo cáo cho công ty này. Ba điều này đúc từ REST
-   API của Metabase (kiến trúc cũ), **chưa được kiểm lại qua MCP gốc** — nếu tool báo lỗi tên trường thì tin
-   thông điệp lỗi của Metabase, đừng tin ba dòng dưới đây:
-   - Biến native chỉ nhận MỘT giá trị ⇒ tham số dashboard phải đặt `isMultiSelect: false`.
-   - Khi người dùng xoá trắng một ô lọc, Metabase gửi **chuỗi rỗng** chứ không phải "không gửi gì" ⇒ mọi khối
-     lọc phải mở đầu bằng `{{x}} = '' or …` để chuỗi rỗng nghĩa là "không lọc".
-   - Tham số ngày bỏ trống sẽ thành **NULL** (so sánh với NULL luôn rỗng, không báo lỗi) ⇒ dùng
-     `coalesce({{tu}}, '0001-01-01'::date)` / `coalesce({{den}}, '9999-12-31'::date)`.
+5. Cần bộ lọc → đọc "Bộ lọc dashboard" bên dưới **trước khi dựng thẻ đầu tiên**. Chọn sai kiểu thẻ ở bước 1
+   là phải dựng lại từ đầu.
+
+## Bộ lọc dashboard
+
+MCP **không tạo, không đọc, không sửa được** bộ lọc. Đo 08/09: không tool nào có `parameters`; `dashcards`
+chỉ có `add`/`remove`/`move`; `read_resource` trên dashboard chỉ trả về danh sách thẻ. Trường gửi thừa bị
+**vứt âm lặng, vẫn trả 200**.
+
+⛔ Gửi `parameters`/`parameter_mappings` vào bất kỳ tool nào rồi coi là xong — nó "thành công" mà bộ lọc
+không hề tồn tại.
+⛔ Nhét hướng dẫn vào `description` của dashboard rồi bỏ đó (dashboard #9 trên prod đang mắc đúng lỗi này).
+
+Người dùng bấm MỘT lần cho mỗi dashboard, cwi lo toàn bộ phần còn lại:
+
+1. **Dựng thẻ để Metabase tự nối được.** Thẻ MBQL (`construct_query` trỏ Model/bảng), mọi thẻ phơi **cùng
+   một cột lọc**. Metabase tự nối bộ lọc vào mọi thẻ có cột đó — kể cả thẻ cwi thêm SAU khi bộ lọc đã có.
+   SQL tay KHÔNG tự nối được: phải có biến `{{ten_bien}}` và người dùng phải ánh xạ tay từng thẻ ⇒ tránh.
+2. **Lọc theo danh mục thì tạo sẵn câu hỏi nguồn ô lọc** (mẫu có thật: #169 "Danh sách Lớp (nguồn ô lọc)").
+3. **DỪNG LẠI.** Đưa đúng 6 bước, không dựng tiếp, không báo hoàn thành:
+   > Bút chì → biểu tượng phễu → chọn kiểu lọc → chọn cột `<tên cột>` → Metabase hỏi *"nối vào N thẻ khác?"*
+   > bấm **Có** → **Lưu**. Xong rồi anh/chị bấm thử ô lọc một cái, rồi **dán lại đường link trên trình duyệt**
+   > cho em.
+4. **Xác nhận bằng chính cái link đó.** Link chứa slug (`…/dashboard/2?lop=A12`) ⇒ bộ lọc CÓ THẬT, slug là
+   `lop`. Chưa có link thì báo cáo **chưa xong**: nói "còn chờ anh/chị bấm giúp em bước cuối", **cấm** nói
+   đã dựng xong.
+5. Có slug rồi → tự sinh link lọc sẵn cho người dùng, và thêm thẻ mới thoải mái (tự nối).
+
+| Ý nghĩ | Sự thật |
+|---|---|
+| "Tool trả 200 rồi, bộ lọc chắc có" | 200 không chứng minh gì. Chỉ link có slug mới chứng minh. |
+| "Ghi hướng dẫn vào mô tả dashboard là xong việc" | Không ai đọc. Phải nói thẳng với người dùng và chờ. |
+| "Dùng SQL tay cho nhanh, lọc tính sau" | SQL tay không tự nối được bộ lọc. Quyết ngay từ thẻ đầu. |
+
+Biến trong SQL tay (khi buộc phải dùng) — 3 điều đã trả giá, nay khớp tài liệu Metabase:
+- Biến thường chỉ nhận MỘT giá trị ⇒ ô lọc dashboard phải là kiểu chọn một giá trị.
+- Ô lọc bị xoá trắng gửi **chuỗi rỗng** ⇒ mở đầu khối lọc bằng `{{x}} = '' or …`.
+- Tham số ngày bỏ trống thành **NULL**, so sánh im lặng ra rỗng ⇒ `coalesce({{tu}}, '0001-01-01'::date)` /
+  `coalesce({{den}}, '9999-12-31'::date)`.
+- `construct_native_query` tự sinh tag từ tên biến và `display-name` **không sửa được qua MCP** ⇒ đặt tên
+  biến tử tế ngay từ đầu (`ma_lop` → hiện ra "Ma Lop").
 
 ## Sau khi dựng
 
@@ -89,15 +123,17 @@ Trước khi `create_question` / `create_dashboard`:
 
 ## Hợp đồng payload dashboard
 
-Hình dạng payload của `create_dashboard`/`update_dashboard` (và `create_question`/`update_question`) qua MCP
-gốc **chưa được kiểm bằng thực nghiệm**. Đừng đoán trường nào bắt buộc, tên trường, hay cấu trúc
-`dashcards`/`parameter_mappings`.
+Đã đo 08/09 trên prod, không còn phải đoán:
 
-Cách làm đúng: gọi tool với tham số **tối thiểu**, rồi đọc thông điệp lỗi Metabase trả về để biết trường nào
-còn thiếu/sai — thông điệp lỗi là nguồn sự thật, không phải suy đoán trước. Lặp lại cho tới khi tool chạy
-được. Nếu vẫn không dựng được sau vài lần thử, **nói thật với người dùng là chưa làm được việc này**
-("Em chưa dựng được phần bố cục này qua công cụ hiện có, để em báo lại đội kỹ thuật") — đừng bịa payload
-hay báo thành công khi thẻ/dashboard thực ra lỗi.
+- `update_dashboard.dashcards` chỉ nhận `{"action":"add","card_id":N}` · `{"action":"remove","dashcard_id":N}`
+  · `{"action":"move","dashcard_id":N,"position":"top|bottom"}`. Không có `parameter_mappings`.
+- `create_question` nhận `query_handle` từ `construct_query`/`construct_native_query`, không nhận SQL thô.
+- `construct_native_query` **tự phân tích `{{bien}}` thành template-tag**, không phải khai báo thêm.
+- **Trường ngoài schema bị bỏ im lặng.** Nên KHÔNG dùng mẹo "gọi thử rồi đọc lỗi" để dò trường mới — sẽ
+  không có lỗi nào để đọc, chỉ có một thành công giả.
+
+Tool có báo lỗi thì tin thông điệp của Metabase. Không dựng được sau vài lần thử → **nói thật**: *"Em chưa
+dựng được phần này qua công cụ hiện có, để em báo lại đội kỹ thuật."* Đừng bịa payload, đừng báo thành công.
 
 ## Báo cáo chung của công ty
 
