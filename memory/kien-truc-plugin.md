@@ -23,7 +23,11 @@ thẻ và dashboard) đến từ **remote MCP gốc do Metabase tự host**, kh�
 }
 ```
 
-Xác thực là **OAuth 2.1 per-user**: người dùng gõ `/mcp` → chọn `insight` → `Authenticate`, Claude Code tự lo
+Khai báo này **chỉ có hiệu lực ở Claude Code** (terminal, VS Code, tab Code) và Cowork. Trong khung chat của
+app Claude/claude.ai, kết nối phải là **connector cấp tổ chức** trỏ cùng URL → [[gotcha-mcp-khong-toi-duoc-chat]].
+
+Xác thực là **OAuth 2.1 per-user**: ở Claude Code người dùng gõ `/mcp` → chọn `insight` → `Authenticate`
+(ở khung chat thì vào Connectors bấm `Connect`), Claude tự lo
 toàn bộ luồng OAuth (mở trình duyệt, PKCE, lưu token) và tự quản lý việc lưu token. Plugin **không chạm vào
 mật khẩu hay bất kỳ thông tin đăng nhập nào** — không có chỗ nào trong plugin đọc, ghi, hay yêu cầu nhập mật
 khẩu.
@@ -82,8 +86,10 @@ tự động nào.
 
 ## Phát hành
 
-`github.com/askvasir/xleader-cwi` — **private**. Cài: `/plugin marketplace add askvasir/xleader-cwi` →
-`/plugin install xleader-cwi@xleader-cwi` → `/mcp` chọn `insight` bấm `Authenticate` → `/start`.
+`github.com/askvasir/xleader-cwi` — **private**. Cài ở bản terminal: `/plugin marketplace add askvasir/xleader-cwi`
+→ `/plugin install xleader-cwi@xleader-cwi` → `/mcp` chọn `insight` bấm `Authenticate` → `/start`.
+Cho người dùng app Claude: admin đẩy plugin qua Organization settings → Plugins và thêm connector `insight`,
+người dùng chỉ bấm `Connect` → `/start`.
 
 Bump version ở **CẢ HAI** manifest rồi push thì auto-update mới nhận:
 `.claude-plugin/marketplace.json` → `plugins[0].version` · `plugin/.claude-plugin/plugin.json` → `version`.

@@ -6,7 +6,9 @@ description: Dùng khi người dùng muốn tạo, sửa, hoặc gỡ một bá
 # Dựng báo cáo riêng trên insight
 
 Báo cáo được tạo trong **thư mục riêng của chính người dùng**, mặc định. Mọi thao tác đi qua các tool của
-server `insight`.
+insight (`search`, `read_resource`, `create_question`, `update_dashboard`…). Các tool đó có thể tới từ plugin
+hay từ connector của Claude nên **tên đầy đủ khác nhau tuỳ máy** — cứ dùng tool đang có trong phiên, đừng đòi
+đúng một tên server. Không có tool nào của insight → nói là chưa kết nối và bảo người dùng gõ `/start`.
 
 ## Đọc đúng LÁT CẮT, đừng đọc cả kho
 
@@ -104,7 +106,7 @@ Biến trong SQL tay (khi buộc phải dùng) — 3 điều đã trả giá, na
 
 Không có file nào lưu lại công thức báo cáo — tìm và đọc lại thẳng từ insight:
 
-1. `search` (server `insight`) để tìm đúng thẻ/dashboard theo tên.
+1. `search` của insight để tìm đúng thẻ/dashboard theo tên.
 2. `read_resource` trên đúng card/dashboard đó để đọc lại cấu hình hiện tại (`dataset_query`, `display`,
    `dashcards`…) — đọc MỘT thẻ cụ thể, không phải quét mô tả cả bảng.
 3. Sửa trên cấu hình vừa đọc rồi gọi `update_question` (thẻ) hoặc `update_dashboard` (bố cục dashboard) — xem

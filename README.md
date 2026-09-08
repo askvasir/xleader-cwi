@@ -1,11 +1,40 @@
 # xleader-cwi — Chat With Insight
 
 Hỏi dữ liệu kinh doanh XLeaders bằng tiếng Việt và tự dựng báo cáo riêng trên `insight.xteam.edu.vn`,
-ngay trong Claude Code. Không cần biết SQL.
+ngay trong Claude — app trên máy, trên web, hay bản Claude Code cho dân kỹ thuật. Không cần biết SQL.
 
-## Cài đặt (làm một lần)
+## Dành cho người quản trị — bật một lần cho cả công ty
 
-> Repo: `github.com/askvasir/xleader-cwi` (**private** — cần quyền đọc repo mới cài được).
+Nhân viên **không tự thêm được** kết nối insight: trên gói Team/Enterprise chỉ chủ tài khoản (Owner) mới
+thêm connector được. Làm hai việc sau một lần, sau đó nhân viên chỉ còn bấm **Connect**.
+
+**1. Thêm connector `insight`** — vào **Organization settings → Connectors → Add → Custom → Web**, dán URL:
+
+```
+https://insight.xteam.edu.vn/api/metabase-mcp
+```
+
+Không cần điền ID/secret gì thêm. Connector này dùng OAuth per-user: mỗi người đăng nhập bằng chính tài
+khoản insight của họ, nên quyền của ai vẫn đúng bằng quyền người đó.
+
+**2. Đẩy plugin cho cả công ty** — vào **Organization settings → Plugins**, sync marketplace
+`askvasir/xleader-cwi` rồi đặt chế độ *Installed by default* (hoặc *Required*). Từ đó máy nhân viên tự có
+skill và tri thức, không ai phải gõ lệnh cài.
+
+> Nếu công ty dùng các tài khoản Pro cá nhân riêng lẻ (không có Organization settings), mỗi người tự thêm
+> connector một lần ở **Cài đặt → Connectors → Add → Custom** với đúng URL trên.
+
+## Dành cho nhân viên
+
+Mở **Cài đặt → Connectors**, tìm dòng **insight**, bấm **Connect**, đăng nhập bằng tài khoản insight của
+bạn rồi bấm đồng ý. Xong gõ `/start`.
+
+Không thấy dòng **insight**? Nhờ người quản trị tài khoản Claude của công ty làm bước 1 ở trên — bạn không
+tự thêm được, và đó không phải lỗi của bạn.
+
+### Nếu bạn dùng Claude Code bản terminal / VS Code
+
+Ở bản này plugin tự mang kết nối theo, cài bằng lệnh:
 
 ```
 /plugin marketplace add askvasir/xleader-cwi
@@ -13,9 +42,8 @@ ngay trong Claude Code. Không cần biết SQL.
 /mcp
 ```
 
-Trong màn hình `/mcp`, chọn dòng `insight` và bấm **Authenticate** — trình duyệt mở trang đăng nhập
-`insight.xteam.edu.vn`, đăng nhập bằng chính tài khoản insight của bạn rồi bấm đồng ý. Xong quay lại gõ
-`/start`.
+Trong màn hình `/mcp`, chọn dòng `insight` và bấm **Authenticate**. Lệnh `/mcp` **chỉ có ở bản terminal** —
+trong khung chat của app Claude không gõ được, ở đó dùng đường Connectors phía trên.
 
 Bật **auto update** trong màn hình `/plugin` để máy tự nhận bản plugin mới khi đội kỹ thuật phát hành (sửa
 tri thức nghiệp vụ, sửa skill…). Plugin **không** tự phát hiện khi dữ liệu/cấu trúc bảng bên Metabase thay
@@ -56,4 +84,8 @@ Gỡ báo cáo = đưa vào Thùng rác Metabase (khôi phục được), không
 
 - Tri thức nghiệp vụ nằm dưới `plugin/knowledge/` (Markdown, cắt lát theo chỉ số) — sửa tay khi số liệu đổi.
 - Repo ở `askvasir/xleader-cwi`, để **private** vì tri thức mô tả cấu trúc kinh doanh và tên đội Sale.
-  Người dùng phải được cấp quyền đọc repo thì lệnh cài mới chạy.
+  Ai cài bằng lệnh `/plugin marketplace add` phải được cấp quyền đọc repo; còn đường đẩy qua Organization
+  settings → Plugins thì claude.ai tự đọc repo qua Claude GitHub App, người dùng không cần quyền git.
+- Kết nối tới Metabase đi hai đường khác nhau tuỳ bề mặt: bản terminal dùng `plugin/.mcp.json` của plugin,
+  app Claude/web dùng connector khai ở Organization settings. Tool vì thế mang tên khác nhau — skill phải
+  gọi theo năng lực (`execute_sql`…), không bám tên server.

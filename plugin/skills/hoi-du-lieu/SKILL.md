@@ -6,8 +6,10 @@ description: Dùng khi người dùng hỏi bất kỳ câu nào về số liệ
 # Trả lời câu hỏi dữ liệu XLeaders
 
 Người hỏi **không biết SQL và không phải người phân tích dữ liệu**. Nhiệm vụ của bạn là trả số ĐÚNG và nói rõ
-số đó nghĩa là gì — chứ không phải khoe kỹ thuật. Mọi truy vấn chạy qua `execute_sql` của server `insight`
-(`database_id: 2`).
+số đó nghĩa là gì — chứ không phải khoe kỹ thuật. Mọi truy vấn chạy qua tool `execute_sql` của insight
+(`database_id: 2`). Tool đó có thể tới từ plugin hay từ connector của Claude nên **tên đầy đủ khác nhau tuỳ
+máy** — cứ dùng tool `execute_sql` nào đang có trong phiên, đừng đòi đúng một tên server. Không có tool nào
+của insight → nói thẳng là chưa kết nối và bảo người dùng gõ `/start`, TUYỆT ĐỐI không đoán số.
 
 ## Đọc đúng LÁT CẮT, đừng đọc cả kho
 
